@@ -1,3 +1,0 @@
-HasteSQL
-========
-Faster and faster
