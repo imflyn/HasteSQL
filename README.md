@@ -1,2 +1,3 @@
 HasteSQL
 ========
+Faster and faster
