@@ -1,6 +1,7 @@
 package com.flyn.hastesql.core;
 
-import java.util.ArrayList;
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.List;
 
 /**
@@ -8,12 +9,103 @@ import java.util.List;
  * <p/>
  * Not Thread-Safe
  */
-public class HasteDao
+public class HasteDao implements HasteOperation
 {
-    private static final int DEFAULT_DB_VERSION = 1;
-    private static final String DEFAULT_DB_NAME = "database.db";
+    private final SQLiteDatabase db;
+    private final String tableName;
+    private final Class<? extends HasteModel> hasteModelClz;
 
-    private List<? extends HasteTable> hasteTableList = new ArrayList<HasteTable>();
+    protected HasteDao(SQLiteDatabase db, String tableName, Class<? extends HasteModel> hasteModelClz)
+    {
+        this.hasteModelClz = hasteModelClz;
+        this.tableName = tableName;
+        this.db = db;
+    }
 
+    public String getTableName()
+    {
+        return tableName;
+    }
+
+    public Class<? extends HasteModel> getHasteModelClz()
+    {
+        return hasteModelClz;
+    }
+
+    @Override
+    public void insert(HasteModel hasteModel)
+    {
+
+    }
+
+    @Override
+    public void insert(HasteModel hasteModel, String prefix, String suffix)
+    {
+
+    }
+
+
+    @Override
+    public void update(HasteModel hasteModel)
+    {
+
+    }
+
+    @Override
+    public void update(HasteModel hasteModel, String prefix, String suffix)
+    {
+
+    }
+
+
+    @Override
+    public void insertOrReplace(HasteModel hasteModel)
+    {
+
+    }
+
+    @Override
+    public void insertOrReplace(HasteModel hasteModel, String prefix, String suffix)
+    {
+
+    }
+
+    @Override
+    public void delete(HasteModel hasteModel)
+    {
+
+    }
+
+    @Override
+    public void delete(HasteModel hasteModel, String prefix, String suffix)
+    {
+
+    }
+
+
+    @Override
+    public <T extends HasteModel> T queryFirst(Class<T> clz)
+    {
+        return null;
+    }
+
+    @Override
+    public <T extends HasteModel> T queryFirst(Class<T> clz, String prefix, String suffix)
+    {
+        return null;
+    }
+
+
+    @Override
+    public <T extends HasteModel> List<T> queryAll(Class<T> clz)
+    {
+        return null;
+    }
+
+    @Override
+    public <T extends HasteModel> List<T> queryAll(Class<T> clz, String prefix, String suffix)
+    {
+        return null;
+    }
 
 }
