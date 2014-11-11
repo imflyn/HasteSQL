@@ -16,12 +16,11 @@ public class HasteDao implements HasteOperation
     {
         this.sqlExecutor = sqlExecutor;
         this.hasteTable = new HasteTable(tableName, hasteModelClz);
-        checkIfExits();
+        createTableIfNotExits();
     }
 
-    private void checkIfExits()
+    private void createTableIfNotExits()
     {
-        //TODO 检查是否存在该表,没有则建表
 
 
     }

@@ -2,16 +2,19 @@ package com.flyn.hastesql.core;
 
 /**
  * Created by flyn on 2014-11-11.
+ * 支持主键暂不支持外键
  */
 public class HasteTable
 {
 
     private String tableName;
-    private  String[] allColumns;
+    private String[] allColumns;
+    private String[] pkColumns;
+
 
     protected HasteTable(String tableName, Class<? extends HasteModel> clz)
     {
-        this.tableName=tableName;
+        this.tableName = tableName;
         init(clz);
     }
 
@@ -19,11 +22,10 @@ public class HasteTable
     {
 
 
-
     }
 
-    protected  String createTable()
+    protected String createTable()
     {
-return  "";
+        return "";
     }
 }
