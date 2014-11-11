@@ -16,14 +16,12 @@ import java.util.Map;
 public class HasteMaster implements HasteOperation
 {
 
-    private final IMasterConfig masterConfig;
     private final HasteSQLiteOpenHelper hasteSQLiteOpenHelper;
-    private SQLiteDatabase sqLiteDatabase;
+    private SQLiteDatabase db;
     private Map<String, HasteDao> hasteDaoMap = new HashMap<String, HasteDao>();
 
     private HasteMaster(Context context, IMasterConfig masterConfig)
     {
-        this.masterConfig = masterConfig;
         this.hasteSQLiteOpenHelper = new HasteSQLiteOpenHelper(context, masterConfig);
         init();
 
@@ -37,19 +35,25 @@ public class HasteMaster implements HasteOperation
     private void init()
     {
         this.hasteDaoMap.clear();
-        this.sqLiteDatabase = this.hasteSQLiteOpenHelper.getWritableDatabase();
+        this.db = this.hasteSQLiteOpenHelper.getWritableDatabase();
     }
 
-    private synchronized HasteDao getHasteDao(Class<? extends HasteModel> clz, String tableName)
+    private HasteDao getHasteDao(Class<? extends HasteModel> clz, String tableName)
     {
         HasteDao hasteDao = hasteDaoMap.get(tableName);
         if (null == hasteDao)
         {
-            hasteDao = new HasteDao(this.sqLiteDatabase, tableName, clz);
+
+            hasteDao = new HasteDao(this.db, tableName, clz);
 
             this.hasteDaoMap.put(tableName, hasteDao);
         }
         return hasteDao;
+    }
+
+    public SQLiteDatabase getDatabase()
+    {
+        return this.db;
     }
 
     @Override
