@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Created by flyn on 2014-11-11.
  */
-public interface IMasterConfig
+public interface IHasteConfig
 {
     public abstract void onCreate(SQLiteDatabase db);
 

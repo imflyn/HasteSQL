@@ -20,16 +20,16 @@ public class HasteMaster implements HasteOperation
     private SQLiteDatabase db;
     private SQLExecutor sqlExecutor;
 
-    private HasteMaster(Context context, IMasterConfig masterConfig)
+    private HasteMaster(Context context, IHasteConfig hasteConfig)
     {
-        this.hasteSQLiteOpenHelper = new HasteSQLiteOpenHelper(context, masterConfig);
+        this.hasteSQLiteOpenHelper = new HasteSQLiteOpenHelper(context, hasteConfig);
         init();
 
     }
 
-    public static HasteMaster newInstance(Context context, IMasterConfig masterConfig)
+    public static HasteMaster newInstance(Context context, IHasteConfig hasteConfig)
     {
-        return new HasteMaster(context, masterConfig);
+        return new HasteMaster(context, hasteConfig);
     }
 
     private void init()
@@ -39,7 +39,7 @@ public class HasteMaster implements HasteOperation
         this.sqlExecutor = new SQLExecutor(this.db);
     }
 
-    private HasteDao getHasteDao(Class<? extends HasteModel> clz, String tableName)
+    private synchronized HasteDao getHasteDao(Class<? extends HasteModel> clz, String tableName)
     {
         HasteDao hasteDao = hasteDaoMap.get(tableName);
         if (null == hasteDao)
@@ -126,24 +126,24 @@ public class HasteMaster implements HasteOperation
 
     private static class HasteSQLiteOpenHelper extends SQLiteOpenHelper
     {
-        private final IMasterConfig masterConfig;
+        private final IHasteConfig hasteConfig;
 
-        private HasteSQLiteOpenHelper(Context context, IMasterConfig masterConfig)
+        private HasteSQLiteOpenHelper(Context context, IHasteConfig hasteConfig)
         {
-            super(context, masterConfig.dbName(), null, masterConfig.dbVersion());
-            this.masterConfig = masterConfig;
+            super(context, hasteConfig.dbName(), null, hasteConfig.dbVersion());
+            this.hasteConfig = hasteConfig;
         }
 
         @Override
         public void onCreate(SQLiteDatabase db)
         {
-            this.masterConfig.onCreate(db);
+            this.hasteConfig.onCreate(db);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
         {
-            this.masterConfig.onUpgrade(db, oldVersion, newVersion);
+            this.hasteConfig.onUpgrade(db, oldVersion, newVersion);
         }
     }
 }

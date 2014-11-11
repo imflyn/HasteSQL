@@ -9,20 +9,21 @@ import java.util.List;
  */
 public class HasteDao implements HasteOperation
 {
-    private final String tableName;
-    private final Class<? extends HasteModel> hasteModelClz;
+    private final HasteTable hasteTable;
     private final SQLExecutor sqlExecutor;
 
     protected HasteDao(SQLExecutor sqlExecutor, String tableName, Class<? extends HasteModel> hasteModelClz)
     {
         this.sqlExecutor = sqlExecutor;
-        this.hasteModelClz = hasteModelClz;
-        this.tableName = tableName;
+        this.hasteTable = new HasteTable(tableName, hasteModelClz);
+        checkIfExits();
     }
 
     private void checkIfExits()
     {
         //TODO 检查是否存在该表,没有则建表
+
+
     }
 
     @Override

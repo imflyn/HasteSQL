@@ -2,6 +2,7 @@ package com.flyn.hastesql.core;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
@@ -27,4 +28,33 @@ public class SQLExecutor
     }
 
 
+    public void insert(HasteModel hasteModel)
+    {
+
+    }
+
+    public void update(HasteModel hasteModel)
+    {
+
+    }
+
+    public void insertOrReplace(HasteModel hasteModel)
+    {
+
+    }
+
+    public void delete(HasteModel hasteModel)
+    {
+
+    }
+
+    public <T extends HasteModel> T queryFirst(Class<T> clz)
+    {
+        return null;
+    }
+
+    public <T extends HasteModel> List<T> queryAll(Class<T> clz)
+    {
+        return null;
+    }
 }

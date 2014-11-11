@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.flyn.hastesql.core.HasteMaster;
-import com.flyn.hastesql.core.IMasterConfig;
+import com.flyn.hastesql.core.IHasteConfig;
 
 import java.util.HashMap;
 
@@ -40,7 +40,7 @@ public class HasteSQL
         return createNew(context, DEFAULT_CONFIG);
     }
 
-    public static HasteMaster createNew(Context context, IMasterConfig masterConfig)
+    public static HasteMaster createNew(Context context, IHasteConfig hasteConfig)
     {
 
         HasteSQL hasteSQL = getInstance(context);
@@ -48,18 +48,18 @@ public class HasteSQL
         HasteMaster hasteMaster;
         synchronized (hasteSQL.mLock)
         {
-            hasteMaster = hasteSQL.hasteMasterMap.get(masterConfig.dbName());
+            hasteMaster = hasteSQL.hasteMasterMap.get(hasteConfig.dbName());
             if (hasteMaster == null)
             {
-                hasteMaster = HasteMaster.newInstance(context, masterConfig);
-                hasteSQL.hasteMasterMap.put(masterConfig.dbName(), hasteMaster);
+                hasteMaster = HasteMaster.newInstance(context, hasteConfig);
+                hasteSQL.hasteMasterMap.put(hasteConfig.dbName(), hasteMaster);
             }
         }
         return hasteMaster;
     }
 
 
-    private static IMasterConfig DEFAULT_CONFIG = new IMasterConfig()
+    private static IHasteConfig DEFAULT_CONFIG = new IHasteConfig()
     {
         @Override
         public void onCreate(SQLiteDatabase db)
