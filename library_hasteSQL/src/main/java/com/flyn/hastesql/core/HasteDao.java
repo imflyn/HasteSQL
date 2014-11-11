@@ -14,7 +14,6 @@ public class HasteDao
     private static final String DEFAULT_DB_NAME = "database.db";
 
     private List<? extends HasteTable> hasteTableList = new ArrayList<HasteTable>();
-    private List<? extends IHasteDaoImpl> hasteDaoImplList = new ArrayList<IHasteDaoImpl>();
 
 
 }

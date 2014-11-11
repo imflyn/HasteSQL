@@ -3,28 +3,23 @@ package com.flyn.hastesql;
 import android.content.Context;
 
 import com.flyn.hastesql.core.HasteMaster;
-import com.flyn.hastesql.core.HasteModel;
-import com.flyn.hastesql.core.HasteOperation;
-import com.flyn.hastesql.core.IHasteDaoImpl;
 
-import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by flyn on 2014-11-10.
  * <p/>
  * Thread-Safe
  */
-public class HasteSQL implements HasteOperation
+public class HasteSQL
 {
     private final Context mContext;
-    private final HasteMaster hasteMaster;
+    private final ConcurrentHashMap<String, HasteMaster> hasteMasterMap = new ConcurrentHashMap<String, HasteMaster>();
     private static HasteSQL hasteSQL;
 
     private HasteSQL(Context context)
     {
-        hasteMaster = HasteMaster.newInstence();
         mContext = context.getApplicationContext();
-
     }
 
     private static synchronized HasteSQL getInstance(Context context)
@@ -38,12 +33,12 @@ public class HasteSQL implements HasteOperation
     }
 
 
-    public static HasteSQL create(Context context)
+    public static HasteSQL createDefault(Context context)
     {
-        return create(context, null);
+        return createNew(context, null);
     }
 
-    public static HasteSQL create(Context context, Class<? extends IHasteDaoImpl> clz)
+    public static HasteSQL createNew(Context context, String dbName)
     {
         HasteSQL hasteSQL = getInstance(context);
 
@@ -51,39 +46,4 @@ public class HasteSQL implements HasteOperation
         return hasteSQL;
     }
 
-    @Override
-    public void insert(HasteModel hasteModel)
-    {
-
-    }
-
-    @Override
-    public void update(HasteModel hasteModel)
-    {
-
-    }
-
-    @Override
-    public void insertOrReplace(HasteModel hasteModel)
-    {
-
-    }
-
-    @Override
-    public void delete(HasteModel hasteModel)
-    {
-
-    }
-
-    @Override
-    public <T extends HasteModel> T queryFirst(Class<T> clz)
-    {
-        return null;
-    }
-
-    @Override
-    public <T> List<T> queryAll(Class<T> clz)
-    {
-        return null;
-    }
 }
