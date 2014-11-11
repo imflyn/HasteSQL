@@ -1,7 +1,5 @@
 package com.flyn.hastesql.core;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import java.util.List;
 
 /**
@@ -11,58 +9,59 @@ import java.util.List;
  */
 public class HasteDao implements HasteOperation
 {
-    private final SQLiteDatabase db;
     private final String tableName;
     private final Class<? extends HasteModel> hasteModelClz;
-    private final HasteTable hasteTable;
+    private final SQLExecutor sqlExecutor;
 
-    protected HasteDao(SQLiteDatabase db, String tableName, Class<? extends HasteModel> hasteModelClz)
+    protected HasteDao(SQLExecutor sqlExecutor, String tableName, Class<? extends HasteModel> hasteModelClz)
     {
+        this.sqlExecutor = sqlExecutor;
         this.hasteModelClz = hasteModelClz;
         this.tableName = tableName;
-        this.db = db;
-        this.hasteTable = new HasteTable(db, tableName, hasteModelClz);
+    }
+
+    private void checkIfExits()
+    {
+        //TODO 检查是否存在该表,没有则建表
     }
 
     @Override
     public void insert(HasteModel hasteModel)
     {
-        hasteTable.insert(hasteModel);
+
     }
 
 
     @Override
     public void update(HasteModel hasteModel)
     {
-        hasteTable.update(hasteModel);
+
     }
 
 
     @Override
     public void insertOrReplace(HasteModel hasteModel)
     {
-        hasteTable.insertOrReplace(hasteModel);
     }
 
 
     @Override
     public void delete(HasteModel hasteModel)
     {
-        hasteTable.delete(hasteModel);
     }
 
 
     @Override
     public <T extends HasteModel> T queryFirst(Class<T> clz)
     {
-        return hasteTable.queryFirst(clz);
+        return null;
     }
 
 
     @Override
     public <T extends HasteModel> List<T> queryAll(Class<T> clz)
     {
-        return hasteTable.queryAll(clz);
+        return null;
     }
 
 

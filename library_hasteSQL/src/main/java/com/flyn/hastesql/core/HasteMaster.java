@@ -15,10 +15,10 @@ import java.util.Map;
  */
 public class HasteMaster implements HasteOperation
 {
-
+    private Map<String, HasteDao> hasteDaoMap = new HashMap<String, HasteDao>();
     private final HasteSQLiteOpenHelper hasteSQLiteOpenHelper;
     private SQLiteDatabase db;
-    private Map<String, HasteDao> hasteDaoMap = new HashMap<String, HasteDao>();
+    private SQLExecutor sqlExecutor;
 
     private HasteMaster(Context context, IMasterConfig masterConfig)
     {
@@ -36,6 +36,7 @@ public class HasteMaster implements HasteOperation
     {
         this.hasteDaoMap.clear();
         this.db = this.hasteSQLiteOpenHelper.getWritableDatabase();
+        this.sqlExecutor = new SQLExecutor(this.db);
     }
 
     private HasteDao getHasteDao(Class<? extends HasteModel> clz, String tableName)
@@ -43,9 +44,7 @@ public class HasteMaster implements HasteOperation
         HasteDao hasteDao = hasteDaoMap.get(tableName);
         if (null == hasteDao)
         {
-
-            hasteDao = new HasteDao(this.db, tableName, clz);
-
+            hasteDao = new HasteDao(this.sqlExecutor, tableName, clz);
             this.hasteDaoMap.put(tableName, hasteDao);
         }
         return hasteDao;
