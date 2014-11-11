@@ -59,7 +59,6 @@ public class HasteMaster implements HasteOperation
 
     }
 
-    @Override
     public void insert(HasteModel hasteModel, String prefix, String suffix)
     {
         getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).insert(hasteModel);
@@ -71,7 +70,6 @@ public class HasteMaster implements HasteOperation
         getHasteDao(hasteModel.getClass(), hasteModel.getClass().getSimpleName()).update(hasteModel);
     }
 
-    @Override
     public void update(HasteModel hasteModel, String prefix, String suffix)
     {
         getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).update(hasteModel);
@@ -84,7 +82,6 @@ public class HasteMaster implements HasteOperation
         getHasteDao(hasteModel.getClass(), hasteModel.getClass().getSimpleName()).update(hasteModel);
     }
 
-    @Override
     public void insertOrReplace(HasteModel hasteModel, String prefix, String suffix)
     {
         getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).insertOrReplace(hasteModel);
@@ -96,7 +93,6 @@ public class HasteMaster implements HasteOperation
         getHasteDao(hasteModel.getClass(), hasteModel.getClass().getSimpleName()).delete(hasteModel);
     }
 
-    @Override
     public void delete(HasteModel hasteModel, String prefix, String suffix)
     {
         getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).delete(hasteModel);
@@ -108,10 +104,9 @@ public class HasteMaster implements HasteOperation
         return getHasteDao(clz, clz.getSimpleName()).queryFirst(clz);
     }
 
-    @Override
     public <T extends HasteModel> T queryFirst(Class<T> clz, String prefix, String suffix)
     {
-        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryFirst(clz, prefix, suffix);
+        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryFirst(clz);
     }
 
     @Override
@@ -120,10 +115,9 @@ public class HasteMaster implements HasteOperation
         return getHasteDao(clz, clz.getSimpleName()).queryAll(clz);
     }
 
-    @Override
     public <T extends HasteModel> List<T> queryAll(Class<T> clz, String prefix, String suffix)
     {
-        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryAll(clz, prefix, suffix);
+        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryAll(clz);
     }
 
 
