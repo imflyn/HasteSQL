@@ -1,15 +1,20 @@
 package com.flyn.hastesql.core;
 
+import com.flyn.hastesql.optional.Property;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+
 /**
  * Created by flyn on 2014-11-11.
- * 支持主键暂不支持外键
  */
 public class HasteTable
 {
 
     private String tableName;
-    private String[] allColumns;
-    private String[] pkColumns;
+    private Property[] allColumns;
+    private Property[] pkColumns;
 
 
     protected HasteTable(String tableName, Class<? extends HasteModel> clz)
@@ -20,7 +25,6 @@ public class HasteTable
 
     private void init(Class<? extends HasteModel> clz)
     {
-
 
     }
 

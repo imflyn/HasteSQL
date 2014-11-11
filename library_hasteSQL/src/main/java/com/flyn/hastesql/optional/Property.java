@@ -7,17 +7,9 @@ public class Property
 {
 
     protected String name;
-    protected Class<?> type;
-    protected boolean isPrimaryKey;
-    public boolean isPrimaryKey()
-    {
-        return isPrimaryKey;
-    }
+    protected String type;
+    protected Object value;
 
-    public void setPrimaryKey(boolean isPrimaryKey)
-    {
-        this.isPrimaryKey = isPrimaryKey;
-    }
 
     public String getName()
     {
@@ -29,16 +21,23 @@ public class Property
         this.name = name;
     }
 
-    public Class<?> getType()
+    public String getType()
     {
         return type;
     }
 
-    public void setType(Class<?> type)
+    public void setType(String type)
     {
         this.type = type;
     }
 
+    public Object getValue()
+    {
+        return value;
+    }
 
-
+    public void setValue(Object value)
+    {
+        this.value = value;
+    }
 }

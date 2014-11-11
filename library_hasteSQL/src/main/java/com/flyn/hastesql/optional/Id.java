@@ -3,7 +3,7 @@ package com.flyn.hastesql.optional;
 /**
  * Created by flyn on 2014-11-11.
  */
-public class Id extends Property
+public class Id extends PrimaryKey
 {
 
     private boolean autoIncrease;
@@ -16,12 +16,6 @@ public class Id extends Property
     public void setAutoIncrease(boolean autoIncrease)
     {
         this.autoIncrease = autoIncrease;
-    }
-
-    @Override
-    public boolean isPrimaryKey()
-    {
-        return true;
     }
 
 

@@ -7,10 +7,4 @@ package com.flyn.hastesql.core;
  */
 public interface HasteModel
 {
-
-    String[] getPrimaryKey();
-
-    boolean idAutoIncrease();
-
-  //  String[] getForeignKey();
 }
