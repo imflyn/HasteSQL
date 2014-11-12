@@ -1,4 +1,4 @@
-package com.flyn.myapplication;
+package com.flyn.test.hastesql;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
