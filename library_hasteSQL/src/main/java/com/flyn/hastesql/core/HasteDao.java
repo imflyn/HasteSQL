@@ -40,7 +40,7 @@ public class HasteDao implements HasteOperation
     public void insert(HasteModel hasteModel)
     {
         SQLiteStatement sqLiteStatement = hasteTable.getInsertSQLiteStatement();
-        synchronized (sqLiteStatement)
+        synchronized (hasteTable)
         {
             SQLUtils.statementBindValue(sqLiteStatement, SQLUtils.propertyBindValue(hasteTable.getAllColumns(), hasteModel));
         }

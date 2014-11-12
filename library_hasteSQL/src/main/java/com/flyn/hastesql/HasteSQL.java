@@ -16,20 +16,19 @@ import java.util.HashMap;
 public class HasteSQL
 {
     private static HasteSQL hasteSQL;
-    private final Context mContext;
     private final HashMap<String, HasteMaster> hasteMasterMap = new HashMap<String, HasteMaster>();
-    private Object mLock = new Object();
+    private final Object mLock = new Object();
 
-    private HasteSQL(Context context)
+    private HasteSQL()
     {
-        mContext = context.getApplicationContext();
+
     }
 
     private static synchronized HasteSQL getInstance(Context context)
     {
         if (null == hasteSQL)
         {
-            hasteSQL = new HasteSQL(context);
+            hasteSQL = new HasteSQL();
 
         }
         return hasteSQL;
@@ -59,7 +58,7 @@ public class HasteSQL
     }
 
 
-    private static IHasteConfig DEFAULT_CONFIG = new IHasteConfig()
+    private static final IHasteConfig DEFAULT_CONFIG = new IHasteConfig()
     {
         @Override
         public void onCreate(SQLiteDatabase db)

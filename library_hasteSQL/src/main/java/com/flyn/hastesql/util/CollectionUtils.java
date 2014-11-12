@@ -9,13 +9,7 @@ public class CollectionUtils
 {
     public static boolean isEmpty(Collection<?> collection)
     {
-        if (collection == null || collection.isEmpty())
-        {
-            return true;
-        } else
-        {
-            return false;
-        }
+        return collection == null || collection.isEmpty();
 
     }
 

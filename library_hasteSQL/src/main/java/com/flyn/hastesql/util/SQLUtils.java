@@ -43,7 +43,6 @@ public class SQLUtils
         StringBuilder primarySql = new StringBuilder();
         StringBuilder otherSql = new StringBuilder();
 
-        boolean hasId = false;
         for (Property property : properties)
         {
             if (property.getName().equalsIgnoreCase("id") || property.getName().equalsIgnoreCase("_id"))

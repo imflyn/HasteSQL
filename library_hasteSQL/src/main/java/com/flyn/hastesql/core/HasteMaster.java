@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class HasteMaster implements HasteOperation
 {
-    private Map<String, HasteDao> hasteDaoMap = new HashMap<String, HasteDao>();
+    private final Map<String, HasteDao> hasteDaoMap = new HashMap<String, HasteDao>();
     private final HasteSQLiteOpenHelper hasteSQLiteOpenHelper;
     private SQLiteDatabase db;
     private SQLExecutor sqlExecutor;

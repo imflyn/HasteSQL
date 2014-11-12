@@ -18,7 +18,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class SQLExecutor
 {
 
-    private final ReentrantReadWriteLock mLock;
     private final ReentrantReadWriteLock.ReadLock mReadLock;
     private final ReentrantReadWriteLock.WriteLock mWriteLock;
 
@@ -27,9 +26,9 @@ public class SQLExecutor
     public SQLExecutor(SQLiteDatabase db)
     {
         this.db = db;
-        this.mLock = new ReentrantReadWriteLock();
-        this.mReadLock = this.mLock.readLock();
-        this.mWriteLock = this.mLock.writeLock();
+        ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+        this.mReadLock = lock.readLock();
+        this.mWriteLock = lock.writeLock();
     }
 
 

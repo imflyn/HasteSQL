@@ -42,7 +42,7 @@ public class ReflectUtils
             }
         }
 
-        return properties.toArray(new Property[]{});
+        return properties.toArray(new Property[properties.size()]);
     }
 
     public static Object getFieldValue(String fieldName, Object obj)
@@ -59,8 +59,7 @@ public class ReflectUtils
         field.setAccessible(true);
         try
         {
-            Object value = field.get(fieldName);
-            return value;
+            return field.get(fieldName);
         } catch (IllegalAccessException e)
         {
             e.printStackTrace();

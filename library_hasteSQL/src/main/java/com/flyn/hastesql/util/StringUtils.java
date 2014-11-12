@@ -8,13 +8,7 @@ public class StringUtils
 
     public static boolean isEmpty(String text)
     {
-        if (text == null || text.trim().length() == 0)
-        {
-            return true;
-        } else
-        {
-            return false;
-        }
+        return text == null || text.trim().length() == 0;
     }
 
 }
