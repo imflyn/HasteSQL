@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.flyn.hastesql.util.CursorUtils;
 import com.flyn.hastesql.util.LogUtils;
-import com.flyn.hastesql.util.SQLUtils;
 
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -162,16 +161,10 @@ public class SQLExecutor
         }
     }
 
-    public void execInsert(SQLiteStatement sqLiteStatement, HasteModel hasteModel)
+    public void execInsert(SQLiteStatement sqLiteStatement)
     {
         debugSql(sqLiteStatement.toString());
 
-        synchronized (sqLiteStatement)
-        {
-            //TODO 创建Properties
-            SQLUtils.statementBindValue(sqLiteStatement, null);
-
-        }
         try
         {
             mWriteLock.lock();

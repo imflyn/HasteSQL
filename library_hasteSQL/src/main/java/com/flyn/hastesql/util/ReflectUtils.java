@@ -45,12 +45,6 @@ public class ReflectUtils
         return properties.toArray(new Property[]{});
     }
 
-    /**
-     * //TODO 寻求优化
-     * @param fieldName
-     * @param obj
-     * @return
-     */
     public static Object getFieldValue(String fieldName, Object obj)
     {
         Field field;
@@ -73,5 +67,7 @@ public class ReflectUtils
             return null;
         }
     }
+
+
 
 }

@@ -143,4 +143,21 @@ public class SQLUtils
 
     }
 
+    public static Property[] propertyBindValue(Property[] properties, Object obj)
+    {
+        Property[] copy_of_properties = new Property[properties.length];
+        Property property;
+        for (int i = 0; i < properties.length; i++)
+        {
+            property = properties[i];
+
+            copy_of_properties[i].setName(property.getName());
+            copy_of_properties[i].setType(property.getType());
+            copy_of_properties[i].setValue(ReflectUtils.getFieldValue(property.getName(), obj));
+
+        }
+
+        return copy_of_properties;
+    }
+
 }

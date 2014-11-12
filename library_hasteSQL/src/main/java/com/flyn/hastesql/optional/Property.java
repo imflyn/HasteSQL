@@ -5,20 +5,10 @@ package com.flyn.hastesql.optional;
  */
 public class Property
 {
-    protected int index;
     protected String name;
     protected String type;
     protected Object value;
 
-    public int getIndex()
-    {
-        return index;
-    }
-
-    public void setIndex(int index)
-    {
-        this.index = index;
-    }
 
     public String getName()
     {
