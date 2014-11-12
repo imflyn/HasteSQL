@@ -6,7 +6,7 @@ android {
     buildToolsVersion "21.1.0"
 
     defaultConfig {
-        applicationId "com.flyn.myapplication"
+        applicationId "com.flyn.test.hastesql"
         minSdkVersion 8
         targetSdkVersion 21
         versionCode 1

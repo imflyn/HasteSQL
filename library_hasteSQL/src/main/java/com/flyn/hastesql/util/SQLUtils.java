@@ -95,8 +95,7 @@ public class SQLUtils
         sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
         sqlBuilder.append(") VALUES (");
 
-        int length = sqlBuilder.length();
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < properties.length; i++)
         {
             sqlBuilder.append("?,");
         }
