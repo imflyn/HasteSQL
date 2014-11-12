@@ -1,5 +1,9 @@
 package com.flyn.hastesql.core;
 
+import android.database.sqlite.SQLiteDatabase;
+
+import com.flyn.hastesql.util.SQLUtils;
+
 import java.util.List;
 
 /**
@@ -12,23 +16,29 @@ public class HasteDao implements HasteOperation
     private final HasteTable hasteTable;
     private final SQLExecutor sqlExecutor;
 
-    protected HasteDao(SQLExecutor sqlExecutor, String tableName, Class<? extends HasteModel> hasteModelClz)
+    protected HasteDao(SQLiteDatabase db, SQLExecutor sqlExecutor, String tableName, Class<? extends HasteModel> hasteModelClz)
     {
         this.sqlExecutor = sqlExecutor;
-        this.hasteTable = new HasteTable(tableName, hasteModelClz);
+        this.hasteTable = new HasteTable(db, tableName, hasteModelClz);
         createTableIfNotExits();
     }
 
-    private void createTableIfNotExits()
+    protected void createTableIfNotExits()
     {
 
-
+        String checkTableSQL = SQLUtils.createSQLCheckTableExits(hasteTable.getTableName());
+        if (sqlExecutor.isEmpty(checkTableSQL))
+        {
+            //如果为空则建表
+            String createTableSQL = SQLUtils.createSQLCreateTable(hasteTable.getTableName(), hasteTable.getAllColumns());
+            sqlExecutor.execSQL(createTableSQL);
+        }
     }
 
     @Override
     public void insert(HasteModel hasteModel)
     {
-
+        sqlExecutor.execInsert(hasteTable.getInsertSQLiteStatement(),hasteModel);
     }
 
 

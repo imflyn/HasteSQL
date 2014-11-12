@@ -26,17 +26,52 @@ public class ReflectUtils
         final int modifierMask = Modifier.STATIC | Modifier.TRANSIENT | Modifier.FINAL;
         for (Field field : fields)
         {
-            if ((field.getModifiers() & modifierMask) != modifierMask && (!(field.getClass().equals(Object.class))))
+            if ((field.getModifiers() & modifierMask) != modifierMask)
             {
-                Property property = new Property();
+                String type = Type.wrap(field.getType());
 
+                if (StringUtils.isEmpty(type))
+                {
+                    continue;
+                }
+
+                Property property = new Property();
+                property.setType(type);
                 property.setName(field.getName());
-                property.setType(Type.wrap(field.getType()));
                 properties.add(property);
             }
         }
 
         return properties.toArray(new Property[]{});
+    }
+
+    /**
+     * //TODO 寻求优化
+     * @param fieldName
+     * @param obj
+     * @return
+     */
+    public static Object getFieldValue(String fieldName, Object obj)
+    {
+        Field field;
+        try
+        {
+            field = obj.getClass().getDeclaredField(fieldName);
+        } catch (NoSuchFieldException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        field.setAccessible(true);
+        try
+        {
+            Object value = field.get(fieldName);
+            return value;
+        } catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

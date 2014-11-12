@@ -9,7 +9,7 @@ import java.io.IOException;
 public class CursorUtils
 {
 
-    public static void quickClose(Closeable closeable)
+    public static void closeQuietly(Closeable closeable)
     {
         if (null != closeable)
         {

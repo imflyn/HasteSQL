@@ -17,7 +17,7 @@ public enum Type
     }
 
 
-    String value()
+    public String value()
     {
         return type;
     }
@@ -36,7 +36,7 @@ public enum Type
         } else if (clz.equals(boolean.class) || clz.equals(Boolean.class) || clz.equals(Float.class) || clz.equals(float.class))
         {
             return Type.DOUBLE.value();
-        } else if (clz.equals(int.class) || clz.equals(Integer.class))
+        } else if (clz.equals(int.class) || clz.equals(Integer.class) || clz.equals(long.class) || clz.equals(Long.class))
         {
             return Type.INTEGER.value();
         } else if (clz.equals(Date.class))
@@ -46,6 +46,6 @@ public enum Type
         {
             return Type.BLOB.value();
         }
-        return Type.TEXT.value();
+        return null;
     }
 }

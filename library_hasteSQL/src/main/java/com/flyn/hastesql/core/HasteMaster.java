@@ -44,7 +44,7 @@ public class HasteMaster implements HasteOperation
         HasteDao hasteDao = hasteDaoMap.get(tableName);
         if (null == hasteDao)
         {
-            hasteDao = new HasteDao(this.sqlExecutor, tableName, clz);
+            hasteDao = new HasteDao(db, this.sqlExecutor, tableName, clz);
             this.hasteDaoMap.put(tableName, hasteDao);
         }
         return hasteDao;
