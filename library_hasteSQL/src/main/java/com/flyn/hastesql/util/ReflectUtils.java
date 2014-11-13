@@ -94,5 +94,14 @@ public class ReflectUtils
         }
     }
 
+    public static Object[] getFieldValueArray(Property[] properties, Object obj)
+    {
+        Object[] objects = new Object[properties.length];
+        for (int i = 0; i < properties.length; i++)
+        {
+            objects[i] = getFieldValue(properties[i].getName(), obj);
+        }
+        return objects;
+    }
 
 }

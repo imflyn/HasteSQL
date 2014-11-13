@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteStatement;
 import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.util.CursorUtils;
 import com.flyn.hastesql.util.LogUtils;
+import com.flyn.hastesql.util.ReflectUtils;
 import com.flyn.hastesql.util.SQLUtils;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -34,9 +36,35 @@ public class SQLExecutor
     }
 
 
+    /**
+     * TODO 需要测试
+     *
+     * @param hasteModel
+     */
     public void insert(HasteModel hasteModel)
     {
+        Property[] properties = ReflectUtils.getPropertyArray(hasteModel.getClass());
+        String sql = SQLUtils.createSQLInsert(hasteModel.getClass().getSimpleName(), properties);
+        execSQL(sql, ReflectUtils.getFieldValueArray(properties, hasteModel));
+    }
 
+    /**
+     * TODO 需要测试
+     *
+     * @param hasteModelList
+     */
+    public void insertAll(List<HasteModel> hasteModelList)
+    {
+        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
+        Property[] properties = ReflectUtils.getPropertyArray(clz);
+        String sql = SQLUtils.createSQLInsert(clz.getSimpleName(), properties);
+
+        List<Object[]> objects = new LinkedList<Object[]>();
+        for (HasteModel hasteModel : hasteModelList)
+        {
+            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModel));
+        }
+        execSQLList(sql, objects);
     }
 
     public void update(HasteModel hasteModel)
@@ -126,14 +154,33 @@ public class SQLExecutor
         }
     }
 
-    public void execSQL(String sql, String[] selectionArgs)
+    public void execSQL(String sql, Object[] values)
     {
         debugSql(sql);
         try
         {
             mWriteLock.lock();
             db.beginTransaction();
-            db.execSQL(sql, selectionArgs);
+            db.execSQL(sql, values);
+            db.setTransactionSuccessful();
+        } finally
+        {
+            db.endTransaction();
+            mWriteLock.unlock();
+        }
+    }
+
+    public void execSQLList(String sql, List<Object[]> values)
+    {
+        debugSql(sql);
+        try
+        {
+            mWriteLock.lock();
+            db.beginTransaction();
+            for (Object[] objects : values)
+            {
+                db.execSQL(sql, objects);
+            }
             db.setTransactionSuccessful();
         } finally
         {

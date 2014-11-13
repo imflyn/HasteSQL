@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by flyn on 2014-11-12.
  */
-public class TestModel implements HasteModel
+public class TestMultiModel implements HasteModel
 {
     private final int testFinal = 2;
     private static int testStatic = 3;
@@ -38,7 +38,7 @@ public class TestModel implements HasteModel
     private volatile StringBuffer testObject3;
 
 
-    public TestModel()
+    public TestMultiModel()
     {
         this.string1 = "aaa";
         this.string2 = "bbb";

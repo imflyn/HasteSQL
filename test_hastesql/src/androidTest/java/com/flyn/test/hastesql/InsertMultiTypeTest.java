@@ -5,7 +5,7 @@ import android.test.AndroidTestCase;
 
 import com.flyn.hastesql.HasteSQL;
 import com.flyn.hastesql.core.HasteMaster;
-import com.flyn.test.hastesql.entity.TestModel;
+import com.flyn.test.hastesql.entity.TestMultiModel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -32,22 +32,22 @@ public class InsertMultiTypeTest extends AndroidTestCase
     {
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
 
-        TestModel testModel = new TestModel();
-        hasteMaster.insert(testModel);
+        TestMultiModel testMultiModel = new TestMultiModel();
+        hasteMaster.insert(testMultiModel);
 
     }
 
     public void testInsertAll()
     {
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
-        TestModel testModel;
-        List<TestModel> testModelList = new LinkedList<TestModel>();
+        TestMultiModel testMultiModel;
+        List<TestMultiModel> testMultiModelList = new LinkedList<TestMultiModel>();
         for (int i = 0; i < 10000; i++)
         {
-            testModel = new TestModel();
-            testModelList.add(testModel);
+            testMultiModel = new TestMultiModel();
+            testMultiModelList.add(testMultiModel);
         }
-        hasteMaster.insertAll(testModelList);
+        hasteMaster.insertAll(testMultiModelList);
     }
 
     @Override
