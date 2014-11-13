@@ -4,8 +4,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
+import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.util.CursorUtils;
 import com.flyn.hastesql.util.LogUtils;
+import com.flyn.hastesql.util.SQLUtils;
 
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -74,7 +76,7 @@ public class SQLExecutor
                     int count = cursor.getInt(0);
                     if (count > 0)
                     {
-                        return true;
+                        return false;
                     }
                 }
             } finally
@@ -83,7 +85,7 @@ public class SQLExecutor
             }
         }
 
-        return false;
+        return true;
     }
 
 
@@ -160,17 +162,37 @@ public class SQLExecutor
         }
     }
 
-    public void execInsert(SQLiteStatement sqLiteStatement)
+    public void execInsert(SQLiteStatement sqLiteStatement, Property[] properties)
     {
         debugSql(sqLiteStatement.toString());
-
         try
         {
             mWriteLock.lock();
             db.beginTransaction();
+            SQLUtils.statementBindValue(sqLiteStatement, properties);
             sqLiteStatement.executeInsert();
             db.setTransactionSuccessful();
-            sqLiteStatement.close();
+        } finally
+        {
+            db.endTransaction();
+            mWriteLock.lock();
+        }
+    }
+
+    public void execInsertAll(SQLiteStatement sqLiteStatement, Property[] properties, List<? extends HasteModel> hasteModelList)
+    {
+        debugSql(sqLiteStatement.toString());
+        try
+        {
+            mWriteLock.lock();
+            db.beginTransaction();
+            for (HasteModel hasteModel : hasteModelList)
+            {
+                Property[] propertyArray = SQLUtils.propertyBindValue(properties, hasteModel);
+                SQLUtils.statementBindValue(sqLiteStatement, propertyArray);
+                sqLiteStatement.executeInsert();
+            }
+            db.setTransactionSuccessful();
         } finally
         {
             db.endTransaction();

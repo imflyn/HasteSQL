@@ -11,6 +11,7 @@ public interface HasteOperation
 
     void insert(HasteModel hasteModel);
 
+    void insertAll(List<? extends HasteModel> hasteModelList);
 
     void update(HasteModel hasteModel);
 

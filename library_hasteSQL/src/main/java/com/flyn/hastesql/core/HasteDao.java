@@ -3,6 +3,7 @@ package com.flyn.hastesql.core;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
+import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.util.SQLUtils;
 
 import java.util.List;
@@ -20,8 +21,9 @@ public class HasteDao implements HasteOperation
     protected HasteDao(SQLiteDatabase db, SQLExecutor sqlExecutor, String tableName, Class<? extends HasteModel> hasteModelClz)
     {
         this.sqlExecutor = sqlExecutor;
-        this.hasteTable = new HasteTable(db, tableName, hasteModelClz);
+        this.hasteTable = new HasteTable(tableName, hasteModelClz);
         createTableIfNotExits();
+        this.hasteTable.compileStatements(db);
     }
 
     protected void createTableIfNotExits()
@@ -40,12 +42,15 @@ public class HasteDao implements HasteOperation
     public void insert(HasteModel hasteModel)
     {
         SQLiteStatement sqLiteStatement = hasteTable.getInsertSQLiteStatement();
-        synchronized (hasteTable)
-        {
-            SQLUtils.statementBindValue(sqLiteStatement, SQLUtils.propertyBindValue(hasteTable.getAllColumns(), hasteModel));
-        }
+        Property[] properties = SQLUtils.propertyBindValue(hasteTable.getAllColumns(), hasteModel);
+        sqlExecutor.execInsert(sqLiteStatement, properties);
+    }
 
-        sqlExecutor.execInsert(sqLiteStatement);
+    @Override
+    public void insertAll(List<? extends HasteModel> hasteModelList)
+    {
+        SQLiteStatement sqLiteStatement = hasteTable.getInsertSQLiteStatement();
+        sqlExecutor.execInsertAll(sqLiteStatement, hasteTable.getAllColumns(), hasteModelList);
     }
 
 

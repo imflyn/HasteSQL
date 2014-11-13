@@ -33,16 +33,17 @@ public enum Type
         } else if (clz.equals(boolean.class) || clz.equals(Boolean.class))
         {
             return Type.BOOLEAN.value();
-        } else if (clz.equals(boolean.class) || clz.equals(Boolean.class) || clz.equals(Float.class) || clz.equals(float.class))
+        } else if (clz.equals(double.class) || clz.equals(Double.class) || clz.equals(Float.class) || clz.equals(float.class))
         {
             return Type.DOUBLE.value();
-        } else if (clz.equals(int.class) || clz.equals(Integer.class) || clz.equals(long.class) || clz.equals(Long.class))
+        } else if (clz.equals(int.class) || clz.equals(Integer.class) || clz.equals(long.class) || clz.equals(Long.class) || clz.equals(short
+                .class) || clz.equals(Short.class))
         {
             return Type.INTEGER.value();
         } else if (clz.equals(Date.class))
         {
             return Type.DATE.value();
-        } else if (clz.isArray() && (clz.getComponentType().equals(byte.class) || clz.getComponentType().equals(Byte.class)))
+        } else if (clz.isArray() && (clz.getComponentType().equals(byte.class)))
         {
             return Type.BLOB.value();
         }

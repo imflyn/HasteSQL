@@ -2,6 +2,7 @@ package com.flyn.hastesql.util;
 
 import android.database.sqlite.SQLiteStatement;
 
+import com.flyn.hastesql.core.HasteModel;
 import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.optional.Type;
 
@@ -109,27 +110,27 @@ public class SQLUtils
 
     public static void statementBindValue(SQLiteStatement sqLiteStatement, Property[] properties)
     {
-        int index = 0;
+        int index = 1;
         for (Property property : properties)
         {
             if (property.getType().equals(Type.TEXT.value()))
             {
-                sqLiteStatement.bindString(index, (String) property.getValue());
-            } else if (property.getType().equals(Type.DATE.value()))
-            {
-                sqLiteStatement.bindLong(index, ((Date) property.getValue()).getTime());
-            } else if (property.getType().equals(Type.DOUBLE.value()))
-            {
-                sqLiteStatement.bindDouble(index, (Double) property.getValue());
+                sqLiteStatement.bindString(index, String.valueOf(property.getValue()));
             } else if (property.getType().equals(Type.INTEGER.value()))
             {
-                sqLiteStatement.bindLong(index, (Integer) property.getValue());
-            } else if (property.getType().equals(Type.BLOB.value()))
-            {
-                sqLiteStatement.bindBlob(index, (byte[]) property.getValue());
+                sqLiteStatement.bindLong(index, Long.valueOf(property.getValue().toString()));
             } else if (property.getType().equals(Type.BOOLEAN.value()))
             {
                 sqLiteStatement.bindString(index, String.valueOf(property.getValue()));
+            } else if (property.getType().equals(Type.DOUBLE.value()))
+            {
+                sqLiteStatement.bindDouble(index, Double.valueOf(property.getValue().toString()));
+            } else if (property.getType().equals(Type.DATE.value()))
+            {
+                sqLiteStatement.bindLong(index, ((Date) property.getValue()).getTime());
+            } else if (property.getType().equals(Type.BLOB.value()))
+            {
+                sqLiteStatement.bindBlob(index, (byte[]) property.getValue());
             } else
             {
                 sqLiteStatement.bindNull(index);
@@ -137,25 +138,24 @@ public class SQLUtils
 
             index++;
         }
-
-
     }
 
-    public static Property[] propertyBindValue(Property[] properties, Object obj)
+    public static Property[] propertyBindValue(Property[] properties, HasteModel hasteModel)
     {
         Property[] copy_of_properties = new Property[properties.length];
         Property property;
         for (int i = 0; i < properties.length; i++)
         {
             property = properties[i];
-
+            copy_of_properties[i] = new Property();
             copy_of_properties[i].setName(property.getName());
             copy_of_properties[i].setType(property.getType());
-            copy_of_properties[i].setValue(ReflectUtils.getFieldValue(property.getName(), obj));
+            copy_of_properties[i].setValue(ReflectUtils.getFieldValue(property.getName(), hasteModel));
 
         }
 
         return copy_of_properties;
     }
+
 
 }

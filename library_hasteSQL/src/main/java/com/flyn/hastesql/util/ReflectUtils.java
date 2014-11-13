@@ -26,7 +26,7 @@ public class ReflectUtils
         final int modifierMask = Modifier.STATIC | Modifier.TRANSIENT | Modifier.FINAL;
         for (Field field : fields)
         {
-            if ((field.getModifiers() & modifierMask) != modifierMask)
+            if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isTransient(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()))
             {
                 String type = Type.wrap(field.getType());
 
@@ -59,14 +59,40 @@ public class ReflectUtils
         field.setAccessible(true);
         try
         {
-            return field.get(fieldName);
+            if (field.getType().equals(boolean.class))
+            {
+                return field.getBoolean(obj);
+            } else if (field.getType().equals(byte.class))
+            {
+                return field.getByte(obj);
+            } else if (field.getType().equals(double.class))
+            {
+                return field.getDouble(obj);
+            } else if (field.getType().equals(char.class))
+            {
+                return field.getChar(obj);
+            } else if (field.getType().equals(float.class))
+            {
+                return field.getFloat(obj);
+            } else if (field.getType().equals(int.class))
+            {
+                return field.getInt(obj);
+            } else if (field.getType().equals(long.class))
+            {
+                return field.getLong(obj);
+            } else if (field.getType().equals(short.class))
+            {
+                return field.getShort(obj);
+            } else
+            {
+                return field.get(obj);
+            }
         } catch (IllegalAccessException e)
         {
             e.printStackTrace();
             return null;
         }
     }
-
 
 
 }

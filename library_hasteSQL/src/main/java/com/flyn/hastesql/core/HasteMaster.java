@@ -62,6 +62,27 @@ public class HasteMaster implements HasteOperation
 
     }
 
+    @Override
+    public void insertAll(List<? extends HasteModel> hasteModelList)
+    {
+        if (hasteModelList == null || hasteModelList.isEmpty())
+        {
+            return;
+        }
+        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
+        getHasteDao(clz, clz.getSimpleName()).insertAll(hasteModelList);
+    }
+
+    public void insertAll(List<HasteModel> hasteModelList, String prefix, String suffix)
+    {
+        if (hasteModelList == null || hasteModelList.isEmpty())
+        {
+            return;
+        }
+        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).insertAll(hasteModelList);
+    }
+
     public void insert(HasteModel hasteModel, String prefix, String suffix)
     {
         getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).insert(hasteModel);
