@@ -1,9 +1,7 @@
 package com.flyn.hastesql.core;
 
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 
-import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.util.SQLUtils;
 
 import java.util.List;
@@ -41,16 +39,20 @@ public class HasteDao implements HasteOperation
     @Override
     public void insert(HasteModel hasteModel)
     {
-        SQLiteStatement sqLiteStatement = hasteTable.getInsertSQLiteStatement();
-        Property[] properties = SQLUtils.propertyBindValue(hasteTable.getAllColumns(), hasteModel);
-        sqlExecutor.execInsert(sqLiteStatement, properties);
+        sqlExecutor.insert(hasteModel);
+
+        //        SQLiteStatement sqLiteStatement = hasteTable.getInsertSQLiteStatement();
+        //        Property[] properties = SQLUtils.propertyBindValue(hasteTable.getAllColumns(), hasteModel);
+        //        sqlExecutor.execInsert(sqLiteStatement, properties);
     }
 
     @Override
     public void insertAll(List<? extends HasteModel> hasteModelList)
     {
-        SQLiteStatement sqLiteStatement = hasteTable.getInsertSQLiteStatement();
-        sqlExecutor.execInsertAll(sqLiteStatement, hasteTable.getAllColumns(), hasteModelList);
+        sqlExecutor.insertAll(hasteModelList);
+
+        //        SQLiteStatement sqLiteStatement = hasteTable.getInsertSQLiteStatement();
+        //        sqlExecutor.execInsertAll(sqLiteStatement, hasteTable.getAllColumns(), hasteModelList);
     }
 
 

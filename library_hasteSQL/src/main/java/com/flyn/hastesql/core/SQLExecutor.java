@@ -53,7 +53,7 @@ public class SQLExecutor
      *
      * @param hasteModelList
      */
-    public void insertAll(List<HasteModel> hasteModelList)
+    public void insertAll(List<? extends HasteModel> hasteModelList)
     {
         Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
         Property[] properties = ReflectUtils.getPropertyArray(clz);
@@ -66,6 +66,36 @@ public class SQLExecutor
         }
         execSQLList(sql, objects);
     }
+
+    /**
+     * TODO 需要测试
+     *
+     * @param hasteModel
+     */
+    public void insert(Property[] properties, HasteModel hasteModel)
+    {
+        String sql = SQLUtils.createSQLInsert(hasteModel.getClass().getSimpleName(), properties);
+        execSQL(sql, ReflectUtils.getFieldValueArray(properties, hasteModel));
+    }
+
+    /**
+     * TODO 需要测试
+     *
+     * @param hasteModelList
+     */
+    public void insertAll(Property[] properties, List<? extends HasteModel> hasteModelList)
+    {
+        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
+        String sql = SQLUtils.createSQLInsert(clz.getSimpleName(), properties);
+
+        List<Object[]> objects = new LinkedList<Object[]>();
+        for (HasteModel hasteModel : hasteModelList)
+        {
+            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModel));
+        }
+        execSQLList(sql, objects);
+    }
+
 
     public void update(HasteModel hasteModel)
     {
