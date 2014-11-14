@@ -36,57 +36,16 @@ public class SQLExecutor
     }
 
 
-    /**
-     * TODO 需要测试
-     *
-     * @param hasteModel
-     */
-    public void insert(HasteModel hasteModel)
+    public void insert(String tableName, Property[] properties, HasteModel hasteModel)
     {
-        Property[] properties = ReflectUtils.getPropertyArray(hasteModel.getClass());
-        String sql = SQLUtils.createSQLInsert(hasteModel.getClass().getSimpleName(), properties);
+        String sql = SQLUtils.createSQLInsert(tableName, properties);
         execSQL(sql, ReflectUtils.getFieldValueArray(properties, hasteModel));
     }
 
-    /**
-     * TODO 需要测试
-     *
-     * @param hasteModelList
-     */
-    public void insertAll(List<? extends HasteModel> hasteModelList)
+    public void insertAll(String tableName, Property[] properties, List<? extends HasteModel> hasteModelList)
     {
         Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
-        Property[] properties = ReflectUtils.getPropertyArray(clz);
-        String sql = SQLUtils.createSQLInsert(clz.getSimpleName(), properties);
-
-        List<Object[]> objects = new LinkedList<Object[]>();
-        for (HasteModel hasteModel : hasteModelList)
-        {
-            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModel));
-        }
-        execSQLList(sql, objects);
-    }
-
-    /**
-     * TODO 需要测试
-     *
-     * @param hasteModel
-     */
-    public void insert(Property[] properties, HasteModel hasteModel)
-    {
-        String sql = SQLUtils.createSQLInsert(hasteModel.getClass().getSimpleName(), properties);
-        execSQL(sql, ReflectUtils.getFieldValueArray(properties, hasteModel));
-    }
-
-    /**
-     * TODO 需要测试
-     *
-     * @param hasteModelList
-     */
-    public void insertAll(Property[] properties, List<? extends HasteModel> hasteModelList)
-    {
-        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
-        String sql = SQLUtils.createSQLInsert(clz.getSimpleName(), properties);
+        String sql = SQLUtils.createSQLInsert(tableName, properties);
 
         List<Object[]> objects = new LinkedList<Object[]>();
         for (HasteModel hasteModel : hasteModelList)

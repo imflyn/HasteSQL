@@ -39,7 +39,7 @@ public class HasteDao implements HasteOperation
     @Override
     public void insert(HasteModel hasteModel)
     {
-        sqlExecutor.insert(hasteModel);
+        sqlExecutor.insert(hasteTable.getTableName(), hasteTable.getAllColumns(), hasteModel);
 
         //        SQLiteStatement sqLiteStatement = hasteTable.getInsertSQLiteStatement();
         //        Property[] properties = SQLUtils.propertyBindValue(hasteTable.getAllColumns(), hasteModel);
@@ -49,7 +49,7 @@ public class HasteDao implements HasteOperation
     @Override
     public void insertAll(List<? extends HasteModel> hasteModelList)
     {
-        sqlExecutor.insertAll(hasteModelList);
+        sqlExecutor.insertAll(hasteTable.getTableName(), hasteTable.getAllColumns(), hasteModelList);
 
         //        SQLiteStatement sqLiteStatement = hasteTable.getInsertSQLiteStatement();
         //        sqlExecutor.execInsertAll(sqLiteStatement, hasteTable.getAllColumns(), hasteModelList);
