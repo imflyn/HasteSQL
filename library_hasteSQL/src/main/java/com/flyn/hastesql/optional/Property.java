@@ -1,5 +1,7 @@
 package com.flyn.hastesql.optional;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by flyn on 2014-11-11.
  */
@@ -8,6 +10,7 @@ public class Property
     protected String name;
     protected String type;
     protected Object value;
+    protected Field field;
 
 
     public String getName()
@@ -38,5 +41,15 @@ public class Property
     public void setValue(Object value)
     {
         this.value = value;
+    }
+
+    public Field getField()
+    {
+        return field;
+    }
+
+    public void setField(Field field)
+    {
+        this.field = field;
     }
 }

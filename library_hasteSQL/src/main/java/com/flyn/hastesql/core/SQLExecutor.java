@@ -10,7 +10,7 @@ import com.flyn.hastesql.util.LogUtils;
 import com.flyn.hastesql.util.ReflectUtils;
 import com.flyn.hastesql.util.SQLUtils;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -47,7 +47,7 @@ public class SQLExecutor
         Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
         String sql = SQLUtils.createSQLInsert(tableName, properties);
 
-        List<Object[]> objects = new LinkedList<Object[]>();
+        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
         for (HasteModel hasteModel : hasteModelList)
         {
             objects.add(ReflectUtils.getFieldValueArray(properties, hasteModel));
@@ -166,9 +166,9 @@ public class SQLExecutor
         {
             mWriteLock.lock();
             db.beginTransaction();
-            for (Object[] objects : values)
+            for (int i = 0, size = values.size(); i < size; i++)
             {
-                db.execSQL(sql, objects);
+                db.execSQL(sql, values.get(i));
             }
             db.setTransactionSuccessful();
         } finally
@@ -222,9 +222,10 @@ public class SQLExecutor
         {
             mWriteLock.lock();
             db.beginTransaction();
-            for (HasteModel hasteModel : hasteModelList)
+            Property[] propertyArray;
+            for (int i = 0, size = hasteModelList.size(); i < size; i++)
             {
-                Property[] propertyArray = SQLUtils.propertyBindValue(properties, hasteModel);
+                propertyArray = SQLUtils.propertyBindValue(properties, hasteModelList.get(i));
                 SQLUtils.statementBindValue(sqLiteStatement, propertyArray);
                 sqLiteStatement.executeInsert();
             }

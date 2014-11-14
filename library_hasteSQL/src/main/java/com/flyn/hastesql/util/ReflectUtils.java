@@ -12,7 +12,6 @@ import java.util.ArrayList;
  */
 public class ReflectUtils
 {
-
     public static Property[] getPropertyArray(Class<?> clz)
     {
         Field[] fields = clz.getDeclaredFields();
@@ -23,7 +22,7 @@ public class ReflectUtils
         }
 
         ArrayList<Property> properties = new ArrayList<Property>();
-        final int modifierMask = Modifier.STATIC | Modifier.TRANSIENT | Modifier.FINAL;
+        Property property;
         for (Field field : fields)
         {
             if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isTransient(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()))
@@ -35,9 +34,10 @@ public class ReflectUtils
                     continue;
                 }
 
-                Property property = new Property();
+                property = new Property();
                 property.setType(type);
                 property.setName(field.getName());
+                property.setField(field);
                 properties.add(property);
             }
         }
@@ -45,42 +45,34 @@ public class ReflectUtils
         return properties.toArray(new Property[properties.size()]);
     }
 
-    public static Object getFieldValue(String fieldName, Object obj)
+    public static Object getFieldValue(Field field, Object obj)
     {
-        Field field;
-        try
-        {
-            field = obj.getClass().getDeclaredField(fieldName);
-        } catch (NoSuchFieldException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
         field.setAccessible(true);
+        Class<?> type = field.getType();
         try
         {
-            if (field.getType().equals(boolean.class))
+            if (type.equals(boolean.class))
             {
                 return field.getBoolean(obj);
-            } else if (field.getType().equals(byte.class))
+            } else if (type.equals(byte.class))
             {
                 return field.getByte(obj);
-            } else if (field.getType().equals(double.class))
+            } else if (type.equals(double.class))
             {
                 return field.getDouble(obj);
-            } else if (field.getType().equals(char.class))
+            } else if (type.equals(char.class))
             {
                 return field.getChar(obj);
-            } else if (field.getType().equals(float.class))
+            } else if (type.equals(float.class))
             {
                 return field.getFloat(obj);
-            } else if (field.getType().equals(int.class))
+            } else if (type.equals(int.class))
             {
                 return field.getInt(obj);
-            } else if (field.getType().equals(long.class))
+            } else if (type.equals(long.class))
             {
                 return field.getLong(obj);
-            } else if (field.getType().equals(short.class))
+            } else if (type.equals(short.class))
             {
                 return field.getShort(obj);
             } else
@@ -99,7 +91,7 @@ public class ReflectUtils
         Object[] objects = new Object[properties.length];
         for (int i = 0; i < properties.length; i++)
         {
-            objects[i] = getFieldValue(properties[i].getName(), obj);
+            objects[i] = getFieldValue(properties[i].getField(), obj);
         }
         return objects;
     }

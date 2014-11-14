@@ -49,7 +49,7 @@ public class SQLUtils
             if (property.getName().equalsIgnoreCase("id") || property.getName().equalsIgnoreCase("_id"))
             {
                 //TODO 主键，自增
-                primarySql.append(" \'").append(property.getName()).append("\' ").append(property.getType()).append(" INTEGER PRIMARY KEY ");
+                primarySql.append(" \'").append(property.getName()).append("\' ").append(property.getType()).append(" INTEGER ");
                 primarySql.append(",");
             } else
             {
@@ -150,7 +150,7 @@ public class SQLUtils
             copy_of_properties[i] = new Property();
             copy_of_properties[i].setName(property.getName());
             copy_of_properties[i].setType(property.getType());
-            copy_of_properties[i].setValue(ReflectUtils.getFieldValue(property.getName(), hasteModel));
+            copy_of_properties[i].setValue(ReflectUtils.getFieldValue(property.getField(), hasteModel));
 
         }
 

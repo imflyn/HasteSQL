@@ -7,9 +7,11 @@ import android.test.AndroidTestCase;
 import com.flyn.hastesql.HasteSQL;
 import com.flyn.hastesql.core.HasteMaster;
 import com.flyn.hastesql.util.LogUtils;
+import com.flyn.test.greendao.entity.Note;
 import com.flyn.test.hastesql.entity.People;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,12 +44,12 @@ public class InsertTest extends AndroidTestCase
     public void testInsertAll()
     {
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
-        People people;
-        List<People> testMultiModelList = new LinkedList<People>();
+        Note note;
+        List<Note> testMultiModelList = new ArrayList<Note>();
         for (int i = 0; i < 10000; i++)
         {
-            people = new People();
-            testMultiModelList.add(people);
+            note = new Note(Long.valueOf(i + ""), "123", "466", new Date());
+            testMultiModelList.add(note);
         }
         long time = SystemClock.uptimeMillis();
         hasteMaster.insertAll(testMultiModelList);

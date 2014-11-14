@@ -19,16 +19,13 @@ public class HasteTable
     private SQLiteStatement insertSQLiteStatement;
 
 
-    protected HasteTable(String tableName, Class<? extends HasteModel> clz)
+    protected HasteTable(SQLiteDatabase db, String tableName, Class<? extends HasteModel> clz)
     {
         this.tableName = tableName;
-        init(clz);
+        this.allColumns = ReflectUtils.getPropertyArray(clz);
+        compileStatements(db);
     }
 
-    private void init(Class<? extends HasteModel> clz)
-    {
-        allColumns = ReflectUtils.getPropertyArray(clz);
-    }
 
     protected void compileStatements(SQLiteDatabase db)
     {
