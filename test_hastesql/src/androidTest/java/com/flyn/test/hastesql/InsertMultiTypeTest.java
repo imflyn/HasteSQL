@@ -1,10 +1,12 @@
 package com.flyn.test.hastesql;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.test.AndroidTestCase;
 
 import com.flyn.hastesql.HasteSQL;
 import com.flyn.hastesql.core.HasteMaster;
+import com.flyn.hastesql.util.LogUtils;
 import com.flyn.test.hastesql.entity.TestMultiModel;
 
 import java.util.LinkedList;
@@ -42,12 +44,17 @@ public class InsertMultiTypeTest extends AndroidTestCase
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
         TestMultiModel testMultiModel;
         List<TestMultiModel> testMultiModelList = new LinkedList<TestMultiModel>();
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < 10000; i++)
         {
             testMultiModel = new TestMultiModel();
             testMultiModelList.add(testMultiModel);
         }
+        long time = SystemClock.uptimeMillis();
+
         hasteMaster.insertAll(testMultiModelList);
+
+        LogUtils.d("花费时间:" + (SystemClock.uptimeMillis() - time));
+
     }
 
     @Override
