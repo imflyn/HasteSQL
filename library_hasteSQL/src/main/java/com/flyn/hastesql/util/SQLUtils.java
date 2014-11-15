@@ -113,22 +113,22 @@ public class SQLUtils
         int index = 1;
         for (Property property : properties)
         {
-            if (property.getType().equals(Type.TEXT.value()))
+            if (property.getType() == Type.TEXT.value())
             {
                 sqLiteStatement.bindString(index, String.valueOf(property.getValue()));
-            } else if (property.getType().equals(Type.INTEGER.value()))
+            } else if (property.getType() == Type.INTEGER.value())
             {
                 sqLiteStatement.bindLong(index, Long.valueOf(property.getValue().toString()));
-            } else if (property.getType().equals(Type.BOOLEAN.value()))
+            } else if (property.getType() == Type.BOOLEAN.value())
             {
                 sqLiteStatement.bindString(index, String.valueOf(property.getValue()));
-            } else if (property.getType().equals(Type.DOUBLE.value()))
+            } else if (property.getType() == Type.DOUBLE.value())
             {
                 sqLiteStatement.bindDouble(index, Double.valueOf(property.getValue().toString()));
-            } else if (property.getType().equals(Type.DATE.value()))
+            } else if (property.getType() == Type.DATE.value())
             {
                 sqLiteStatement.bindLong(index, ((Date) property.getValue()).getTime());
-            } else if (property.getType().equals(Type.BLOB.value()))
+            } else if (property.getType() == Type.BLOB.value())
             {
                 sqLiteStatement.bindBlob(index, (byte[]) property.getValue());
             } else

@@ -27,9 +27,9 @@ public class ReflectUtils
         {
             if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isTransient(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()))
             {
-                String type = Type.wrap(field.getType());
+                int type = Type.wrap(field.getType());
 
-                if (StringUtils.isEmpty(type))
+                if (!Type.isUseFul(type))
                 {
                     continue;
                 }

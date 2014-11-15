@@ -7,46 +7,58 @@ import java.util.Date;
  */
 public enum Type
 {
-    BOOLEAN("BOOLEAN"), TEXT("TEXT"), DOUBLE("DOUBLE"), INTEGER("INTEGER"), DATE("DATE"), BLOB("BLOB");
+    TEXT(0), BOOLEAN(1), DOUBLE(2), INTEGER(3), DATE(4), BLOB(5), NULL(-1);
 
-    private String type;
+    public static final int TYPE_TEXT = 0;
+    public static final int TYPE_BOOLEAN = 1;
+    public static final int TYPE_DOUBLE = 2;
+    public static final int TYPE_INTEGER = 3;
+    public static final int TYPE_DATE = 4;
+    public static final int TYPE_BLOB = 5;
+    public static final int TYPE_NULL = -1;
 
-    Type(String type)
+    private int type;
+
+    Type(int type)
     {
         this.type = type;
     }
 
 
-    public String value()
+    public int value()
     {
         return type;
     }
 
-
-    public static String wrap(Class<?> clz)
+    public static int wrap(Class<?> clz)
     {
         if (clz.equals(String.class) || clz.equals(CharSequence.class) || clz.equals(Byte.class) || clz.equals(byte.class) || clz.equals(char
                 .class) ||
                 clz.equals(Character.class))
         {
-            return Type.TEXT.value();
+            return TYPE_TEXT;
         } else if (clz.equals(boolean.class) || clz.equals(Boolean.class))
         {
-            return Type.BOOLEAN.value();
+            return TYPE_BOOLEAN;
         } else if (clz.equals(double.class) || clz.equals(Double.class) || clz.equals(Float.class) || clz.equals(float.class))
         {
-            return Type.DOUBLE.value();
+            return TYPE_DOUBLE;
         } else if (clz.equals(int.class) || clz.equals(Integer.class) || clz.equals(long.class) || clz.equals(Long.class) || clz.equals(short
                 .class) || clz.equals(Short.class))
         {
-            return Type.INTEGER.value();
+            return TYPE_INTEGER;
         } else if (clz.equals(Date.class))
         {
-            return Type.DATE.value();
+            return TYPE_DATE;
         } else if (clz.isArray() && (clz.getComponentType().equals(byte.class)))
         {
-            return Type.BLOB.value();
+            return TYPE_BLOB;
         }
-        return null;
+        return TYPE_NULL;
+    }
+
+    public static boolean isUseFul(int value)
+    {
+        return value >= 0 && value <= 5;
     }
 }
