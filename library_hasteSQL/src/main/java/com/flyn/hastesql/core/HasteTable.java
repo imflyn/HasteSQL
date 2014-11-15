@@ -23,7 +23,7 @@ public class HasteTable
     {
         this.tableName = tableName;
         this.allColumns = ReflectUtils.getPropertyArray(clz);
-        compileStatements(db);
+//        compileStatements(db);
     }
 
 

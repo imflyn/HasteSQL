@@ -44,13 +44,12 @@ public class SQLExecutor
 
     public void insertAll(String tableName, Property[] properties, List<? extends HasteModel> hasteModelList)
     {
-        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
         String sql = SQLUtils.createSQLInsert(tableName, properties);
 
         List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
-        for (HasteModel hasteModel : hasteModelList)
+        for (int i = 0, size = hasteModelList.size(); i < size; i++)
         {
-            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModel));
+            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModelList.get(i)));
         }
         execSQLList(sql, objects);
     }
