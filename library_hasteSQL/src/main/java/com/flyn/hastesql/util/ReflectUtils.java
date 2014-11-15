@@ -1,5 +1,7 @@
 package com.flyn.hastesql.util;
 
+import android.text.TextUtils;
+
 import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.optional.Type;
 
@@ -27,9 +29,9 @@ public class ReflectUtils
         {
             if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isTransient(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()))
             {
-                int type = Type.wrap(field.getType());
+                String type = Type.wrap(field.getType());
 
-                if (!Type.isUseFul(type))
+                if (TextUtils.isEmpty(type))
                 {
                     continue;
                 }

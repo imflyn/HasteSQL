@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 public class Property
 {
     protected String name;
-    protected int type;
+    protected String type;
     protected Object value;
     protected Field field;
 
@@ -23,12 +23,12 @@ public class Property
         this.name = name;
     }
 
-    public int getType()
+    public String getType()
     {
         return type;
     }
 
-    public void setType(int type)
+    public void setType(String type)
     {
         this.type = type;
     }

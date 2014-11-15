@@ -1,11 +1,13 @@
 package com.flyn.test.hastesql;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.SystemClock;
 import android.test.AndroidTestCase;
 
 import com.flyn.hastesql.HasteSQL;
 import com.flyn.hastesql.core.HasteMaster;
+import com.flyn.hastesql.core.IHasteConfig;
 import com.flyn.hastesql.util.LogUtils;
 import com.flyn.test.greendao.entity.Note;
 import com.flyn.test.hastesql.entity.People;
@@ -21,6 +23,7 @@ public class InsertTest extends AndroidTestCase
 {
 
     private Context mContext;
+    private IHasteConfig iHasteConfig;
 
     @Override
     protected void setUp() throws Exception
@@ -29,7 +32,38 @@ public class InsertTest extends AndroidTestCase
         mContext = getContext();
         assertNotNull(mContext);
 
+        iHasteConfig = new IHasteConfig()
+        {
+            @Override
+            public void onCreate(SQLiteDatabase db)
+            {
 
+            }
+
+            @Override
+            public void onDrop(SQLiteDatabase db)
+            {
+
+            }
+
+            @Override
+            public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+            {
+
+            }
+
+            @Override
+            public int dbVersion()
+            {
+                return 1;
+            }
+
+            @Override
+            public String dbName()
+            {
+                return "test-Multi";
+            }
+        };
     }
 
     public void testInsert()
@@ -46,7 +80,7 @@ public class InsertTest extends AndroidTestCase
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
         Note note;
         List<Note> testMultiModelList = new ArrayList<Note>();
-        for (int i = 0; i < 5000; i++)
+        for (int i = 0; i < 10000; i++)
         {
             note = new Note(Long.valueOf(i + ""), "123", "466", new Date());
             testMultiModelList.add(note);
@@ -54,6 +88,23 @@ public class InsertTest extends AndroidTestCase
         long time = SystemClock.uptimeMillis();
         hasteMaster.insertAll(testMultiModelList);
         LogUtils.d("花费时间:" + (SystemClock.uptimeMillis() - time));
+    }
+
+    public void testMultiDb()
+    {
+        HasteMaster hasteMaster = HasteSQL.createNew(mContext, iHasteConfig);
+
+        People people = new People();
+        hasteMaster.insert(people);
+
+    }
+
+    public void testMultiTable()
+    {
+        HasteMaster hasteMaster = HasteSQL.createNew(mContext, iHasteConfig);
+
+        People people = new People();
+        hasteMaster.insert(people, "test", "2");
     }
 
     @Override
