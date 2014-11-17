@@ -60,9 +60,22 @@ public class SQLExecutor
 
     }
 
-    public void insertOrReplace(HasteModel hasteModel)
+    public void insertOrReplace(String tableName, Property[] properties, HasteModel hasteModel)
     {
+        String sql = SQLUtils.createSQLInsertOrReplace(tableName, properties);
+        execSQL(sql, ReflectUtils.getFieldValueArray(properties, hasteModel));
+    }
 
+    public void insertOrReplaceAll(String tableName, Property[] properties, List<? extends HasteModel> hasteModelList)
+    {
+        String sql = SQLUtils.createSQLInsertOrReplace(tableName, properties);
+
+        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
+        for (int i = 0, size = hasteModelList.size(); i < size; i++)
+        {
+            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModelList.get(i)));
+        }
+        execSQLList(sql, objects);
     }
 
     public void delete(HasteModel hasteModel)

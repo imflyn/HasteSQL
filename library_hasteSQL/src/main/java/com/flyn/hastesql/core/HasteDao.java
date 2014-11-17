@@ -66,6 +66,13 @@ public class HasteDao implements HasteOperation
     @Override
     public void insertOrReplace(HasteModel hasteModel)
     {
+        sqlExecutor.insertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns(), hasteModel);
+    }
+
+    @Override
+    public void insertOrReplaceAll(List<? extends HasteModel> hasteModelList)
+    {
+        sqlExecutor.insertOrReplaceAll(hasteTable.getTableName(), hasteTable.getAllColumns(), hasteModelList);
     }
 
 

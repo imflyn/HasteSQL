@@ -74,19 +74,38 @@ public class SQLUtils
     }
 
 
-    /**
-     * 插入语句
-     *
-     * @param tableName
-     * @param properties
-     * @return
-     */
     public static String createSQLInsert(String tableName, Property[] properties)
     {
 
         StringBuilder sqlBuilder = new StringBuilder();
 
         sqlBuilder.append("INSERT INTO ");
+        sqlBuilder.append(tableName);
+        sqlBuilder.append(" (");
+        for (Property property : properties)
+        {
+            sqlBuilder.append(property.getName()).append(",");
+        }
+        sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
+        sqlBuilder.append(") VALUES (");
+
+        for (int i = 0; i < properties.length; i++)
+        {
+            sqlBuilder.append("?,");
+        }
+        sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
+        sqlBuilder.append(")");
+
+        return sqlBuilder.toString();
+
+    }
+
+    public static String createSQLInsertOrReplace(String tableName, Property[] properties)
+    {
+
+        StringBuilder sqlBuilder = new StringBuilder();
+
+        sqlBuilder.append("INSERT OR REPLACE INTO ");
         sqlBuilder.append(tableName);
         sqlBuilder.append(" (");
         for (Property property : properties)

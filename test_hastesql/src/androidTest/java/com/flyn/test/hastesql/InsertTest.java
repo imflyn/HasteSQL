@@ -107,6 +107,29 @@ public class InsertTest extends AndroidTestCase
         hasteMaster.insert(people, "test", "2");
     }
 
+    public void testInsertOrReplace()
+    {
+        HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
+
+        People people = new People();
+        hasteMaster.insertOrReplace(people);
+    }
+
+    public void testInsertOrReplaceAll()
+    {
+        HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
+        Note note;
+        List<Note> testMultiModelList = new ArrayList<Note>();
+        for (int i = 0; i < 10000; i++)
+        {
+            note = new Note(Long.valueOf(i + ""), "123", "466", new Date());
+            testMultiModelList.add(note);
+        }
+        long time = SystemClock.uptimeMillis();
+        hasteMaster.insertOrReplaceAll(testMultiModelList);
+        LogUtils.d("花费时间:" + (SystemClock.uptimeMillis() - time));
+    }
+
     @Override
     protected void tearDown() throws Exception
     {

@@ -15,9 +15,9 @@ public interface HasteOperation
 
     void update(HasteModel hasteModel);
 
-
     void insertOrReplace(HasteModel hasteModel);
 
+    void insertOrReplaceAll(List<? extends HasteModel> hasteModelList);
 
     void delete(HasteModel hasteModel);
 

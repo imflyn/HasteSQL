@@ -95,13 +95,27 @@ public class HasteMaster implements HasteOperation
     @Override
     public void insertOrReplace(HasteModel hasteModel)
     {
-        getHasteDao(hasteModel.getClass(), hasteModel.getClass().getSimpleName()).update(hasteModel);
+        getHasteDao(hasteModel.getClass(), hasteModel.getClass().getSimpleName()).insertOrReplace(hasteModel);
     }
 
     public void insertOrReplace(HasteModel hasteModel, String prefix, String suffix)
     {
         getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).insertOrReplace(hasteModel);
     }
+
+    @Override
+    public void insertOrReplaceAll(List<? extends HasteModel> hasteModelList)
+    {
+        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
+        getHasteDao(clz, clz.getSimpleName()).insertOrReplaceAll(hasteModelList);
+    }
+
+    public void insertOrReplaceAll(List<? extends HasteModel> hasteModelList, String prefix, String suffix)
+    {
+        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).insertOrReplaceAll(hasteModelList);
+    }
+
 
     @Override
     public void delete(HasteModel hasteModel)
