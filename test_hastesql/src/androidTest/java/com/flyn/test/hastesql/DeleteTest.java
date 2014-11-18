@@ -45,4 +45,11 @@ public class DeleteTest extends AndroidTestCase
 
     }
 
+
+    public void testRun()
+    {
+        HasteSQL.createDefault(mContext).run(" delete from people ");
+
+    }
+
 }

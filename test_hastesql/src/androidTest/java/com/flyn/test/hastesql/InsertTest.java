@@ -137,6 +137,42 @@ public class InsertTest extends AndroidTestCase
         LogUtils.d("花费时间:" + (SystemClock.uptimeMillis() - time));
     }
 
+    public void testMultiThreadInsert() throws InterruptedException
+    {
+        for (int j = 0; j < 20; j++)
+        {
+            new Thread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+
+                    HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
+                    Note note;
+                    List<Note> testMultiModelList = new ArrayList<Note>();
+                    for (int i = 0; i < 10; i++)
+                    {
+                        note = new Note();
+                        note.setDate(new Date());
+                        note.setComment("Comment");
+                        note.setText("text");
+                        testMultiModelList.add(note);
+                    }
+                    long time = SystemClock.uptimeMillis();
+                    hasteMaster.insertOrReplaceAll(testMultiModelList);
+                    LogUtils.d(Thread.currentThread().getName() + "==花费时间:" + (SystemClock.uptimeMillis() - time));
+                }
+            }).start();
+
+        }
+
+        while (true)
+        {
+            Thread.sleep(5000);
+        }
+    }
+
+
     @Override
     protected void tearDown() throws Exception
     {

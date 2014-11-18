@@ -99,5 +99,11 @@ public class HasteDao implements HasteOperation
         return null;
     }
 
+    @Override
+    public void run(String sql)
+    {
+        //ignore
+    }
+
 
 }

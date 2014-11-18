@@ -31,5 +31,6 @@ public interface HasteOperation
 
     <T extends HasteModel> List<T> queryAll(Class<T> clz);
 
+    void run(String sql);
 
 }

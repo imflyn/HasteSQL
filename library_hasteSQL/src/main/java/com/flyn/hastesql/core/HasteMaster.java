@@ -170,6 +170,12 @@ public class HasteMaster implements HasteOperation
         return getHasteDao(clz, clz.getSimpleName()).queryAll(clz);
     }
 
+    @Override
+    public void run(String sql)
+    {
+        sqlExecutor.execSQL(sql);
+    }
+
     public <T extends HasteModel> List<T> queryAll(Class<T> clz, String prefix, String suffix)
     {
         return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryAll(clz);
