@@ -1,6 +1,5 @@
 package com.flyn.test.hastesql.entity;
 
-import com.flyn.hastesql.annotation.Constraint;
 import com.flyn.hastesql.annotation.PrimaryKey;
 import com.flyn.hastesql.core.HasteModel;
 
@@ -15,9 +14,7 @@ public class People implements HasteModel
     @PrimaryKey(AutoIncrease = true)
     private int id;
 
-    @Constraint(notNull = true, unique = true)
     private String name;
-    @Constraint(notNull = true, check = " age > 2 ")
     private int age;
 
     private Date date = new Date();
