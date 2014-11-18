@@ -2,7 +2,6 @@ package com.flyn.hastesql.core;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 
 import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.util.CursorUtils;
@@ -81,6 +80,12 @@ public class SQLExecutor
     public void delete(HasteModel hasteModel)
     {
 
+    }
+
+    public void deleteAll(String tableName)
+    {
+        String sql = SQLUtils.createSQLDeleteAll(tableName);
+        execSQL(sql);
     }
 
     public <T extends HasteModel> T queryFirst(Class<T> clz)
@@ -187,65 +192,6 @@ public class SQLExecutor
         {
             db.endTransaction();
             mWriteLock.unlock();
-        }
-    }
-
-
-    public void execSQLWithStmt(String sql)
-    {
-        debugSql(sql);
-
-        try
-        {
-            mWriteLock.lock();
-            db.beginTransaction();
-            SQLiteStatement sqLiteStatement = db.compileStatement(sql);
-            sqLiteStatement.execute();
-            db.setTransactionSuccessful();
-            sqLiteStatement.close();
-        } finally
-        {
-            db.endTransaction();
-            mWriteLock.lock();
-        }
-    }
-
-    public void execInsert(SQLiteStatement sqLiteStatement, Property[] properties)
-    {
-        debugSql(sqLiteStatement.toString());
-        try
-        {
-            mWriteLock.lock();
-            db.beginTransaction();
-            SQLUtils.statementBindValue(sqLiteStatement, properties);
-            sqLiteStatement.executeInsert();
-            db.setTransactionSuccessful();
-        } finally
-        {
-            db.endTransaction();
-            mWriteLock.lock();
-        }
-    }
-
-    public void execInsertAll(SQLiteStatement sqLiteStatement, Property[] properties, List<? extends HasteModel> hasteModelList)
-    {
-        debugSql(sqLiteStatement.toString());
-        try
-        {
-            mWriteLock.lock();
-            db.beginTransaction();
-            Property[] propertyArray;
-            for (int i = 0, size = hasteModelList.size(); i < size; i++)
-            {
-                propertyArray = SQLUtils.propertyBindValue(properties, hasteModelList.get(i));
-                SQLUtils.statementBindValue(sqLiteStatement, propertyArray);
-                sqLiteStatement.executeInsert();
-            }
-            db.setTransactionSuccessful();
-        } finally
-        {
-            db.endTransaction();
-            mWriteLock.lock();
         }
     }
 

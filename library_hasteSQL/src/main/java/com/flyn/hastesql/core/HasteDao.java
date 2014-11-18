@@ -1,7 +1,5 @@
 package com.flyn.hastesql.core;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import com.flyn.hastesql.util.ReflectUtils;
 import com.flyn.hastesql.util.SQLUtils;
 
@@ -17,7 +15,7 @@ public class HasteDao implements HasteOperation
     private final HasteTable hasteTable;
     private final SQLExecutor sqlExecutor;
 
-    protected HasteDao(SQLiteDatabase db, SQLExecutor sqlExecutor, String tableName, Class<? extends HasteModel> hasteModelClz)
+    protected HasteDao(SQLExecutor sqlExecutor, String tableName, Class<? extends HasteModel> hasteModelClz)
     {
         this.sqlExecutor = sqlExecutor;
         createTableIfNotExits(tableName, hasteModelClz);
@@ -41,18 +39,12 @@ public class HasteDao implements HasteOperation
     {
         sqlExecutor.insert(hasteTable.getTableName(), hasteTable.getAllColumns(), hasteModel);
 
-        //        SQLiteStatement sqLiteStatement = hasteTable.getInsertSQLiteStatement();
-        //        Property[] properties = SQLUtils.propertyBindValue(hasteTable.getAllColumns(), hasteModel);
-        //        sqlExecutor.execInsert(sqLiteStatement, properties);
     }
 
     @Override
     public void insertAll(List<? extends HasteModel> hasteModelList)
     {
         sqlExecutor.insertAll(hasteTable.getTableName(), hasteTable.getAllColumns(), hasteModelList);
-
-        //        SQLiteStatement sqLiteStatement = hasteTable.getInsertSQLiteStatement();
-        //        sqlExecutor.execInsertAll(sqLiteStatement, hasteTable.getAllColumns(), hasteModelList);
     }
 
 
@@ -79,6 +71,18 @@ public class HasteDao implements HasteOperation
     @Override
     public void delete(HasteModel hasteModel)
     {
+    }
+
+    @Override
+    public void deleteAll(Class<? extends HasteModel> clz)
+    {
+        sqlExecutor.deleteAll(hasteTable.getTableName());
+    }
+
+    @Override
+    public void deleteAll(List<? extends HasteModel> hasteModelList)
+    {
+
     }
 
 

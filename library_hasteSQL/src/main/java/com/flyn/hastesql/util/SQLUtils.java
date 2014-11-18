@@ -1,12 +1,6 @@
 package com.flyn.hastesql.util;
 
-import android.database.sqlite.SQLiteStatement;
-
-import com.flyn.hastesql.core.HasteModel;
 import com.flyn.hastesql.optional.Property;
-import com.flyn.hastesql.optional.Type;
-
-import java.util.Date;
 
 /**
  * Created by flyn on 2014-11-12.
@@ -150,59 +144,13 @@ public class SQLUtils
 
     }
 
-
-    public static void statementBindValue(SQLiteStatement sqLiteStatement, Property[] properties)
+    public static String createSQLDeleteAll(String tableName)
     {
-        int index = 1;
-        for (Property property : properties)
-        {
-            if (property.getType() == Type.TEXT.value())
-            {
-                sqLiteStatement.bindString(index, String.valueOf(property.getValue()));
-            } else if (property.getType() == Type.INTEGER.value())
-            {
-                sqLiteStatement.bindLong(index, Long.valueOf(property.getValue().toString()));
-            } else if (property.getType() == Type.BOOLEAN.value())
-            {
-                sqLiteStatement.bindString(index, String.valueOf(property.getValue()));
-            } else if (property.getType() == Type.DOUBLE.value())
-            {
-                sqLiteStatement.bindDouble(index, Double.valueOf(property.getValue().toString()));
-            } else if (property.getType() == Type.DATE.value())
-            {
-                sqLiteStatement.bindLong(index, ((Date) property.getValue()).getTime());
-            } else if (property.getType() == Type.BLOB.value())
-            {
-                sqLiteStatement.bindBlob(index, (byte[]) property.getValue());
-            } else
-            {
-                sqLiteStatement.bindNull(index);
-            }
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append(" DELETE FROM  ");
+        sqlBuilder.append(tableName);
 
-            index++;
-        }
-    }
-
-    public static Property[] propertyBindValue(Property[] properties, HasteModel hasteModel)
-    {
-        Property[] copy_of_properties = new Property[properties.length];
-        System.arraycopy(properties, 0, copy_of_properties, 0, properties.length);
-
-        Property property;
-        for (int i = 0; i < copy_of_properties.length; i++)
-        {
-            property = copy_of_properties[i];
-
-            if (property.isAutoIncrease())
-            {
-                continue;
-            }
-
-            property.setValue(ReflectUtils.getFieldValue(property.getField(), hasteModel));
-
-        }
-
-        return copy_of_properties;
+        return sqlBuilder.toString();
     }
 
 

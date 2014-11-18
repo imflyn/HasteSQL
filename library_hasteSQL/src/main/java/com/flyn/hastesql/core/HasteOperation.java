@@ -21,6 +21,10 @@ public interface HasteOperation
 
     void delete(HasteModel hasteModel);
 
+    void deleteAll(Class<? extends HasteModel> clz);
+
+    void deleteAll(List<? extends HasteModel> hasteModelList);
+
 
     <T extends HasteModel> T queryFirst(Class<T> clz);
 

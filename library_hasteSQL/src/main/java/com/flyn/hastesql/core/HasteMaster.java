@@ -44,7 +44,7 @@ public class HasteMaster implements HasteOperation
         HasteDao hasteDao = hasteDaoMap.get(tableName);
         if (null == hasteDao)
         {
-            hasteDao = new HasteDao(db, this.sqlExecutor, tableName, clz);
+            hasteDao = new HasteDao(this.sqlExecutor, tableName, clz);
             this.hasteDaoMap.put(tableName, hasteDao);
         }
         return hasteDao;
@@ -127,6 +127,31 @@ public class HasteMaster implements HasteOperation
     {
         getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).delete(hasteModel);
     }
+
+    @Override
+    public void deleteAll(Class<? extends HasteModel> clz)
+    {
+        getHasteDao(clz, clz.getSimpleName()).deleteAll(clz);
+    }
+
+    public void deleteAll(Class<? extends HasteModel> clz, String prefix, String suffix)
+    {
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).deleteAll(clz);
+    }
+
+    @Override
+    public void deleteAll(List<? extends HasteModel> hasteModelList)
+    {
+        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
+        getHasteDao(clz, clz.getSimpleName()).deleteAll(hasteModelList);
+    }
+
+    public void deleteAll(List<? extends HasteModel> hasteModelList, String prefix, String suffix)
+    {
+        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).deleteAll(hasteModelList);
+    }
+
 
     @Override
     public <T extends HasteModel> T queryFirst(Class<T> clz)

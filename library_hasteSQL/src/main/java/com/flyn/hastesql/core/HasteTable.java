@@ -1,11 +1,9 @@
 package com.flyn.hastesql.core;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.util.ReflectUtils;
-import com.flyn.hastesql.util.SQLUtils;
 
 /**
  * Created by flyn on 2014-11-11.
@@ -15,6 +13,7 @@ public class HasteTable
 
     private final String tableName;
     private Property[] allColumns;
+    private Property primaryKey;
     private Property[] pkColumns;
     private SQLiteStatement insertSQLiteStatement;
 
@@ -23,14 +22,21 @@ public class HasteTable
     {
         this.tableName = tableName;
         this.allColumns = ReflectUtils.getPropertyArray(clz);
-        //        compileStatements(db);
+        init();
     }
 
-
-    protected void compileStatements(SQLiteDatabase db)
+    private void init()
     {
-        compileInsertSQLiteStatement(db);
+        for (Property property : allColumns)
+        {
+            if (property.isPrimaryKey() || property.getName().equalsIgnoreCase("id") || property.getName().equalsIgnoreCase("_id"))
+            {
+                primaryKey = property;
+                break;
+            }
+        }
     }
+
 
     public String getTableName()
     {
@@ -47,16 +53,9 @@ public class HasteTable
         return pkColumns;
     }
 
-    private void compileInsertSQLiteStatement(SQLiteDatabase db)
+    public Property getPrimaryKey()
     {
-        String insertSQL = SQLUtils.createSQLInsert(getTableName(), getAllColumns());
-
-        insertSQLiteStatement = db.compileStatement(insertSQL);
+        return primaryKey;
     }
 
-
-    public SQLiteStatement getInsertSQLiteStatement()
-    {
-        return insertSQLiteStatement;
-    }
 }
