@@ -14,6 +14,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface PrimaryKey
 {
     boolean AutoIncrease() default false;
-
-    boolean ID() default false;
 }

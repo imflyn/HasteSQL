@@ -50,8 +50,9 @@ public class ReflectUtils
                     {
                         PrimaryKey primaryKey = (PrimaryKey) annotation;
                         property.setAutoIncrease(primaryKey.AutoIncrease());
-                        property.setPrimaryKey(primaryKey.ID());
-                    } else if (annotation.annotationType().equals(Constraint.class))
+                        property.setPrimaryKey(true);
+                    }
+                    if (annotation.annotationType().equals(Constraint.class))
                     {
                         Constraint constraint = (Constraint) annotation;
                         property.setNotNull(constraint.notNull());

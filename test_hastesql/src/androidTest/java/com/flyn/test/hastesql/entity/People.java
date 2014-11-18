@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class People implements HasteModel
 {
-    @PrimaryKey(ID = true, AutoIncrease = true)
+    @PrimaryKey(AutoIncrease = true)
     private int id;
 
     @Constraint(notNull = true, unique = true)
