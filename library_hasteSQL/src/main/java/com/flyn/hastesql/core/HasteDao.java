@@ -21,7 +21,7 @@ public class HasteDao implements HasteOperation
     {
         this.sqlExecutor = sqlExecutor;
         createTableIfNotExits(tableName, hasteModelClz);
-        this.hasteTable = new HasteTable(db, tableName, hasteModelClz);
+        this.hasteTable = new HasteTable(tableName, hasteModelClz);
     }
 
     protected void createTableIfNotExits(String tableName, Class<? extends HasteModel> hasteModelClz)

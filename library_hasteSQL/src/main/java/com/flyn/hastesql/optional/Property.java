@@ -7,10 +7,10 @@ import java.lang.reflect.Field;
  */
 public class Property
 {
-    protected String name;
-    protected String type;
-    protected Object value;
-    protected Field field;
+    private String name;
+    private String type;
+    private Object value;
+    private Field field;
 
 
     public String getName()
