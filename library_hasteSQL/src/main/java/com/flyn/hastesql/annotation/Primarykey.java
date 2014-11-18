@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(ElementType.FIELD)
 public @interface PrimaryKey
 {
-    boolean isAutoIncrease() default false;
+    boolean AutoIncrease() default false;
 
     boolean ID() default false;
 }

@@ -50,9 +50,9 @@ public class HasteMaster implements HasteOperation
         return hasteDao;
     }
 
-    public SQLiteDatabase getDatabase()
+    public SQLExecutor getSqlExecutor()
     {
-        return this.db;
+        return sqlExecutor;
     }
 
     @Override

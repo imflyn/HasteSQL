@@ -11,7 +11,8 @@ public class Property
     private String type;
     private Object value;
     private Field field;
-
+    private boolean isPrimaryKey;
+    private boolean isAutoIncrease;
 
     public String getName()
     {
@@ -51,5 +52,25 @@ public class Property
     public void setField(Field field)
     {
         this.field = field;
+    }
+
+    public boolean isPrimaryKey()
+    {
+        return isPrimaryKey;
+    }
+
+    public void setPrimaryKey(boolean isPrimaryKey)
+    {
+        this.isPrimaryKey = isPrimaryKey;
+    }
+
+    public boolean isAutoIncrease()
+    {
+        return isAutoIncrease;
+    }
+
+    public void setAutoIncrease(boolean isAutoIncrease)
+    {
+        this.isAutoIncrease = isAutoIncrease;
     }
 }

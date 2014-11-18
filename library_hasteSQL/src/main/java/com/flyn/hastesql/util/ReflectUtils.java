@@ -1,10 +1,10 @@
 package com.flyn.hastesql.util;
 
-import android.text.TextUtils;
-
+import com.flyn.hastesql.annotation.PrimaryKey;
 import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.optional.Type;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -27,11 +27,12 @@ public class ReflectUtils
         Property property;
         for (Field field : fields)
         {
+
             if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isTransient(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()))
             {
                 String type = Type.wrap(field.getType());
 
-                if (TextUtils.isEmpty(type))
+                if (StringUtils.isEmpty(type))
                 {
                     continue;
                 }
@@ -40,6 +41,17 @@ public class ReflectUtils
                 property.setType(type);
                 property.setName(field.getName());
                 property.setField(field);
+
+                Annotation[] annotations = field.getAnnotations();
+                for (Annotation annotation : annotations)
+                {
+                    if (annotation.annotationType().equals(PrimaryKey.class))
+                    {
+                        PrimaryKey primaryKey = (PrimaryKey) annotation;
+                        property.setAutoIncrease(primaryKey.AutoIncrease());
+                        property.setPrimaryKey(primaryKey.ID());
+                    }
+                }
                 properties.add(property);
             }
         }

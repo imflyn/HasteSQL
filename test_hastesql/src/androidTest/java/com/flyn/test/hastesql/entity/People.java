@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class People implements HasteModel
 {
-    @PrimaryKey(isAutoIncrease = true)
+    @PrimaryKey(ID = true, AutoIncrease = true)
     private int id1 = 1;
 
     private String name = "123";
