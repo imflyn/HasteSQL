@@ -99,23 +99,27 @@ public class SQLUtils
     {
 
         StringBuilder sqlBuilder = new StringBuilder();
+        StringBuilder valueBuilder = new StringBuilder();
 
         sqlBuilder.append("INSERT INTO ");
         sqlBuilder.append(tableName);
         sqlBuilder.append(" (");
         for (Property property : properties)
         {
+            if (property.isAutoIncrease())
+            {
+                continue;
+            }
             sqlBuilder.append(property.getName()).append(",");
+            valueBuilder.append("?,");
         }
         sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
         sqlBuilder.append(") VALUES (");
 
-        for (int i = 0; i < properties.length; i++)
-        {
-            sqlBuilder.append("?,");
-        }
-        sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
-        sqlBuilder.append(")");
+        valueBuilder.deleteCharAt(valueBuilder.length() - 1);
+        valueBuilder.append(")");
+
+        sqlBuilder.append(valueBuilder.toString());
 
         return sqlBuilder.toString();
 
@@ -123,8 +127,8 @@ public class SQLUtils
 
     public static String createSQLInsertOrReplace(String tableName, Property[] properties)
     {
-
         StringBuilder sqlBuilder = new StringBuilder();
+        StringBuilder valueBuilder = new StringBuilder();
 
         sqlBuilder.append("INSERT OR REPLACE INTO ");
         sqlBuilder.append(tableName);
@@ -132,16 +136,15 @@ public class SQLUtils
         for (Property property : properties)
         {
             sqlBuilder.append(property.getName()).append(",");
+            valueBuilder.append("?,");
         }
         sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
         sqlBuilder.append(") VALUES (");
 
-        for (int i = 0; i < properties.length; i++)
-        {
-            sqlBuilder.append("?,");
-        }
-        sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
-        sqlBuilder.append(")");
+        valueBuilder.deleteCharAt(valueBuilder.length() - 1);
+        valueBuilder.append(")");
+
+        sqlBuilder.append(valueBuilder.toString());
 
         return sqlBuilder.toString();
 
@@ -183,14 +186,19 @@ public class SQLUtils
     public static Property[] propertyBindValue(Property[] properties, HasteModel hasteModel)
     {
         Property[] copy_of_properties = new Property[properties.length];
+        System.arraycopy(properties, 0, copy_of_properties, 0, properties.length);
+
         Property property;
-        for (int i = 0; i < properties.length; i++)
+        for (int i = 0; i < copy_of_properties.length; i++)
         {
-            property = properties[i];
-            copy_of_properties[i] = new Property();
-            copy_of_properties[i].setName(property.getName());
-            copy_of_properties[i].setType(property.getType());
-            copy_of_properties[i].setValue(ReflectUtils.getFieldValue(property.getField(), hasteModel));
+            property = copy_of_properties[i];
+
+            if (property.isAutoIncrease())
+            {
+                continue;
+            }
+
+            property.setValue(ReflectUtils.getFieldValue(property.getField(), hasteModel));
 
         }
 

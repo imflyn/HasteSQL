@@ -39,7 +39,7 @@ public class SQLExecutor
     public void insert(String tableName, Property[] properties, HasteModel hasteModel)
     {
         String sql = SQLUtils.createSQLInsert(tableName, properties);
-        execSQL(sql, ReflectUtils.getFieldValueArray(properties, hasteModel));
+        execSQL(sql, ReflectUtils.getFieldValueArray(properties, hasteModel, true));
     }
 
     public void insertAll(String tableName, Property[] properties, List<? extends HasteModel> hasteModelList)
@@ -49,7 +49,7 @@ public class SQLExecutor
         List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
         for (int i = 0, size = hasteModelList.size(); i < size; i++)
         {
-            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModelList.get(i)));
+            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModelList.get(i), true));
         }
         execSQLList(sql, objects);
     }
@@ -63,7 +63,7 @@ public class SQLExecutor
     public void insertOrReplace(String tableName, Property[] properties, HasteModel hasteModel)
     {
         String sql = SQLUtils.createSQLInsertOrReplace(tableName, properties);
-        execSQL(sql, ReflectUtils.getFieldValueArray(properties, hasteModel));
+        execSQL(sql, ReflectUtils.getFieldValueArray(properties, hasteModel, false));
     }
 
     public void insertOrReplaceAll(String tableName, Property[] properties, List<? extends HasteModel> hasteModelList)
@@ -73,7 +73,7 @@ public class SQLExecutor
         List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
         for (int i = 0, size = hasteModelList.size(); i < size; i++)
         {
-            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModelList.get(i)));
+            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModelList.get(i), false));
         }
         execSQLList(sql, objects);
     }

@@ -107,14 +107,18 @@ public class ReflectUtils
         }
     }
 
-    public static Object[] getFieldValueArray(Property[] properties, Object obj)
+    public static Object[] getFieldValueArray(Property[] properties, Object obj, boolean skipAutoIncrease)
     {
-        Object[] objects = new Object[properties.length];
+        ArrayList<Object> objectArrayList = new ArrayList<Object>(properties.length);
         for (int i = 0; i < properties.length; i++)
         {
-            objects[i] = getFieldValue(properties[i].getField(), obj);
+            if (properties[i].isAutoIncrease() && skipAutoIncrease)
+            {
+                continue;
+            }
+            objectArrayList.add(getFieldValue(properties[i].getField(), obj));
         }
-        return objects;
+        return objectArrayList.toArray();
     }
 
 }
