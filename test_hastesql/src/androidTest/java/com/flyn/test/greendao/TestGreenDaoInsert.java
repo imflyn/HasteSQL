@@ -54,7 +54,7 @@ public class TestGreenDaoInsert extends AndroidTestCase
             note = new Note(null, "123", comment, new Date());
             list.add(note);
         }
-        noteDao.insertInTx(list);
+        noteDao.insertOrReplaceInTx(list);
 
         long spendTime = System.currentTimeMillis() - time;
 
