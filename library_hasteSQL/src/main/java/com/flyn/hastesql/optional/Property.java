@@ -13,6 +13,10 @@ public class Property
     private Field field;
     private boolean isPrimaryKey;
     private boolean isAutoIncrease;
+    private boolean notNull;
+    private boolean unique;
+    private String check;
+
 
     public String getName()
     {
@@ -72,5 +76,35 @@ public class Property
     public void setAutoIncrease(boolean isAutoIncrease)
     {
         this.isAutoIncrease = isAutoIncrease;
+    }
+
+    public boolean isNotNull()
+    {
+        return notNull;
+    }
+
+    public void setNotNull(boolean notNull)
+    {
+        this.notNull = notNull;
+    }
+
+    public boolean isUnique()
+    {
+        return unique;
+    }
+
+    public void setUnique(boolean unique)
+    {
+        this.unique = unique;
+    }
+
+    public String getCheck()
+    {
+        return check;
+    }
+
+    public void setCheck(String check)
+    {
+        this.check = check;
     }
 }

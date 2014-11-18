@@ -1,5 +1,6 @@
 package com.flyn.test.hastesql.entity;
 
+import com.flyn.hastesql.annotation.Constraint;
 import com.flyn.hastesql.annotation.PrimaryKey;
 import com.flyn.hastesql.core.HasteModel;
 
@@ -12,11 +13,52 @@ import java.util.Date;
 public class People implements HasteModel
 {
     @PrimaryKey(ID = true, AutoIncrease = true)
-    private int id1 = 1;
+    private int id;
 
-    private String name = "123";
-
-    private int age = 19;
+    @Constraint(notNull = true, unique = true)
+    private String name;
+    @Constraint(notNull = true, check = " age > 2 ")
+    private int age;
 
     private Date date = new Date();
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public int getAge()
+    {
+        return age;
+    }
+
+    public void setAge(int age)
+    {
+        this.age = age;
+    }
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
+    }
 }

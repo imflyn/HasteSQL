@@ -71,6 +71,9 @@ public class InsertTest extends AndroidTestCase
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
 
         People people = new People();
+        people.setDate(new Date());
+        people.setAge(18);
+        people.setName("1号");
         hasteMaster.insert(people);
 
     }
@@ -112,6 +115,9 @@ public class InsertTest extends AndroidTestCase
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
 
         People people = new People();
+        people.setDate(new Date());
+        people.setAge(18);
+        people.setName("1号");
         hasteMaster.insertOrReplace(people);
     }
 

@@ -48,22 +48,43 @@ public class SQLUtils
         {
             if (property.getName().equalsIgnoreCase("id") || property.getName().equalsIgnoreCase("_id"))
             {
-                //TODO 主键，自增
-                primarySql.append(" \'").append(property.getName()).append("\' ").append(property.getType()).append(" INTEGER ");
+                // 主键，自增
+                primarySql.append(" \'").append(property.getName()).append("\' ").append(" INTEGER PRIMARY KEY");
+                if (property.isAutoIncrease())
+                {
+                    primarySql.append(" AUTOINCREMENT ");
+                }
                 primarySql.append(",");
             } else
             {
-                //TODO 设置UNIQUE属性
-                //TODO 设置NOT NULL属性
-                //TODO 设置CHECK属性
                 otherSql.append(" \'").append(property.getName()).append("\' ").append(property.getType());
+                if (property.isPrimaryKey())
+                {
+                    otherSql.append(" PRIMARY KEY ");
+                    if (property.isAutoIncrease())
+                    {
+                        otherSql.append(" AUTOINCREMENT ");
+                    }
+                }
+                // 设置UNIQUE属性
+                // 设置NOT NULL属性
+                // 设置CHECK属性
+                if (!StringUtils.isEmpty(property.getCheck()))
+                {
+                    otherSql.append(" CHECK(");
+                    otherSql.append(property.getCheck());
+                    otherSql.append(")");
+                }
+                if (property.isNotNull())
+                {
+                    otherSql.append(" NOT NULL ");
+                }
+                if (property.isUnique())
+                {
+                    otherSql.append(" UNIQUE ");
+                }
                 otherSql.append(",");
             }
-            //            db.execSQL("CREATE TABLE " + constraint + "'NOTE' (" + //
-            //                    "'_id' INTEGER PRIMARY KEY ," + // 0: id
-            //                    "'TEXT' TEXT NOT NULL ," + // 1: text
-            //                    "'COMMENT' TEXT," + // 2: comment
-            //                    "'DATE' INTEGER);"); // 3: date
         }
 
         sqlBuilder.append(primarySql.toString()).append(otherSql.toString());

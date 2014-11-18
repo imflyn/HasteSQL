@@ -1,5 +1,6 @@
 package com.flyn.hastesql.util;
 
+import com.flyn.hastesql.annotation.Constraint;
 import com.flyn.hastesql.annotation.PrimaryKey;
 import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.optional.Type;
@@ -50,6 +51,12 @@ public class ReflectUtils
                         PrimaryKey primaryKey = (PrimaryKey) annotation;
                         property.setAutoIncrease(primaryKey.AutoIncrease());
                         property.setPrimaryKey(primaryKey.ID());
+                    } else if (annotation.annotationType().equals(Constraint.class))
+                    {
+                        Constraint constraint = (Constraint) annotation;
+                        property.setNotNull(constraint.notNull());
+                        property.setCheck(constraint.check());
+                        property.setUnique(constraint.unique());
                     }
                 }
                 properties.add(property);
