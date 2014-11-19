@@ -88,13 +88,6 @@ public class ConditionExpression
         return this;
     }
 
-    public ConditionExpression where()
-    {
-        stringBuilder.append(" ");
-        stringBuilder.append("WHERE");
-        stringBuilder.append(" ");
-        return this;
-    }
 
     public ConditionExpression equals(Property property, Object value)
     {
@@ -246,7 +239,7 @@ public class ConditionExpression
 
     public String toString()
     {
-        LogUtils.d(stringBuilder.toString());
+
 
         return stringBuilder.toString();
     }
