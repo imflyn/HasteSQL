@@ -122,4 +122,9 @@ public class ReflectUtils
         return objectArrayList.toArray();
     }
 
+
+    public static boolean isText(Object obj)
+    {
+        return Type.wrap(obj.getClass()).equals(Type.TEXT);
+    }
 }
