@@ -4,7 +4,7 @@ package com.flyn.hastesql.optional;
  * Created by flyn on 2014-11-18.
  * Non-Thread-Safe
  */
-public class WhereCondition
+public class WhereClause
 {
 
     private StringBuilder whereBuilder = new StringBuilder();
