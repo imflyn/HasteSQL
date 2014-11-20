@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.flyn.hastesql.optional.ConditionExpression;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,15 +18,12 @@ import java.util.Map;
 public class HasteMaster implements HasteOperation
 {
     private final Map<String, HasteDao> hasteDaoMap = new HashMap<String, HasteDao>();
-    private final HasteSQLiteOpenHelper hasteSQLiteOpenHelper;
     private SQLiteDatabase db;
     private SQLExecutor sqlExecutor;
 
     private HasteMaster(Context context, IHasteConfig hasteConfig)
     {
-        this.hasteSQLiteOpenHelper = new HasteSQLiteOpenHelper(context, hasteConfig);
-        init();
-
+        init(context, hasteConfig);
     }
 
     public static HasteMaster newInstance(Context context, IHasteConfig hasteConfig)
@@ -32,10 +31,11 @@ public class HasteMaster implements HasteOperation
         return new HasteMaster(context, hasteConfig);
     }
 
-    private void init()
+    private void init(Context context, IHasteConfig hasteConfig)
     {
         this.hasteDaoMap.clear();
-        this.db = this.hasteSQLiteOpenHelper.getWritableDatabase();
+        HasteSQLiteOpenHelper hasteSQLiteOpenHelper = new HasteSQLiteOpenHelper(context, hasteConfig);
+        this.db = hasteSQLiteOpenHelper.getWritableDatabase();
         this.sqlExecutor = new SQLExecutor(this.db);
     }
 
@@ -126,6 +126,17 @@ public class HasteMaster implements HasteOperation
     public void delete(HasteModel hasteModel, String prefix, String suffix)
     {
         getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).delete(hasteModel);
+    }
+
+    @Override
+    public void delete(HasteModel hasteModel, ConditionExpression conditionExpression)
+    {
+        getHasteDao(hasteModel.getClass(), hasteModel.getClass().getSimpleName()).delete(hasteModel, conditionExpression);
+    }
+
+    public void delete(HasteModel hasteModel, String prefix, String suffix, ConditionExpression conditionExpression)
+    {
+        getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).delete(hasteModel, conditionExpression);
     }
 
     @Override

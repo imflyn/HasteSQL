@@ -1,5 +1,7 @@
 package com.flyn.hastesql.core;
 
+import com.flyn.hastesql.optional.ConditionExpression;
+
 import java.util.List;
 
 /**
@@ -21,13 +23,13 @@ public interface HasteOperation
 
     void delete(HasteModel hasteModel);
 
+    void delete(HasteModel hasteModel, ConditionExpression conditionExpression);
+
     void deleteAll(Class<? extends HasteModel> clz);
 
     void deleteAll(List<? extends HasteModel> hasteModelList);
 
-
     <T extends HasteModel> T queryFirst(Class<T> clz);
-
 
     <T extends HasteModel> List<T> queryAll(Class<T> clz);
 

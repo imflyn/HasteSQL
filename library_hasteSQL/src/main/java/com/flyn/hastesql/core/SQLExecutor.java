@@ -3,13 +3,9 @@ package com.flyn.hastesql.core;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.util.CursorUtils;
 import com.flyn.hastesql.util.LogUtils;
-import com.flyn.hastesql.util.ReflectUtils;
-import com.flyn.hastesql.util.SQLUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -34,60 +30,6 @@ public class SQLExecutor
         this.mWriteLock = lock.writeLock();
     }
 
-
-    public void insert(String tableName, Property[] properties, HasteModel hasteModel)
-    {
-        String sql = SQLUtils.createSQLInsert(tableName, properties);
-        execSQL(sql, ReflectUtils.getFieldValueArray(properties, hasteModel, true));
-    }
-
-    public void insertAll(String tableName, Property[] properties, List<? extends HasteModel> hasteModelList)
-    {
-        String sql = SQLUtils.createSQLInsert(tableName, properties);
-
-        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
-        for (int i = 0, size = hasteModelList.size(); i < size; i++)
-        {
-            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModelList.get(i), true));
-        }
-        execSQLList(sql, objects);
-    }
-
-
-    public void update(HasteModel hasteModel)
-    {
-
-    }
-
-    public void insertOrReplace(String tableName, Property[] properties, HasteModel hasteModel)
-    {
-        String sql = SQLUtils.createSQLInsertOrReplace(tableName, properties);
-        execSQL(sql, ReflectUtils.getFieldValueArray(properties, hasteModel, false));
-    }
-
-    public void insertOrReplaceAll(String tableName, Property[] properties, List<? extends HasteModel> hasteModelList)
-    {
-        String sql = SQLUtils.createSQLInsertOrReplace(tableName, properties);
-
-        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
-        for (int i = 0, size = hasteModelList.size(); i < size; i++)
-        {
-            objects.add(ReflectUtils.getFieldValueArray(properties, hasteModelList.get(i), false));
-        }
-        execSQLList(sql, objects);
-    }
-
-    public void delete(HasteModel hasteModel)
-    {
-
-    }
-
-    public void deleteAll(String tableName)
-    {
-        String sql = SQLUtils.createSQLDeleteAll(tableName);
-        execSQL(sql);
-    }
-
     public <T extends HasteModel> T queryFirst(Class<T> clz)
     {
         return null;
@@ -100,6 +42,7 @@ public class SQLExecutor
 
     public boolean isEmpty(String sql)
     {
+        LogUtils.d(sql);
         Cursor cursor = execQuery(sql);
         if (cursor != null)
         {

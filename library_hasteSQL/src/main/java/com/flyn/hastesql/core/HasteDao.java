@@ -1,8 +1,10 @@
 package com.flyn.hastesql.core;
 
+import com.flyn.hastesql.optional.ConditionExpression;
 import com.flyn.hastesql.util.ReflectUtils;
 import com.flyn.hastesql.util.SQLUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,14 +39,22 @@ public class HasteDao implements HasteOperation
     @Override
     public void insert(HasteModel hasteModel)
     {
-        sqlExecutor.insert(hasteTable.getTableName(), hasteTable.getAllColumns(), hasteModel);
-
+        String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
+        Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
+        sqlExecutor.execSQL(sql, objects);
     }
 
     @Override
     public void insertAll(List<? extends HasteModel> hasteModelList)
     {
-        sqlExecutor.insertAll(hasteTable.getTableName(), hasteTable.getAllColumns(), hasteModelList);
+        String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
+        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
+        for (int i = 0, size = hasteModelList.size(); i < size; i++)
+        {
+            objects.add(ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true));
+        }
+
+        sqlExecutor.execSQLList(sql, objects);
     }
 
 
@@ -58,13 +68,21 @@ public class HasteDao implements HasteOperation
     @Override
     public void insertOrReplace(HasteModel hasteModel)
     {
-        sqlExecutor.insertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns(), hasteModel);
+        String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns());
+        Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
+        sqlExecutor.execSQL(sql, objects);
     }
 
     @Override
     public void insertOrReplaceAll(List<? extends HasteModel> hasteModelList)
     {
-        sqlExecutor.insertOrReplaceAll(hasteTable.getTableName(), hasteTable.getAllColumns(), hasteModelList);
+        String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns());
+        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
+        for (int i = 0, size = hasteModelList.size(); i < size; i++)
+        {
+            objects.add(ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true));
+        }
+        sqlExecutor.execSQLList(sql, objects);
     }
 
 
@@ -74,9 +92,16 @@ public class HasteDao implements HasteOperation
     }
 
     @Override
+    public void delete(HasteModel hasteModel, ConditionExpression conditionExpression)
+    {
+
+    }
+
+    @Override
     public void deleteAll(Class<? extends HasteModel> clz)
     {
-        sqlExecutor.deleteAll(hasteTable.getTableName());
+        String sql = SQLUtils.createSQLDeleteAll(hasteTable.getTableName());
+        sqlExecutor.execSQL(sql);
     }
 
     @Override
