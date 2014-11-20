@@ -1,6 +1,5 @@
 package com.flyn.hastesql.optional;
 
-import com.flyn.hastesql.util.LogUtils;
 import com.flyn.hastesql.util.ReflectUtils;
 
 /**
@@ -173,19 +172,19 @@ public class ConditionExpression
         boolean isText = ReflectUtils.isText(value);
         stringBuilder.append(isText ? "\'" : " ");
         stringBuilder.append(value);
-        stringBuilder.append(isText ? "\'" : "");
+        stringBuilder.append(isText ? "\'" : " ");
         return this;
     }
 
     public ConditionExpression between(Property property, Object left, Object right)
     {
         stringBuilder.append(property.getName());
-        stringBuilder.append(COMPARISON_NOT_LESS);
-        boolean isText = ReflectUtils.isText(left);
-        stringBuilder.append(isText ? "\'" : " ");
-        stringBuilder.append(left);
-        stringBuilder.append(isText ? "\'" : "");
         stringBuilder.append(" ");
+        stringBuilder.append(LOGIC_BETWEEN);
+        boolean isText = ReflectUtils.isText(left);
+        stringBuilder.append(isText ? " \'" : " ");
+        stringBuilder.append(left);
+        stringBuilder.append(isText ? "\' " : " ");
         stringBuilder.append(LOGIC_AND);
         stringBuilder.append(" ");
         stringBuilder.append(isText ? "\'" : " ");
@@ -197,16 +196,18 @@ public class ConditionExpression
     public ConditionExpression in(Property property, Object... value)
     {
         stringBuilder.append(property.getName());
+        stringBuilder.append(" ");
         stringBuilder.append(LOGIC_IN);
         stringBuilder.append(" ( ");
         for (Object obj : value)
         {
-            boolean isText = ReflectUtils.isText(value);
+            boolean isText = ReflectUtils.isText(obj);
             stringBuilder.append(isText ? " " : "\'");
             stringBuilder.append(obj);
             stringBuilder.append(isText ? "" : "\'");
             stringBuilder.append(",");
         }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         stringBuilder.append(" ) ");
         return this;
     }
@@ -224,6 +225,7 @@ public class ConditionExpression
             stringBuilder.append(isText ? "" : "\'");
             stringBuilder.append(",");
         }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         stringBuilder.append(" ) ");
         return this;
     }

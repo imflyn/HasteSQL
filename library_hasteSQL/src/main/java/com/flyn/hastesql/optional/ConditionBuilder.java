@@ -143,10 +143,9 @@ public class ConditionBuilder
         return this;
     }
 
-    @Override
-    public String toString()
+    public String build()
     {
-        LogUtils.d(stringBuilder.toString());
+        LogUtils.d("[" + stringBuilder.toString() + "]");
         return stringBuilder.toString();
     }
 }

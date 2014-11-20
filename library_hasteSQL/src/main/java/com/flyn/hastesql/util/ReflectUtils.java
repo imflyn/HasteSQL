@@ -125,6 +125,6 @@ public class ReflectUtils
 
     public static boolean isText(Object obj)
     {
-        return Type.wrap(obj.getClass()).equals(Type.TEXT);
+        return Type.wrap(obj.getClass()).equals(Type.TEXT.value());
     }
 }
