@@ -129,14 +129,14 @@ public class HasteMaster implements HasteOperation
     }
 
     @Override
-    public void delete(HasteModel hasteModel, ConditionExpression conditionExpression)
+    public void delete(Class<? extends HasteModel> clz, ConditionExpression conditionExpression)
     {
-        getHasteDao(hasteModel.getClass(), hasteModel.getClass().getSimpleName()).delete(hasteModel, conditionExpression);
+        getHasteDao(clz, clz.getSimpleName()).delete(clz, conditionExpression);
     }
 
-    public void delete(HasteModel hasteModel, String prefix, String suffix, ConditionExpression conditionExpression)
+    public void delete(Class<? extends HasteModel> clz, String prefix, String suffix, ConditionExpression conditionExpression)
     {
-        getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).delete(hasteModel, conditionExpression);
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).delete(clz, conditionExpression);
     }
 
     @Override

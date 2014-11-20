@@ -1,5 +1,7 @@
 package com.flyn.hastesql.util;
 
+import com.flyn.hastesql.optional.ConditionBuilder;
+import com.flyn.hastesql.optional.ConditionExpression;
 import com.flyn.hastesql.optional.Property;
 
 /**
@@ -128,7 +130,7 @@ public class SQLUtils
 
     }
 
-    public static String createSQLDeleteAll(String tableName)
+    public static String createSQLDelete(String tableName)
     {
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append(" DELETE FROM  ");
@@ -137,11 +139,40 @@ public class SQLUtils
         return sqlBuilder.toString();
     }
 
-    public static String createSQLDeleteById(String tableName)
+    public static String createSQLDeleteByKey(String tableName, Property property)
     {
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append(" DELETE FROM  ");
         sqlBuilder.append(tableName);
+
+        ConditionExpression conditionExpression = new ConditionExpression();
+        conditionExpression.equals(property.getName(), '?');
+        ConditionBuilder conditionBuilder = new ConditionBuilder();
+        conditionBuilder.where(conditionExpression);
+        sqlBuilder.append(conditionBuilder.build());
+
+        return sqlBuilder.toString();
+    }
+
+    public static String createSQLDelete(String tableName, Property[] properties)
+    {
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append(" DELETE FROM  ");
+        sqlBuilder.append(tableName);
+
+        ConditionExpression conditionExpression = new ConditionExpression();
+        for (int i = 0; i < properties.length; i++)
+        {
+            if (i != 0)
+            {
+                conditionExpression.and();
+            }
+            conditionExpression.equals(properties[i].getName(), '?');
+
+        }
+        ConditionBuilder conditionBuilder = new ConditionBuilder();
+        conditionBuilder.where(conditionExpression);
+        sqlBuilder.append(conditionBuilder.build());
 
         return sqlBuilder.toString();
     }

@@ -23,7 +23,7 @@ public interface HasteOperation
 
     void delete(HasteModel hasteModel);
 
-    void delete(HasteModel hasteModel, ConditionExpression conditionExpression);
+    void delete(Class<? extends HasteModel> clz, ConditionExpression conditionExpression);
 
     void deleteAll(Class<? extends HasteModel> clz);
 

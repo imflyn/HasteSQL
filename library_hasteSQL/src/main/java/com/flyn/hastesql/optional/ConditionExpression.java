@@ -44,11 +44,6 @@ public class ConditionExpression
 
     protected StringBuilder stringBuilder = new StringBuilder();
 
-    public ConditionExpression operate(String operation, Property property, Object value)
-    {
-        return operate(operation, property.getName(), value);
-    }
-
     public ConditionExpression operate(String operation, String field, Object value)
     {
 
@@ -88,9 +83,9 @@ public class ConditionExpression
     }
 
 
-    public ConditionExpression equals(Property property, Object value)
+    public ConditionExpression equals(String fieldName, Object value)
     {
-        stringBuilder.append(property.getName());
+        stringBuilder.append(fieldName);
         stringBuilder.append(COMPARISON_EQUALS);
         boolean isText = ReflectUtils.isText(value);
         stringBuilder.append(isText ? "\'" : " ");
@@ -99,9 +94,9 @@ public class ConditionExpression
         return this;
     }
 
-    public ConditionExpression notEquals(Property property, Object value)
+    public ConditionExpression notEquals(String fieldName, Object value)
     {
-        stringBuilder.append(property.getName());
+        stringBuilder.append(fieldName);
         stringBuilder.append(COMPARISON_NOT_EQUALS);
         boolean isText = ReflectUtils.isText(value);
         stringBuilder.append(isText ? "\'" : " ");
@@ -110,9 +105,9 @@ public class ConditionExpression
         return this;
     }
 
-    public ConditionExpression greater(Property property, Object value)
+    public ConditionExpression greater(String fieldName, Object value)
     {
-        stringBuilder.append(property.getName());
+        stringBuilder.append(fieldName);
         stringBuilder.append(COMPARISON_GREATER);
         boolean isText = ReflectUtils.isText(value);
         stringBuilder.append(isText ? "\'" : " ");
@@ -121,9 +116,9 @@ public class ConditionExpression
         return this;
     }
 
-    public ConditionExpression greaterEquals(Property property, Object value)
+    public ConditionExpression greaterEquals(String fieldName, Object value)
     {
-        stringBuilder.append(property.getName());
+        stringBuilder.append(fieldName);
         stringBuilder.append(COMPARISON_GREATER_AND_EQUALS);
         boolean isText = ReflectUtils.isText(value);
         stringBuilder.append(isText ? "\'" : " ");
@@ -132,9 +127,9 @@ public class ConditionExpression
         return this;
     }
 
-    public ConditionExpression notGreater(Property property, Object value)
+    public ConditionExpression notGreater(String fieldName, Object value)
     {
-        stringBuilder.append(property.getName());
+        stringBuilder.append(fieldName);
         stringBuilder.append(COMPARISON_NOT_GREATER);
         boolean isText = ReflectUtils.isText(value);
         stringBuilder.append(isText ? "\'" : " ");
@@ -143,9 +138,9 @@ public class ConditionExpression
         return this;
     }
 
-    public ConditionExpression less(Property property, Object value)
+    public ConditionExpression less(String fieldName, Object value)
     {
-        stringBuilder.append(property.getName());
+        stringBuilder.append(fieldName);
         stringBuilder.append(COMPARISON_LESS);
         boolean isText = ReflectUtils.isText(value);
         stringBuilder.append(isText ? "\'" : " ");
@@ -154,9 +149,9 @@ public class ConditionExpression
         return this;
     }
 
-    public ConditionExpression lessEquals(Property property, Object value)
+    public ConditionExpression lessEquals(String fieldName, Object value)
     {
-        stringBuilder.append(property.getName());
+        stringBuilder.append(fieldName);
         stringBuilder.append(COMPARISON_LESS_AND_EQUALS);
         boolean isText = ReflectUtils.isText(value);
         stringBuilder.append(isText ? "\'" : " ");
@@ -165,9 +160,9 @@ public class ConditionExpression
         return this;
     }
 
-    public ConditionExpression notLess(Property property, Object value)
+    public ConditionExpression notLess(String fieldName, Object value)
     {
-        stringBuilder.append(property.getName());
+        stringBuilder.append(fieldName);
         stringBuilder.append(COMPARISON_NOT_LESS);
         boolean isText = ReflectUtils.isText(value);
         stringBuilder.append(isText ? "\'" : " ");
@@ -176,9 +171,9 @@ public class ConditionExpression
         return this;
     }
 
-    public ConditionExpression between(Property property, Object left, Object right)
+    public ConditionExpression between(String fieldName, Object left, Object right)
     {
-        stringBuilder.append(property.getName());
+        stringBuilder.append(fieldName);
         stringBuilder.append(" ");
         stringBuilder.append(LOGIC_BETWEEN);
         boolean isText = ReflectUtils.isText(left);
@@ -193,9 +188,9 @@ public class ConditionExpression
         return this;
     }
 
-    public ConditionExpression in(Property property, Object... value)
+    public ConditionExpression in(String fieldName, Object... value)
     {
-        stringBuilder.append(property.getName());
+        stringBuilder.append(fieldName);
         stringBuilder.append(" ");
         stringBuilder.append(LOGIC_IN);
         stringBuilder.append(" ( ");
@@ -212,9 +207,9 @@ public class ConditionExpression
         return this;
     }
 
-    public ConditionExpression notIn(Property property, Object... value)
+    public ConditionExpression notIn(String fieldName, Object... value)
     {
-        stringBuilder.append(property.getName());
+        stringBuilder.append(fieldName);
         stringBuilder.append(LOGIC_NOT_IN);
         stringBuilder.append(" ( ");
         for (Object obj : value)
@@ -241,8 +236,6 @@ public class ConditionExpression
 
     public String toString()
     {
-
-
         return stringBuilder.toString();
     }
 

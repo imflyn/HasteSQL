@@ -4,6 +4,7 @@ import android.content.Context;
 import android.test.AndroidTestCase;
 
 import com.flyn.hastesql.HasteSQL;
+import com.flyn.hastesql.optional.ConditionExpression;
 import com.flyn.test.hastesql.entity.People;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class DeleteTest extends AndroidTestCase
         super.setUp();
         mContext = getContext();
 
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < 500; i++)
         {
             People people = new People();
             people.setAge(19);
@@ -45,6 +46,17 @@ public class DeleteTest extends AndroidTestCase
 
     }
 
+    public void testDelete()
+    {
+        HasteSQL.createDefault(mContext).delete(peopleList.get(3));
+    }
+
+    public void testDeleteWithCondition()
+    {
+        ConditionExpression conditionExpression = new ConditionExpression();
+        conditionExpression.equals("age", 19);
+        HasteSQL.createDefault(mContext).delete(People.class, conditionExpression);
+    }
 
     public void testRun()
     {

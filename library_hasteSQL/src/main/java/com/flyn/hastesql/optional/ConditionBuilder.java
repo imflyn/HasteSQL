@@ -38,53 +38,53 @@ public class ConditionBuilder
         return this;
     }
 
-    public ConditionBuilder orderBy(Property property)
+    public ConditionBuilder orderBy(String str)
     {
 
         stringBuilder.append(" ORDER BY ");
-        stringBuilder.append(property.getName());
+        stringBuilder.append(str);
         stringBuilder.append(" ");
         return this;
     }
 
-    public ConditionBuilder orderByAsc(Property property)
+    public ConditionBuilder orderByAsc(String str)
     {
 
         stringBuilder.append(" ORDER BY ");
-        stringBuilder.append(property.getName());
+        stringBuilder.append(str);
         stringBuilder.append(" ASC ");
         return this;
     }
 
-    public ConditionBuilder orderByDesc(Property property)
+    public ConditionBuilder orderByDesc(String str)
     {
 
         stringBuilder.append(" ORDER BY ");
-        stringBuilder.append(property.getName());
+        stringBuilder.append(str);
         stringBuilder.append(" DESC ");
         return this;
     }
 
-    public ConditionBuilder orderBy(Property... properties)
+    public ConditionBuilder orderBy(String... stringArray)
     {
 
         stringBuilder.append(" ORDER BY ");
-        for (Property property : properties)
+        for (String str : stringArray)
         {
-            stringBuilder.append(property.getName());
+            stringBuilder.append(str);
             stringBuilder.append(",");
         }
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         return this;
     }
 
-    public ConditionBuilder orderByAsc(Property... properties)
+    public ConditionBuilder orderByAsc(String... stringArray)
     {
 
         stringBuilder.append(" ORDER BY ");
-        for (Property property : properties)
+        for (String str : stringArray)
         {
-            stringBuilder.append(property.getName());
+            stringBuilder.append(str);
             stringBuilder.append(" ASC ");
             stringBuilder.append(",");
         }
@@ -93,12 +93,12 @@ public class ConditionBuilder
         return this;
     }
 
-    public ConditionBuilder orderByDesc(Property... properties)
+    public ConditionBuilder orderByDesc(String... stringArray)
     {
         stringBuilder.append(" ORDER BY ");
-        for (Property property : properties)
+        for (String str : stringArray)
         {
-            stringBuilder.append(property.getName());
+            stringBuilder.append(str);
             stringBuilder.append(" DESC ");
             stringBuilder.append(",");
         }
@@ -107,12 +107,12 @@ public class ConditionBuilder
     }
 
 
-    public ConditionBuilder orderBy(Property[] properties, boolean... desc)
+    public ConditionBuilder orderBy(String[] stringArray, boolean... desc)
     {
         stringBuilder.append(" ORDER BY ");
-        for (int i = 0; i < properties.length; i++)
+        for (int i = 0; i < stringArray.length; i++)
         {
-            stringBuilder.append(properties[i].getName());
+            stringBuilder.append(stringArray[i]);
             if (desc[i])
             {
                 stringBuilder.append(" DESC ");
@@ -123,12 +123,12 @@ public class ConditionBuilder
         return this;
     }
 
-    public ConditionBuilder groupBy(Property... properties)
+    public ConditionBuilder groupBy(String... stringArray)
     {
         stringBuilder.append(" GROUP BY ");
-        for (Property property : properties)
+        for (String str : stringArray)
         {
-            stringBuilder.append(property.getName());
+            stringBuilder.append(str);
             stringBuilder.append(",");
         }
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);

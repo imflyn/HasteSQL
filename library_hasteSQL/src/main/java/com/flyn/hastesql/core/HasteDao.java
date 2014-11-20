@@ -89,20 +89,37 @@ public class HasteDao implements HasteOperation
     @Override
     public void delete(HasteModel hasteModel)
     {
-        String sql = SQLUtils.createSQLDeleteAll(hasteTable.getTableName());
-        sqlExecutor.execSQL(sql);
+        if (null != hasteTable.getPrimaryKey())
+        {
+            String sql = SQLUtils.createSQLDeleteByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey());
+            Object[] keyValues = new Object[]{ReflectUtils.getFieldValue(hasteTable.getPrimaryKey().getField(), hasteModel)};
+            sqlExecutor.execSQL(sql, keyValues);
+        } else
+        {
+            String sql = SQLUtils.createSQLDelete(hasteTable.getTableName(), hasteTable.getAllColumns());
+            Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
+            sqlExecutor.execSQL(sql, objects);
+        }
+
     }
 
     @Override
-    public void delete(HasteModel hasteModel, ConditionExpression conditionExpression)
+    public void delete(Class<? extends HasteModel> clz, ConditionExpression conditionExpression)
     {
+        StringBuilder stringBuilder = new StringBuilder();
+        String sql = SQLUtils.createSQLDelete(hasteTable.getTableName());
 
+        stringBuilder.append(sql);
+        stringBuilder.append(" WHERE ");
+        stringBuilder.append(conditionExpression.toString());
+
+        sqlExecutor.execSQL(stringBuilder.toString());
     }
 
     @Override
     public void deleteAll(Class<? extends HasteModel> clz)
     {
-        String sql = SQLUtils.createSQLDeleteAll(hasteTable.getTableName());
+        String sql = SQLUtils.createSQLDelete(hasteTable.getTableName());
         sqlExecutor.execSQL(sql);
     }
 
