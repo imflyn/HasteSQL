@@ -89,6 +89,8 @@ public class HasteDao implements HasteOperation
     @Override
     public void delete(HasteModel hasteModel)
     {
+        String sql = SQLUtils.createSQLDeleteAll(hasteTable.getTableName());
+        sqlExecutor.execSQL(sql);
     }
 
     @Override

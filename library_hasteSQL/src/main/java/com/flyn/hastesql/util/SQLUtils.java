@@ -35,53 +35,37 @@ public class SQLUtils
         sqlBuilder.append(tableName);
         sqlBuilder.append(" ( ");
 
-        StringBuilder primarySql = new StringBuilder();
-        StringBuilder otherSql = new StringBuilder();
-
         for (Property property : properties)
         {
-            if (property.getName().equalsIgnoreCase("id") || property.getName().equalsIgnoreCase("_id"))
+            sqlBuilder.append(" \'").append(property.getName()).append("\' ").append(property.getType());
+            if (property.isPrimaryKey())
             {
-                // 主键，自增
-                primarySql.append(" \'").append(property.getName()).append("\' ").append(" INTEGER PRIMARY KEY");
+                sqlBuilder.append(" PRIMARY KEY ");
                 if (property.isAutoIncrease())
                 {
-                    primarySql.append(" AUTOINCREMENT ");
+                    sqlBuilder.append(" AUTOINCREMENT ");
                 }
-                primarySql.append(",");
-            } else
-            {
-                otherSql.append(" \'").append(property.getName()).append("\' ").append(property.getType());
-                if (property.isPrimaryKey())
-                {
-                    otherSql.append(" PRIMARY KEY ");
-                    if (property.isAutoIncrease())
-                    {
-                        otherSql.append(" AUTOINCREMENT ");
-                    }
-                }
-                // 设置UNIQUE属性
-                // 设置NOT NULL属性
-                // 设置CHECK属性
-                if (!StringUtils.isEmpty(property.getCheck()))
-                {
-                    otherSql.append(" CHECK(");
-                    otherSql.append(property.getCheck());
-                    otherSql.append(")");
-                }
-                if (property.isNotNull())
-                {
-                    otherSql.append(" NOT NULL ");
-                }
-                if (property.isUnique())
-                {
-                    otherSql.append(" UNIQUE ");
-                }
-                otherSql.append(",");
             }
+            // 设置UNIQUE属性
+            // 设置NOT NULL属性
+            // 设置CHECK属性
+            if (!StringUtils.isEmpty(property.getCheck()))
+            {
+                sqlBuilder.append(" CHECK(");
+                sqlBuilder.append(property.getCheck());
+                sqlBuilder.append(")");
+            }
+            if (property.isNotNull())
+            {
+                sqlBuilder.append(" NOT NULL ");
+            }
+            if (property.isUnique())
+            {
+                sqlBuilder.append(" UNIQUE ");
+            }
+            sqlBuilder.append(",");
         }
 
-        sqlBuilder.append(primarySql.toString()).append(otherSql.toString());
         sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
         sqlBuilder.append(" )");
 
@@ -153,5 +137,13 @@ public class SQLUtils
         return sqlBuilder.toString();
     }
 
+    public static String createSQLDeleteById(String tableName)
+    {
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append(" DELETE FROM  ");
+        sqlBuilder.append(tableName);
+
+        return sqlBuilder.toString();
+    }
 
 }

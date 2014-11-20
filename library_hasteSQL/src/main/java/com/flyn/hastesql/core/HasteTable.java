@@ -29,7 +29,7 @@ public class HasteTable
     {
         for (Property property : allColumns)
         {
-            if (property.isPrimaryKey() || property.getName().equalsIgnoreCase("id") || property.getName().equalsIgnoreCase("_id"))
+            if (property.isPrimaryKey())
             {
                 primaryKey = property;
                 break;
