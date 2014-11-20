@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteStatement;
 import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.util.ReflectUtils;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Created by flyn on 2014-11-11.
  */
@@ -16,7 +18,7 @@ public class HasteTable
     private Property primaryKey;
     private Property[] pkColumns;
     private SQLiteStatement insertSQLiteStatement;
-
+    protected AtomicInteger sequence = new AtomicInteger();
 
     protected HasteTable(String tableName, Class<? extends HasteModel> clz)
     {
@@ -24,6 +26,7 @@ public class HasteTable
         this.allColumns = ReflectUtils.getPropertyArray(clz);
         init();
     }
+
 
     private void init()
     {
@@ -35,6 +38,7 @@ public class HasteTable
                 break;
             }
         }
+        createSQLGetMaxId
     }
 
 
@@ -58,4 +62,8 @@ public class HasteTable
         return primaryKey;
     }
 
+    public boolean hasPrimaryKey()
+    {
+        return null != primaryKey;
+    }
 }

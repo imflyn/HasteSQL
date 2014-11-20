@@ -10,25 +10,18 @@ import com.flyn.hastesql.optional.Property;
 public class SQLUtils
 {
 
-    /**
-     * 检查是否存在该表
-     *
-     * @param tableName
-     * @return
-     */
     public static String createSQLCheckTableExits(String tableName)
     {
         String sql = "SELECT COUNT(*) AS c FROM sqlite_master WHERE type='table' AND name='" + tableName + "'";
         return sql;
     }
 
-    /**
-     * 建表
-     *
-     * @param tableName
-     * @param properties
-     * @return
-     */
+    public static String createSQLGetMaxId(String tableName)
+    {
+        String sql = "SELECT SEQ  FROM sqlite_sequence WHERE  name='" + tableName + "'";
+        return sql;
+    }
+
     public static String createSQLCreateTable(String tableName, Property[] properties)
     {
         StringBuilder sqlBuilder = new StringBuilder();

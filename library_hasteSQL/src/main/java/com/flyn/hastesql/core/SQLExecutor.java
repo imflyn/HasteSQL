@@ -42,7 +42,6 @@ public class SQLExecutor
 
     public boolean isEmpty(String sql)
     {
-        LogUtils.d(sql);
         Cursor cursor = execQuery(sql);
         if (cursor != null)
         {
@@ -68,6 +67,7 @@ public class SQLExecutor
 
     public Cursor execQuery(String sql)
     {
+        LogUtils.d(sql);
         return execQuery(sql, null);
     }
 

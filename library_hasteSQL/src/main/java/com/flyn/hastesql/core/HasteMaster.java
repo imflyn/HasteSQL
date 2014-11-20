@@ -145,17 +145,18 @@ public class HasteMaster implements HasteOperation
         getHasteDao(clz, clz.getSimpleName()).deleteAll(clz);
     }
 
-    public void deleteAll(Class<? extends HasteModel> clz, String prefix, String suffix)
-    {
-        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).deleteAll(clz);
-    }
-
     @Override
     public void deleteAll(List<? extends HasteModel> hasteModelList)
     {
         Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
         getHasteDao(clz, clz.getSimpleName()).deleteAll(hasteModelList);
     }
+
+    public void deleteAll(Class<? extends HasteModel> clz, String prefix, String suffix)
+    {
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).deleteAll(clz);
+    }
+
 
     public void deleteAll(List<? extends HasteModel> hasteModelList, String prefix, String suffix)
     {

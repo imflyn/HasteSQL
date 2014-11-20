@@ -34,6 +34,8 @@ public class HasteDao implements HasteOperation
             String createTableSQL = SQLUtils.createSQLCreateTable(tableName, ReflectUtils.getPropertyArray(hasteModelClz));
             sqlExecutor.execSQL(createTableSQL);
         }
+
+        hasteTable.sequence.set();
     }
 
     @Override
@@ -126,7 +128,27 @@ public class HasteDao implements HasteOperation
     @Override
     public void deleteAll(List<? extends HasteModel> hasteModelList)
     {
+        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
+        if (hasteTable.hasPrimaryKey())
+        {
+            String sql = SQLUtils.createSQLDeleteByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey());
 
+            for (int i = 0, size = hasteModelList.size(); i < size; i++)
+            {
+                Object[] keyValues = new Object[]{ReflectUtils.getFieldValue(hasteTable.getPrimaryKey().getField(), hasteModelList.get(i))};
+                objects.add(keyValues);
+            }
+            sqlExecutor.execSQLList(sql, objects);
+        } else
+        {
+            String sql = SQLUtils.createSQLDelete(hasteTable.getTableName(), hasteTable.getAllColumns());
+            for (int i = 0, size = hasteModelList.size(); i < size; i++)
+            {
+                Object[] keyValues = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true);
+                objects.add(keyValues);
+            }
+            sqlExecutor.execSQLList(sql, objects);
+        }
     }
 
 

@@ -1,6 +1,5 @@
 package com.flyn.test.hastesql.entity;
 
-import com.flyn.hastesql.annotation.PrimaryKey;
 import com.flyn.hastesql.core.HasteModel;
 
 import java.util.Date;
@@ -11,7 +10,6 @@ import java.util.Date;
 
 public class People implements HasteModel
 {
-    @PrimaryKey(AutoIncrease = true)
     private int id;
 
     private String name;

@@ -46,6 +46,12 @@ public class DeleteTest extends AndroidTestCase
 
     }
 
+    public void testDeleteAll2()
+    {
+        HasteSQL.createDefault(mContext).deleteAll(peopleList);
+
+    }
+
     public void testDelete()
     {
         HasteSQL.createDefault(mContext).delete(peopleList.get(3));
