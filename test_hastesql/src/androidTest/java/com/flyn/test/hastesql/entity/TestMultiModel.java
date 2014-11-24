@@ -300,4 +300,10 @@ public class TestMultiModel implements HasteModel
     {
 
     }
+
+    @Override
+    public Object getPrimaryKeyValue()
+    {
+        return null;
+    }
 }

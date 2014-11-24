@@ -117,7 +117,7 @@ public class InsertTest extends AndroidTestCase
         People people = new People();
         people.setId(1);
         people.setDate(new Date());
-        people.setAge(6);
+        people.setAge(22);
         people.setName("1号");
         hasteMaster.insertOrReplace(people);
     }
@@ -127,7 +127,7 @@ public class InsertTest extends AndroidTestCase
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
         Note note;
         List<Note> testMultiModelList = new ArrayList<Note>();
-        for (int i = 0; i < 10000; i++)
+        for (int i = 0; i < 2; i++)
         {
             note = new Note(Long.valueOf(i + ""), "123", "466", new Date());
             testMultiModelList.add(note);

@@ -66,4 +66,10 @@ public class People implements HasteModel
         LogUtils.d("PrimaryKeyValue:" + value);
         id = value;
     }
+
+    @Override
+    public Object getPrimaryKeyValue()
+    {
+        return id;
+    }
 }

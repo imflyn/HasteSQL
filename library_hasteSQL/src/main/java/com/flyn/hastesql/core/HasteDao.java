@@ -56,11 +56,9 @@ public class HasteDao implements HasteOperation
         String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
         Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
         sqlExecutor.execSQL(sql, objects);
-
         if (hasteTable.isAutoIncrease())
         {
-            int value = hasteTable.sequence.incrementAndGet();
-            hasteModel.setPrimaryKeyValue(value);
+            hasteModel.setPrimaryKeyValue(hasteTable.sequence.incrementAndGet());
         }
     }
 
@@ -69,16 +67,15 @@ public class HasteDao implements HasteOperation
     {
         String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
         List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
-        boolean autoIncrease = hasteTable.isAutoIncrease();
-        HasteModel hasteModel;
         for (int i = 0, size = hasteModelList.size(); i < size; i++)
         {
-            hasteModel = hasteModelList.get(i);
             objects.add(ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true));
-            if (autoIncrease)
+        }
+        if (hasteTable.isAutoIncrease())
+        {
+            for (int i = 0, size = hasteModelList.size(); i < size; i++)
             {
-                int value = hasteTable.sequence.incrementAndGet();
-                hasteModel.setPrimaryKeyValue(value);
+                hasteModelList.get(i).setPrimaryKeyValue(hasteTable.sequence.incrementAndGet());
             }
         }
 
@@ -97,8 +94,12 @@ public class HasteDao implements HasteOperation
     public void insertOrReplace(HasteModel hasteModel)
     {
         String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns());
-        Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
+        Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, false);
         sqlExecutor.execSQL(sql, objects);
+        if (hasteTable.isAutoIncrease() && ReflectUtils.getLongValue(hasteModel.getPrimaryKeyValue()) > 0)
+        {
+            hasteModel.setPrimaryKeyValue(hasteTable.sequence.incrementAndGet());
+        }
     }
 
     @Override
@@ -108,16 +109,27 @@ public class HasteDao implements HasteOperation
         List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
         for (int i = 0, size = hasteModelList.size(); i < size; i++)
         {
-            objects.add(ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true));
+            objects.add(ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), false));
         }
         sqlExecutor.execSQLList(sql, objects);
+        if (hasteTable.isAutoIncrease())
+        {
+            HasteModel hasteModel;
+            for (int i = 0, size = hasteModelList.size(); i < size; i++)
+            {
+                hasteModel = hasteModelList.get(i);
+                if (ReflectUtils.getLongValue(hasteModel.getPrimaryKeyValue()) > 0)
+                {
+                    hasteModel.setPrimaryKeyValue(hasteTable.sequence.incrementAndGet());
+                }
+            }
+        }
     }
-
 
     @Override
     public void delete(HasteModel hasteModel)
     {
-        if (null != hasteTable.getPrimaryKey())
+        if (hasteTable.hasPrimaryKey())
         {
             String sql = SQLUtils.createSQLDeleteByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey());
             Object[] keyValues = new Object[]{ReflectUtils.getFieldValue(hasteTable.getPrimaryKey().getField(), hasteModel)};

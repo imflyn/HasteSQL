@@ -127,4 +127,24 @@ public class ReflectUtils
     {
         return obj instanceof String;
     }
+
+    public static long getLongValue(Object obj)
+    {
+        if (obj == null)
+            return -1;
+
+        if (obj instanceof Long)
+        {
+            return (Long) obj;
+        } else if (obj instanceof Integer)
+        {
+            return Long.valueOf((Integer) obj);
+        } else if (obj instanceof Short)
+        {
+            return Long.valueOf((Short) obj);
+        } else
+        {
+            return -1;
+        }
+    }
 }

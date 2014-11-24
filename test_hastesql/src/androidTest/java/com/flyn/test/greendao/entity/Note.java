@@ -90,4 +90,10 @@ public class Note implements HasteModel
         id = Long.valueOf(value);
         LogUtils.d("PrimaryKeyValue:" + id);
     }
+
+    @Override
+    public Object getPrimaryKeyValue()
+    {
+        return id;
+    }
 }
