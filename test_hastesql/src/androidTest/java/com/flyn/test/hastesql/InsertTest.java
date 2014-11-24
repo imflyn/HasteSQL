@@ -115,7 +115,7 @@ public class InsertTest extends AndroidTestCase
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
 
         People people = new People();
-        people.setId(1);
+        people.setId(2);
         people.setDate(new Date());
         people.setAge(22);
         people.setName("1号");
