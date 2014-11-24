@@ -294,4 +294,10 @@ public class TestMultiModel implements HasteModel
     {
         this.testObject3 = testObject3;
     }
+
+    @Override
+    public void setPrimaryKeyValue(int value)
+    {
+
+    }
 }

@@ -1,6 +1,8 @@
 package com.flyn.test.hastesql.entity;
 
+import com.flyn.hastesql.annotation.PrimaryKey;
 import com.flyn.hastesql.core.HasteModel;
+import com.flyn.hastesql.util.LogUtils;
 
 import java.util.Date;
 
@@ -10,6 +12,7 @@ import java.util.Date;
 
 public class People implements HasteModel
 {
+    @PrimaryKey(AutoIncrease = true)
     private int id;
 
     private String name;
@@ -55,5 +58,12 @@ public class People implements HasteModel
     public void setDate(Date date)
     {
         this.date = date;
+    }
+
+    @Override
+    public void setPrimaryKeyValue(int value)
+    {
+        LogUtils.d("PrimaryKeyValue:" + value);
+        id = value;
     }
 }

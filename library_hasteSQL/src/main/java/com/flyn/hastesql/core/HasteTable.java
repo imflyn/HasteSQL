@@ -1,7 +1,5 @@
 package com.flyn.hastesql.core;
 
-import android.database.sqlite.SQLiteStatement;
-
 import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.util.ReflectUtils;
 
@@ -10,14 +8,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by flyn on 2014-11-11.
  */
-public class HasteTable
+class HasteTable
 {
 
     private final String tableName;
-    private Property[] allColumns;
     private Property primaryKey;
+    private Property[] allColumns;
     private Property[] pkColumns;
-    private SQLiteStatement insertSQLiteStatement;
     protected AtomicInteger sequence = new AtomicInteger();
 
     protected HasteTable(String tableName, Class<? extends HasteModel> clz)
@@ -38,7 +35,7 @@ public class HasteTable
                 break;
             }
         }
-        //TODO 检查id最大值
+        sequence.set(0);
     }
 
 
@@ -62,8 +59,15 @@ public class HasteTable
         return primaryKey;
     }
 
+    public boolean isAutoIncrease()
+    {
+        return primaryKey != null && primaryKey.isAutoIncrease();
+
+    }
+
     public boolean hasPrimaryKey()
     {
         return null != primaryKey;
     }
+
 }

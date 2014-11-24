@@ -64,10 +64,28 @@ public class SQLExecutor
         return true;
     }
 
+    public int maxId(String sql)
+    {
+        Cursor cursor = execQuery(sql);
+        if (cursor != null)
+        {
+            try
+            {
+                if (cursor.moveToNext())
+                {
+                    return cursor.getInt(0);
+                }
+            } finally
+            {
+                CursorUtils.closeQuietly(cursor);
+            }
+        }
+        return -1;
+    }
+
 
     public Cursor execQuery(String sql)
     {
-        LogUtils.d(sql);
         return execQuery(sql, null);
     }
 
