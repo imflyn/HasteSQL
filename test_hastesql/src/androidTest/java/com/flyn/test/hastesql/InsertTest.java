@@ -159,7 +159,7 @@ public class InsertTest extends AndroidTestCase
                         testMultiModelList.add(note);
                     }
                     long time = SystemClock.uptimeMillis();
-                    hasteMaster.insertOrReplaceAll(testMultiModelList);
+                    hasteMaster.insertAll(testMultiModelList);
                     LogUtils.d(Thread.currentThread().getName() + "==花费时间:" + (SystemClock.uptimeMillis() - time));
                 }
             }).start();
