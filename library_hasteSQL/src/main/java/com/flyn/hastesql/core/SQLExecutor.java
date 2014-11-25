@@ -193,6 +193,62 @@ public class SQLExecutor
         return rowId;
     }
 
+
+    public long updateOrDelete(String sql, Object[] objects)
+    {
+        debugSql(sql);
+        long rowId = -1;
+        try
+        {
+            mWriteLock.lock();
+            db.beginTransaction();
+            SQLiteStatement sqLiteStatement = null;
+            try
+            {
+                sqLiteStatement = getSQLiteStatement(sql, objects);
+                rowId = sqLiteStatement.executeUpdateDelete();
+            } finally
+            {
+                CursorUtils.closeQuietly(sqLiteStatement);
+            }
+            db.setTransactionSuccessful();
+        } finally
+        {
+            db.endTransaction();
+            mWriteLock.unlock();
+        }
+        return rowId;
+    }
+
+    public long[] updateOrDeleteList(String sql, List<Object[]> objects)
+    {
+        debugSql(sql);
+        long[] rowId = new long[objects.size()];
+        try
+        {
+            mWriteLock.lock();
+            db.beginTransaction();
+            SQLiteStatement sqLiteStatement = null;
+            for (int i = 0, size = objects.size(); i < size; i++)
+            {
+                try
+                {
+                    sqLiteStatement = getSQLiteStatement(sql, objects.get(i));
+                    rowId[i] = sqLiteStatement.executeUpdateDelete();
+                } finally
+                {
+                    CursorUtils.closeQuietly(sqLiteStatement);
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally
+        {
+            db.endTransaction();
+            mWriteLock.unlock();
+        }
+        return rowId;
+    }
+
     private SQLiteStatement getSQLiteStatement(String sql, Object[] objects)
     {
         try

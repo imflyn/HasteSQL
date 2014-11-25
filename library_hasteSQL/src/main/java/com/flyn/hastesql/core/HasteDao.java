@@ -43,7 +43,7 @@ public class HasteDao implements HasteOperation
         String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
         Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
         long rowId = sqlExecutor.insert(sql, objects);
-        if (hasteTable.isAutoIncrease())
+        if (hasteTable.isAutoIncrease() && rowId != -1)
         {
             hasteModel.setRowId(rowId);
         }
@@ -63,7 +63,8 @@ public class HasteDao implements HasteOperation
         {
             for (int i = 0, size = hasteModelList.size(); i < size; i++)
             {
-                hasteModelList.get(i).setRowId(rowId[i]);
+                if (rowId[i] != -1)
+                    hasteModelList.get(i).setRowId(rowId[i]);
             }
         }
     }
@@ -71,6 +72,63 @@ public class HasteDao implements HasteOperation
 
     @Override
     public void update(HasteModel hasteModel)
+    {
+        long rowId = -1;
+        if (hasteTable.hasPrimaryKey())
+        {
+            String sql = SQLUtils.createSQLUpdateByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey());
+            Object[] keyValues = new Object[]{ReflectUtils.getFieldValue(hasteTable.getPrimaryKey().getField(), hasteModel)};
+            rowId = sqlExecutor.updateOrDelete(sql, keyValues);
+
+        } else
+        {
+            String sql = SQLUtils.createSQLUpdate(hasteTable.getTableName(), hasteTable.getAllColumns());
+            Object[] keyValues = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
+            rowId = sqlExecutor.updateOrDelete(sql, keyValues);
+        }
+        if (hasteTable.isAutoIncrease() && rowId != -1)
+        {
+            hasteModel.setRowId(rowId);
+        }
+    }
+
+    @Override
+    public void updateAll(List<? extends HasteModel> hasteModelList)
+    {
+        long[] rowId = null;
+        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
+        if (hasteTable.hasPrimaryKey())
+        {
+            String sql = SQLUtils.createSQLUpdateByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey());
+
+            for (int i = 0, size = hasteModelList.size(); i < size; i++)
+            {
+                Object[] keyValues = new Object[]{ReflectUtils.getFieldValue(hasteTable.getPrimaryKey().getField(), hasteModelList.get(i))};
+                objects.add(keyValues);
+            }
+            rowId = sqlExecutor.updateOrDeleteList(sql, objects);
+        } else
+        {
+            String sql = SQLUtils.createSQLUpdate(hasteTable.getTableName(), hasteTable.getAllColumns());
+            for (int i = 0, size = hasteModelList.size(); i < size; i++)
+            {
+                Object[] keyValues = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true);
+                objects.add(keyValues);
+            }
+            rowId = sqlExecutor.updateOrDeleteList(sql, objects);
+        }
+        if (hasteTable.isAutoIncrease() && null != rowId)
+        {
+            for (int i = 0, size = hasteModelList.size(); i < size; i++)
+            {
+                if (rowId[i] != -1)
+                    hasteModelList.get(i).setRowId(rowId[i]);
+            }
+        }
+    }
+
+    @Override
+    public void update(Class<? extends HasteModel> clz, ConditionExpression conditionExpression)
     {
 
     }

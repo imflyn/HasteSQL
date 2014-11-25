@@ -17,6 +17,10 @@ public interface HasteOperation
 
     void update(HasteModel hasteModel);
 
+    void updateAll(List<? extends HasteModel> hasteModelList);
+
+    void update(Class<? extends HasteModel> clz, ConditionExpression conditionExpression);
+
     void insertOrReplace(HasteModel hasteModel);
 
     void insertOrReplaceAll(List<? extends HasteModel> hasteModelList);

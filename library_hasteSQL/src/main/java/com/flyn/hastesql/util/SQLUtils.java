@@ -170,4 +170,42 @@ public class SQLUtils
         return sqlBuilder.toString();
     }
 
+
+    public static String createSQLUpdateByKey(String tableName, Property property)
+    {
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append(" UPDATE FROM  ");
+        sqlBuilder.append(tableName);
+
+        ConditionExpression conditionExpression = new ConditionExpression();
+        conditionExpression.equals(property.getName(), '?');
+        ConditionBuilder conditionBuilder = new ConditionBuilder();
+        conditionBuilder.where(conditionExpression);
+        sqlBuilder.append(conditionBuilder.build());
+
+        return sqlBuilder.toString();
+    }
+
+    public static String createSQLUpdate(String tableName, Property[] properties)
+    {
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append(" UPDATE FROM  ");
+        sqlBuilder.append(tableName);
+
+        ConditionExpression conditionExpression = new ConditionExpression();
+        for (int i = 0; i < properties.length; i++)
+        {
+            if (i != 0)
+            {
+                conditionExpression.and();
+            }
+            conditionExpression.equals(properties[i].getName(), '?');
+        }
+        ConditionBuilder conditionBuilder = new ConditionBuilder();
+        conditionBuilder.where(conditionExpression);
+        sqlBuilder.append(conditionBuilder.build());
+
+        return sqlBuilder.toString();
+    }
+
 }

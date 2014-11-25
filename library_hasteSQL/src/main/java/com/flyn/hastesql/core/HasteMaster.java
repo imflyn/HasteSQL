@@ -62,6 +62,11 @@ public class HasteMaster implements HasteOperation
 
     }
 
+    public void insert(HasteModel hasteModel, String prefix, String suffix)
+    {
+        getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).insert(hasteModel);
+    }
+
     @Override
     public void insertAll(List<? extends HasteModel> hasteModelList)
     {
@@ -75,10 +80,6 @@ public class HasteMaster implements HasteOperation
         getHasteDao(clz, prefix + clz.getSimpleName() + suffix).insertAll(hasteModelList);
     }
 
-    public void insert(HasteModel hasteModel, String prefix, String suffix)
-    {
-        getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).insert(hasteModel);
-    }
 
     @Override
     public void update(HasteModel hasteModel)
@@ -86,11 +87,35 @@ public class HasteMaster implements HasteOperation
         getHasteDao(hasteModel.getClass(), hasteModel.getClass().getSimpleName()).update(hasteModel);
     }
 
+
     public void update(HasteModel hasteModel, String prefix, String suffix)
     {
         getHasteDao(hasteModel.getClass(), prefix + hasteModel.getClass().getSimpleName() + suffix).update(hasteModel);
     }
 
+    @Override
+    public void updateAll(List<? extends HasteModel> hasteModelList)
+    {
+        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
+        getHasteDao(clz, clz.getSimpleName()).updateAll(hasteModelList);
+    }
+
+    public void updateAll(List<? extends HasteModel> hasteModelList, String prefix, String suffix)
+    {
+        Class<? extends HasteModel> clz = hasteModelList.get(0).getClass();
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).updateAll(hasteModelList);
+    }
+
+    @Override
+    public void update(Class<? extends HasteModel> clz, ConditionExpression conditionExpression)
+    {
+        getHasteDao(clz, clz.getSimpleName()).update(clz, conditionExpression);
+    }
+
+    public void update(Class<? extends HasteModel> clz, String prefix, String suffix, ConditionExpression conditionExpression)
+    {
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).update(clz, conditionExpression);
+    }
 
     @Override
     public void insertOrReplace(HasteModel hasteModel)
