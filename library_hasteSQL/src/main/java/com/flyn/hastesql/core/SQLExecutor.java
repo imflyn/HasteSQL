@@ -1,6 +1,7 @@
 package com.flyn.hastesql.core;
 
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Build;
@@ -202,7 +203,6 @@ public class SQLExecutor
             {
                 Constructor<SQLiteStatement> constructor = SQLiteStatement.class.getDeclaredConstructor(SQLiteDatabase.class, String.class,
                         Object[].class);
-
                 constructor.setAccessible(true);
                 return constructor.newInstance(db, sql, objects);
             } catch (Exception e)
@@ -215,7 +215,11 @@ public class SQLExecutor
             {
                 Constructor<SQLiteStatement> constructor = SQLiteStatement.class.getDeclaredConstructor(SQLiteDatabase.class, String.class);
                 constructor.setAccessible(true);
-                return constructor.newInstance(db, sql);
+                SQLiteStatement sqLiteStatement = constructor.newInstance(db, sql);
+                for (int i = 0; i < objects.length; i++)
+                {
+                    DatabaseUtils.bindObjectToProgram(sqLiteStatement, i, objects[i]);
+                }
             } catch (Exception e)
             {
                 e.printStackTrace();
