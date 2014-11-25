@@ -2,10 +2,12 @@ package com.flyn.hastesql.core;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 
 import com.flyn.hastesql.util.CursorUtils;
 import com.flyn.hastesql.util.LogUtils;
 
+import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -63,26 +65,6 @@ public class SQLExecutor
 
         return true;
     }
-
-    public int maxId(String sql)
-    {
-        Cursor cursor = execQuery(sql);
-        if (cursor != null)
-        {
-            try
-            {
-                if (cursor.moveToNext())
-                {
-                    return cursor.getInt(0);
-                }
-            } finally
-            {
-                CursorUtils.closeQuietly(cursor);
-            }
-        }
-        return -1;
-    }
-
 
     public Cursor execQuery(String sql)
     {
@@ -156,6 +138,82 @@ public class SQLExecutor
         }
     }
 
+    public long insert(String sql, Object[] objects)
+    {
+        debugSql(sql);
+        long rowId = -1;
+        try
+        {
+            mWriteLock.lock();
+            db.beginTransaction();
+            SQLiteStatement sqLiteStatement = null;
+            try
+            {
+                sqLiteStatement = getSQLiteStatement(sql, objects);
+                rowId = sqLiteStatement.executeInsert();
+            } finally
+            {
+                if (sqLiteStatement != null)
+                {
+                    CursorUtils.closeQuietly(sqLiteStatement);
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally
+        {
+            db.endTransaction();
+            mWriteLock.unlock();
+        }
+        return rowId;
+    }
+
+    public long[] insertList(String sql, List<Object[]> objects)
+    {
+        debugSql(sql);
+        long[] rowId = new long[objects.size()];
+        try
+        {
+            mWriteLock.lock();
+            db.beginTransaction();
+            SQLiteStatement sqLiteStatement = null;
+            for (int i = 0, size = objects.size(); i < size; i++)
+            {
+                try
+                {
+                    sqLiteStatement = getSQLiteStatement(sql, objects.get(i));
+                    rowId[i] = sqLiteStatement.executeInsert();
+                } finally
+                {
+                    if (sqLiteStatement != null)
+                    {
+                        CursorUtils.closeQuietly(sqLiteStatement);
+                    }
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally
+        {
+            db.endTransaction();
+            mWriteLock.unlock();
+        }
+        return rowId;
+    }
+
+    private SQLiteStatement getSQLiteStatement(String sql, Object[] objects)
+    {
+        try
+        {
+            Constructor<SQLiteStatement> constructor = SQLiteStatement.class.getDeclaredConstructor(SQLiteDatabase.class, String.class,
+                    Object[].class);
+
+            return constructor.newInstance(db, sql, objects);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     private void debugSql(String sql)
     {

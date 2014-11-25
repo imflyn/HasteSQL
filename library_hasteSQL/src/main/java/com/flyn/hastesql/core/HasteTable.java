@@ -3,8 +3,6 @@ package com.flyn.hastesql.core;
 import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.util.ReflectUtils;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * Created by flyn on 2014-11-11.
  */
@@ -15,7 +13,6 @@ class HasteTable
     private Property primaryKey;
     private Property[] allColumns;
     private Property[] pkColumns;
-    protected AtomicInteger sequence = new AtomicInteger();
 
     protected HasteTable(String tableName, Class<? extends HasteModel> clz)
     {
@@ -35,7 +32,6 @@ class HasteTable
                 break;
             }
         }
-        sequence.set(0);
     }
 
 
