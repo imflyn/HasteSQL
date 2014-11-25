@@ -73,29 +73,22 @@ public class HasteDao implements HasteOperation
     @Override
     public void update(HasteModel hasteModel)
     {
-        long rowId = -1;
         if (hasteTable.hasPrimaryKey())
         {
             String sql = SQLUtils.createSQLUpdateByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey());
             Object[] keyValues = new Object[]{ReflectUtils.getFieldValue(hasteTable.getPrimaryKey().getField(), hasteModel)};
-            rowId = sqlExecutor.updateOrDelete(sql, keyValues);
-
+            sqlExecutor.execSQL(sql, keyValues);
         } else
         {
             String sql = SQLUtils.createSQLUpdate(hasteTable.getTableName(), hasteTable.getAllColumns());
             Object[] keyValues = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
-            rowId = sqlExecutor.updateOrDelete(sql, keyValues);
-        }
-        if (hasteTable.isAutoIncrease() && rowId != -1)
-        {
-            hasteModel.setRowId(rowId);
+            sqlExecutor.execSQL(sql, keyValues);
         }
     }
 
     @Override
     public void updateAll(List<? extends HasteModel> hasteModelList)
     {
-        long[] rowId = null;
         List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
         if (hasteTable.hasPrimaryKey())
         {
@@ -106,7 +99,7 @@ public class HasteDao implements HasteOperation
                 Object[] keyValues = new Object[]{ReflectUtils.getFieldValue(hasteTable.getPrimaryKey().getField(), hasteModelList.get(i))};
                 objects.add(keyValues);
             }
-            rowId = sqlExecutor.updateOrDeleteList(sql, objects);
+            sqlExecutor.execSQLList(sql, objects);
         } else
         {
             String sql = SQLUtils.createSQLUpdate(hasteTable.getTableName(), hasteTable.getAllColumns());
@@ -115,24 +108,17 @@ public class HasteDao implements HasteOperation
                 Object[] keyValues = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true);
                 objects.add(keyValues);
             }
-            rowId = sqlExecutor.updateOrDeleteList(sql, objects);
-        }
-        if (hasteTable.isAutoIncrease() && null != rowId)
-        {
-            for (int i = 0, size = hasteModelList.size(); i < size; i++)
-            {
-                if (rowId[i] != -1)
-                    hasteModelList.get(i).setRowId(rowId[i]);
-            }
+            sqlExecutor.execSQLList(sql, objects);
         }
     }
 
-    @Override
     public void update(Class<? extends HasteModel> clz, ConditionExpression conditionExpression)
     {
-
+        StringBuilder stringBuilder = new StringBuilder();
+        String sql = SQLUtils.createSQLUpdate(hasteTable.getTableName());
+        stringBuilder.append(sql).append(" WHERE ").append(conditionExpression.toString());
+        sqlExecutor.execSQL(stringBuilder.toString());
     }
-
 
     @Override
     public void insertOrReplace(HasteModel hasteModel)
@@ -175,11 +161,7 @@ public class HasteDao implements HasteOperation
     {
         StringBuilder stringBuilder = new StringBuilder();
         String sql = SQLUtils.createSQLDelete(hasteTable.getTableName());
-
-        stringBuilder.append(sql);
-        stringBuilder.append(" WHERE ");
-        stringBuilder.append(conditionExpression.toString());
-
+        stringBuilder.append(sql).append(" WHERE ").append(conditionExpression.toString());
         sqlExecutor.execSQL(stringBuilder.toString());
     }
 
@@ -233,7 +215,7 @@ public class HasteDao implements HasteOperation
     @Override
     public void run(String sql)
     {
-        //ignore
+        sqlExecutor.execSQL(sql);
     }
 
 }

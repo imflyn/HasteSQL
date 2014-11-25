@@ -134,9 +134,7 @@ public class SQLUtils
 
     public static String createSQLDeleteByKey(String tableName, Property property)
     {
-        StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append(" DELETE FROM  ");
-        sqlBuilder.append(tableName);
+        StringBuilder sqlBuilder = new StringBuilder(createSQLDelete(tableName));
 
         ConditionExpression conditionExpression = new ConditionExpression();
         conditionExpression.equals(property.getName(), '?');
@@ -149,9 +147,7 @@ public class SQLUtils
 
     public static String createSQLDelete(String tableName, Property[] properties)
     {
-        StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append(" DELETE FROM  ");
-        sqlBuilder.append(tableName);
+        StringBuilder sqlBuilder = new StringBuilder(createSQLDelete(tableName));
 
         ConditionExpression conditionExpression = new ConditionExpression();
         for (int i = 0; i < properties.length; i++)
@@ -170,12 +166,18 @@ public class SQLUtils
         return sqlBuilder.toString();
     }
 
-
-    public static String createSQLUpdateByKey(String tableName, Property property)
+    public static String createSQLUpdate(String tableName)
     {
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append(" UPDATE FROM  ");
         sqlBuilder.append(tableName);
+
+        return sqlBuilder.toString();
+    }
+
+    public static String createSQLUpdateByKey(String tableName, Property property)
+    {
+        StringBuilder sqlBuilder = new StringBuilder(createSQLUpdate(tableName));
 
         ConditionExpression conditionExpression = new ConditionExpression();
         conditionExpression.equals(property.getName(), '?');
@@ -188,9 +190,7 @@ public class SQLUtils
 
     public static String createSQLUpdate(String tableName, Property[] properties)
     {
-        StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append(" UPDATE FROM  ");
-        sqlBuilder.append(tableName);
+        StringBuilder sqlBuilder = new StringBuilder(createSQLUpdate(tableName));
 
         ConditionExpression conditionExpression = new ConditionExpression();
         for (int i = 0; i < properties.length; i++)

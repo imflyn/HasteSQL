@@ -3,6 +3,7 @@ package com.flyn.hastesql.core;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.os.Build;
 
 import com.flyn.hastesql.util.CursorUtils;
 import com.flyn.hastesql.util.LogUtils;
@@ -193,75 +194,33 @@ public class SQLExecutor
         return rowId;
     }
 
-
-    public long updateOrDelete(String sql, Object[] objects)
-    {
-        debugSql(sql);
-        long rowId = -1;
-        try
-        {
-            mWriteLock.lock();
-            db.beginTransaction();
-            SQLiteStatement sqLiteStatement = null;
-            try
-            {
-                sqLiteStatement = getSQLiteStatement(sql, objects);
-                rowId = sqLiteStatement.executeUpdateDelete();
-            } finally
-            {
-                CursorUtils.closeQuietly(sqLiteStatement);
-            }
-            db.setTransactionSuccessful();
-        } finally
-        {
-            db.endTransaction();
-            mWriteLock.unlock();
-        }
-        return rowId;
-    }
-
-    public long[] updateOrDeleteList(String sql, List<Object[]> objects)
-    {
-        debugSql(sql);
-        long[] rowId = new long[objects.size()];
-        try
-        {
-            mWriteLock.lock();
-            db.beginTransaction();
-            SQLiteStatement sqLiteStatement = null;
-            for (int i = 0, size = objects.size(); i < size; i++)
-            {
-                try
-                {
-                    sqLiteStatement = getSQLiteStatement(sql, objects.get(i));
-                    rowId[i] = sqLiteStatement.executeUpdateDelete();
-                } finally
-                {
-                    CursorUtils.closeQuietly(sqLiteStatement);
-                }
-            }
-            db.setTransactionSuccessful();
-        } finally
-        {
-            db.endTransaction();
-            mWriteLock.unlock();
-        }
-        return rowId;
-    }
-
     private SQLiteStatement getSQLiteStatement(String sql, Object[] objects)
     {
-        try
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
         {
-            Constructor<SQLiteStatement> constructor = SQLiteStatement.class.getDeclaredConstructor(SQLiteDatabase.class, String.class,
-                    Object[].class);
-            constructor.setAccessible(true);
-            return constructor.newInstance(db, sql, objects);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+            try
+            {
+                Constructor<SQLiteStatement> constructor = SQLiteStatement.class.getDeclaredConstructor(SQLiteDatabase.class, String.class,
+                        Object[].class);
 
+                constructor.setAccessible(true);
+                return constructor.newInstance(db, sql, objects);
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        } else
+        {
+            try
+            {
+                Constructor<SQLiteStatement> constructor = SQLiteStatement.class.getDeclaredConstructor(SQLiteDatabase.class, String.class);
+                constructor.setAccessible(true);
+                return constructor.newInstance(db, sql);
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
         return null;
     }
 
