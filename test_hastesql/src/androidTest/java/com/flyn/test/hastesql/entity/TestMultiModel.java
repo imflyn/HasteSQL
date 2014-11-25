@@ -296,14 +296,14 @@ public class TestMultiModel implements HasteModel
     }
 
     @Override
-    public void setPrimaryKeyValue(int value)
+    public void setRowId(long value)
     {
 
     }
 
     @Override
-    public Object getPrimaryKeyValue()
+    public long getRowId()
     {
-        return null;
+        return 0;
     }
 }

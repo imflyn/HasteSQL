@@ -153,10 +153,7 @@ public class SQLExecutor
                 rowId = sqLiteStatement.executeInsert();
             } finally
             {
-                if (sqLiteStatement != null)
-                {
-                    CursorUtils.closeQuietly(sqLiteStatement);
-                }
+                CursorUtils.closeQuietly(sqLiteStatement);
             }
             db.setTransactionSuccessful();
         } finally
@@ -184,10 +181,7 @@ public class SQLExecutor
                     rowId[i] = sqLiteStatement.executeInsert();
                 } finally
                 {
-                    if (sqLiteStatement != null)
-                    {
-                        CursorUtils.closeQuietly(sqLiteStatement);
-                    }
+                    CursorUtils.closeQuietly(sqLiteStatement);
                 }
             }
             db.setTransactionSuccessful();
@@ -205,7 +199,7 @@ public class SQLExecutor
         {
             Constructor<SQLiteStatement> constructor = SQLiteStatement.class.getDeclaredConstructor(SQLiteDatabase.class, String.class,
                     Object[].class);
-
+            constructor.setAccessible(true);
             return constructor.newInstance(db, sql, objects);
         } catch (Exception e)
         {

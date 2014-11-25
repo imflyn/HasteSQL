@@ -13,19 +13,19 @@ import java.util.Date;
 public class People implements HasteModel
 {
     @PrimaryKey(AutoIncrease = true)
-    private int id;
+    private long id;
 
     private String name;
     private int age;
 
     private Date date = new Date();
 
-    public int getId()
+    public long getId()
     {
         return id;
     }
 
-    public void setId(int id)
+    public void setId(long id)
     {
         this.id = id;
     }
@@ -61,14 +61,14 @@ public class People implements HasteModel
     }
 
     @Override
-    public void setPrimaryKeyValue(int value)
+    public void setRowId(long value)
     {
         LogUtils.d("PrimaryKeyValue:" + value);
         id = value;
     }
 
     @Override
-    public Object getPrimaryKeyValue()
+    public long getRowId()
     {
         return id;
     }

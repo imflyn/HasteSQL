@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by flyn on 2014-11-10.
  * <p/>
- * Not Thread-Safe
+ * Thread-Safe
  */
 public class HasteDao implements HasteOperation
 {
@@ -42,7 +42,11 @@ public class HasteDao implements HasteOperation
     {
         String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
         Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
-        sqlExecutor.execSQL(sql, objects);
+        long rowId = sqlExecutor.insert(sql, objects);
+        if (hasteTable.isAutoIncrease())
+        {
+            hasteModel.setRowId(rowId);
+        }
     }
 
     @Override
@@ -54,7 +58,14 @@ public class HasteDao implements HasteOperation
         {
             objects.add(ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true));
         }
-        sqlExecutor.execSQLList(sql, objects);
+        long[] rowId = sqlExecutor.insertList(sql, objects);
+        if (hasteTable.isAutoIncrease())
+        {
+            for (int i = 0, size = hasteModelList.size(); i < size; i++)
+            {
+                hasteModelList.get(i).setRowId(rowId[i]);
+            }
+        }
     }
 
 
