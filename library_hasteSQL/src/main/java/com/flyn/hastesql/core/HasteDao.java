@@ -126,6 +126,11 @@ public class HasteDao implements HasteOperation
         String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns());
         Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, false);
         sqlExecutor.execSQL(sql, objects);
+
+
+
+
+
     }
 
     @Override
