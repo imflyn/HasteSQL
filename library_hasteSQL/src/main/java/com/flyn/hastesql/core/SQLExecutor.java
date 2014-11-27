@@ -4,12 +4,10 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.os.Build;
 
 import com.flyn.hastesql.util.CursorUtils;
 import com.flyn.hastesql.util.LogUtils;
 
-import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -148,10 +146,13 @@ public class SQLExecutor
         {
             mWriteLock.lock();
             db.beginTransaction();
-            SQLiteStatement sqLiteStatement = null;
+            SQLiteStatement sqLiteStatement = db.compileStatement(sql);
             try
             {
-                sqLiteStatement = getSQLiteStatement(sql, objects);
+                for (int i = 0; i < objects.length; i++)
+                {
+                    DatabaseUtils.bindObjectToProgram(sqLiteStatement, i + 1, objects[i]);
+                }
                 rowId = sqLiteStatement.executeInsert();
             } finally
             {
@@ -174,33 +175,23 @@ public class SQLExecutor
         {
             mWriteLock.lock();
             db.beginTransaction();
-            SQLiteStatement sqLiteStatement = null;
-
-            long time=0;
-            for (int i = 0, size = objects.size(); i < size; i++)
+            SQLiteStatement sqLiteStatement = db.compileStatement(sql);
+            try
             {
-                try
+                Object[] array;
+                for (int i = 0, size = objects.size(); i < size; i++)
                 {
-                    sqLiteStatement = db.compileStatement(sql);
-
-                    long time1=System.currentTimeMillis();
-                    Object [] array= objects.get(i);
-                    for (int j = 0; j <array.length; j++)
+                    array = objects.get(i);
+                    for (int j = 0; j < array.length; j++)
                     {
                         DatabaseUtils.bindObjectToProgram(sqLiteStatement, j + 1, array[j]);
                     }
-                    time+=(System.currentTimeMillis()-time1);
-
                     rowId[i] = sqLiteStatement.executeInsert();
-
-
-                } finally
-                {
-                    CursorUtils.closeQuietly(sqLiteStatement);
                 }
+            } finally
+            {
+                CursorUtils.closeQuietly(sqLiteStatement);
             }
-
-            LogUtils.d("绑定数据耗时:"+time);
 
             db.setTransactionSuccessful();
         } finally
@@ -209,40 +200,6 @@ public class SQLExecutor
             mWriteLock.unlock();
         }
         return rowId;
-    }
-
-    private SQLiteStatement getSQLiteStatement(String sql, Object[] objects)
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        {
-            try
-            {
-                Constructor<SQLiteStatement> constructor = SQLiteStatement.class.getDeclaredConstructor(SQLiteDatabase.class, String.class,
-                        Object[].class);
-                constructor.setAccessible(true);
-                SQLiteStatement sqLiteStatement = constructor.newInstance(db, sql, objects);
-                return sqLiteStatement;
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        } else
-        {
-            try
-            {
-                Constructor<SQLiteStatement> constructor = SQLiteStatement.class.getDeclaredConstructor(SQLiteDatabase.class, String.class);
-                constructor.setAccessible(true);
-                SQLiteStatement sqLiteStatement = constructor.newInstance(db, sql);
-                for (int i = 0; i < objects.length; i++)
-                {
-                    DatabaseUtils.bindObjectToProgram(sqLiteStatement, i + 1, objects[i]);
-                }
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return null;
     }
 
     private void debugSql(String sql)
