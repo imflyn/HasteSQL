@@ -166,46 +166,36 @@ public class SQLUtils
         return sqlBuilder.toString();
     }
 
-    public static String createSQLUpdate(String tableName)
-    {
-        StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append(" UPDATE FROM  ");
-        sqlBuilder.append(tableName);
-
-        return sqlBuilder.toString();
-    }
-
-    public static String createSQLUpdateByKey(String tableName, Property property)
-    {
-        StringBuilder sqlBuilder = new StringBuilder(createSQLUpdate(tableName));
-
-        ConditionExpression conditionExpression = new ConditionExpression();
-        conditionExpression.equals(property.getName(), '?');
-        ConditionBuilder conditionBuilder = new ConditionBuilder();
-        conditionBuilder.where(conditionExpression);
-        sqlBuilder.append(conditionBuilder.build());
-
-        return sqlBuilder.toString();
-    }
-
     public static String createSQLUpdate(String tableName, Property[] properties)
     {
-        StringBuilder sqlBuilder = new StringBuilder(createSQLUpdate(tableName));
-
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append(" UPDATE ").append(tableName).append(" SET ");
         ConditionExpression conditionExpression = new ConditionExpression();
         for (int i = 0; i < properties.length; i++)
         {
             if (i != 0)
             {
-                conditionExpression.and();
+                conditionExpression.combine(",");
             }
             conditionExpression.equals(properties[i].getName(), '?');
         }
+        sqlBuilder.append(conditionExpression.toString());
+
+        return sqlBuilder.toString();
+    }
+
+    public static String createSQLUpdateByKey(String tableName, Property primaryKey, Property[] properties)
+    {
+        StringBuilder sqlBuilder = new StringBuilder(createSQLUpdate(tableName, properties));
+
+        ConditionExpression conditionExpression = new ConditionExpression();
+        conditionExpression.equals(primaryKey.getName(), '?');
         ConditionBuilder conditionBuilder = new ConditionBuilder();
         conditionBuilder.where(conditionExpression);
         sqlBuilder.append(conditionBuilder.build());
 
         return sqlBuilder.toString();
     }
+
 
 }

@@ -39,4 +39,5 @@ public interface HasteOperation
 
     void run(String sql);
 
+    void run(String sql,Object[] args);
 }

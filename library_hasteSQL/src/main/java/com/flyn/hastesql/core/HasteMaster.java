@@ -213,6 +213,12 @@ public class HasteMaster implements HasteOperation
         sqlExecutor.execSQL(sql);
     }
 
+    @Override
+    public void run(String sql, Object[] args)
+    {
+        sqlExecutor.execSQL(sql, args);
+    }
+
     public <T extends HasteModel> List<T> queryAll(Class<T> clz, String prefix, String suffix)
     {
         return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryAll(clz);

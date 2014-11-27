@@ -64,7 +64,9 @@ public class HasteDao implements HasteOperation
             for (int i = 0, size = hasteModelList.size(); i < size; i++)
             {
                 if (rowId[i] != -1)
+                {
                     hasteModelList.get(i).setRowId(rowId[i]);
+                }
             }
         }
     }
@@ -75,14 +77,18 @@ public class HasteDao implements HasteOperation
     {
         if (hasteTable.hasPrimaryKey())
         {
-            String sql = SQLUtils.createSQLUpdateByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey());
-            Object[] keyValues = new Object[]{ReflectUtils.getFieldValue(hasteTable.getPrimaryKey().getField(), hasteModel)};
-            sqlExecutor.execSQL(sql, keyValues);
+            String sql = SQLUtils.createSQLUpdateByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey(), hasteTable.getAllColumns());
+            Object[] srcArray = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, false);
+            Object[] dstArray = new Object[srcArray.length + 1];
+
+            System.arraycopy(srcArray, 0, dstArray, 0, srcArray.length);
+            dstArray[dstArray.length - 1] = hasteModel.getRowId();
+            sqlExecutor.execSQL(sql, dstArray);
+
         } else
         {
-            String sql = SQLUtils.createSQLUpdate(hasteTable.getTableName(), hasteTable.getAllColumns());
-            Object[] keyValues = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
-            sqlExecutor.execSQL(sql, keyValues);
+            //not support
+            throw new IllegalArgumentException("Can not delete entity with no primary key.");
         }
     }
 
@@ -92,30 +98,30 @@ public class HasteDao implements HasteOperation
         List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
         if (hasteTable.hasPrimaryKey())
         {
-            String sql = SQLUtils.createSQLUpdateByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey());
-
+            String sql = SQLUtils.createSQLUpdateByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey(), hasteTable.getAllColumns());
+            HasteModel hasteModel;
             for (int i = 0, size = hasteModelList.size(); i < size; i++)
             {
-                Object[] keyValues = new Object[]{ReflectUtils.getFieldValue(hasteTable.getPrimaryKey().getField(), hasteModelList.get(i))};
-                objects.add(keyValues);
+                hasteModel = hasteModelList.get(i);
+                Object[] srcArray = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, false);
+                Object[] dstArray = new Object[srcArray.length + 1];
+
+                System.arraycopy(srcArray, 0, dstArray, 0, srcArray.length);
+                dstArray[dstArray.length - 1] = hasteModel.getRowId();
+                objects.add(dstArray);
             }
             sqlExecutor.execSQLList(sql, objects);
         } else
         {
-            String sql = SQLUtils.createSQLUpdate(hasteTable.getTableName(), hasteTable.getAllColumns());
-            for (int i = 0, size = hasteModelList.size(); i < size; i++)
-            {
-                Object[] keyValues = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true);
-                objects.add(keyValues);
-            }
-            sqlExecutor.execSQLList(sql, objects);
+            //not support
+            throw new IllegalArgumentException("Can not delete entity with no primary key.");
         }
     }
 
     public void update(Class<? extends HasteModel> clz, ConditionExpression conditionExpression)
     {
         StringBuilder stringBuilder = new StringBuilder();
-        String sql = SQLUtils.createSQLUpdate(hasteTable.getTableName());
+        String sql = SQLUtils.createSQLUpdate(hasteTable.getTableName(), hasteTable.getAllColumns());
         stringBuilder.append(sql).append(" WHERE ").append(conditionExpression.toString());
         sqlExecutor.execSQL(stringBuilder.toString());
     }
@@ -216,6 +222,12 @@ public class HasteDao implements HasteOperation
     public void run(String sql)
     {
         sqlExecutor.execSQL(sql);
+    }
+
+    @Override
+    public void run(String sql, Object[] args)
+    {
+        sqlExecutor.execSQL(sql, args);
     }
 
 }
