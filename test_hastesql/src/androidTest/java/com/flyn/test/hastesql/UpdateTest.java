@@ -4,6 +4,7 @@ import android.content.Context;
 import android.test.AndroidTestCase;
 
 import com.flyn.hastesql.HasteSQL;
+import com.flyn.hastesql.optional.ConditionExpression;
 import com.flyn.hastesql.util.LogUtils;
 import com.flyn.test.hastesql.entity.People;
 
@@ -26,7 +27,7 @@ public class UpdateTest extends AndroidTestCase
         super.setUp();
         mContext = getContext();
         HasteSQL.createDefault(mContext).deleteAll(People.class);
-        for (int i = 0; i < 10000; i++)
+        for (int i = 0; i < 20; i++)
         {
             People people = new People();
             people.setAge(i);
@@ -60,9 +61,22 @@ public class UpdateTest extends AndroidTestCase
         people2.setDate(new Date());
         people2.setName("李四");
 
-        long time=System.currentTimeMillis();
+        long time = System.currentTimeMillis();
         HasteSQL.createDefault(mContext).updateAll(peopleList);
-        LogUtils.d("花费时间:"+(System.currentTimeMillis()-time));
+        LogUtils.d("花费时间:" + (System.currentTimeMillis() - time));
+    }
+
+    public void testUpdateWithCondition()
+    {
+        long time = System.currentTimeMillis();
+        ConditionExpression valueExpression = new ConditionExpression();
+        valueExpression.equals("age", 1).combine(",").equals("name","sb");
+
+        ConditionExpression whereExpression = new ConditionExpression();
+        whereExpression.equals("age", 8).or().greater("age", 18);
+
+        HasteSQL.createDefault(mContext).update(People.class, valueExpression, whereExpression);
+        LogUtils.d("花费时间:" + (System.currentTimeMillis() - time));
     }
 
     public void testSQL()

@@ -118,11 +118,11 @@ public class HasteDao implements HasteOperation
         }
     }
 
-    public void update(Class<? extends HasteModel> clz, ConditionExpression conditionExpression)
+    public void update(Class<? extends HasteModel> clz, ConditionExpression valueExpression, ConditionExpression whereExpression)
     {
         StringBuilder stringBuilder = new StringBuilder();
-        String sql = SQLUtils.createSQLUpdate(hasteTable.getTableName(), hasteTable.getAllColumns());
-        stringBuilder.append(sql).append(" WHERE ").append(conditionExpression.toString());
+        stringBuilder.append(" UPDATE ").append(hasteTable.getTableName()).append(" SET ");
+        stringBuilder.append(valueExpression.toString()).append(" WHERE ").append(whereExpression.toString());
         sqlExecutor.execSQL(stringBuilder.toString());
     }
 

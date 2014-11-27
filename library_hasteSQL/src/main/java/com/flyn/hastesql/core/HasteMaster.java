@@ -107,14 +107,15 @@ public class HasteMaster implements HasteOperation
     }
 
     @Override
-    public void update(Class<? extends HasteModel> clz, ConditionExpression conditionExpression)
+    public void update(Class<? extends HasteModel> clz, ConditionExpression valueExpression, ConditionExpression whereExpression)
     {
-        getHasteDao(clz, clz.getSimpleName()).update(clz, conditionExpression);
+        getHasteDao(clz, clz.getSimpleName()).update(clz, valueExpression, whereExpression);
     }
 
-    public void update(Class<? extends HasteModel> clz, String prefix, String suffix, ConditionExpression conditionExpression)
+    public void update(Class<? extends HasteModel> clz, String prefix, String suffix, ConditionExpression valueExpression,
+                       ConditionExpression whereExpression)
     {
-        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).update(clz, conditionExpression);
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).update(clz, valueExpression, whereExpression);
     }
 
     @Override

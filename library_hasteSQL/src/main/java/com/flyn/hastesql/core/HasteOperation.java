@@ -19,7 +19,7 @@ public interface HasteOperation
 
     void updateAll(List<? extends HasteModel> hasteModelList);
 
-    void update(Class<? extends HasteModel> clz, ConditionExpression conditionExpression);
+    void update(Class<? extends HasteModel> clz, ConditionExpression valueExpression, ConditionExpression whereExpression);
 
     void insertOrReplace(HasteModel hasteModel);
 
@@ -39,5 +39,5 @@ public interface HasteOperation
 
     void run(String sql);
 
-    void run(String sql,Object[] args);
+    void run(String sql, Object[] args);
 }
