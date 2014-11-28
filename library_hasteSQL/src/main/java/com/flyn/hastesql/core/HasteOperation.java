@@ -37,6 +37,8 @@ public interface HasteOperation
 
     <T extends HasteModel> List<T> queryAll(Class<T> clz);
 
+    <T extends HasteModel> List<T> query(Class<T> clz, ConditionExpression conditionExpression);
+
     void run(String sql);
 
     void run(String sql, Object[] args);

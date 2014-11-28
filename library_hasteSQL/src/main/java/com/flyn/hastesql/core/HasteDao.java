@@ -235,6 +235,12 @@ public class HasteDao implements HasteOperation
     }
 
     @Override
+    public <T extends HasteModel> List<T> query(Class<T> clz, ConditionExpression conditionExpression)
+    {
+        return null;
+    }
+
+    @Override
     public void run(String sql)
     {
         sqlExecutor.execSQL(sql);
