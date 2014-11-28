@@ -1,6 +1,9 @@
 package com.flyn.hastesql.core;
 
+import android.database.Cursor;
+
 import com.flyn.hastesql.optional.ConditionExpression;
+import com.flyn.hastesql.util.CursorUtils;
 import com.flyn.hastesql.util.ReflectUtils;
 import com.flyn.hastesql.util.SQLUtils;
 
@@ -224,7 +227,20 @@ public class HasteDao implements HasteOperation
     @Override
     public <T extends HasteModel> List<T> queryAll(Class<T> clz)
     {
-        return null;
+        String sql = SQLUtils.createSQLSelect(hasteTable.getTableName());
+        Cursor cursor = sqlExecutor.execQuery(sql);
+        List<T> entities = null;
+        try
+        {
+            entities = CursorUtils.cursorToEntities(clz, cursor, hasteTable.getAllColumns());
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            CursorUtils.closeQuietly(cursor);
+        }
+        return entities;
     }
 
     @Override

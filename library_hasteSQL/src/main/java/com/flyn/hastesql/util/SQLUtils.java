@@ -201,5 +201,12 @@ public class SQLUtils
         return sqlBuilder.toString();
     }
 
+    public static String createSQLSelect(String tableName)
+    {
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append("SELECT * FROM ");
+        sqlBuilder.append(tableName);
 
+        return sqlBuilder.toString();
+    }
 }

@@ -122,6 +122,11 @@ public class ReflectUtils
         return objectArrayList.toArray();
     }
 
+    public static void setFieldValue()
+    {
+
+    }
+
 
     public static boolean isText(Object obj)
     {
