@@ -98,7 +98,7 @@ public class SQLUtils
 
     }
 
-    public static String createSQLInsertOrReplace(String tableName, Property[] properties)
+    public static String createSQLInsertOrReplace(String tableName, Property[] properties, boolean skipPrimaryKey)
     {
         StringBuilder sqlBuilder = new StringBuilder();
         StringBuilder valueBuilder = new StringBuilder();
@@ -108,6 +108,10 @@ public class SQLUtils
         sqlBuilder.append(" (");
         for (Property property : properties)
         {
+            if (property.isPrimaryKey() && skipPrimaryKey)
+            {
+                continue;
+            }
             sqlBuilder.append(property.getName()).append(",");
             valueBuilder.append("?,");
         }

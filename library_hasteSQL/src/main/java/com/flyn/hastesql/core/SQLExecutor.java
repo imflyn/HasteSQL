@@ -192,7 +192,6 @@ public class SQLExecutor
             {
                 CursorUtils.closeQuietly(sqLiteStatement);
             }
-
             db.setTransactionSuccessful();
         } finally
         {
@@ -201,6 +200,8 @@ public class SQLExecutor
         }
         return rowId;
     }
+
+
 
     private void debugSql(String sql)
     {

@@ -43,7 +43,7 @@ public class HasteDao implements HasteOperation
         String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
         Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
         long rowId = sqlExecutor.insert(sql, objects);
-        if (hasteTable.isAutoIncrease() && rowId != -1)
+        if (hasteTable.isAutoIncrease() && rowId > 0)
         {
             hasteModel.setRowId(rowId);
         }
@@ -58,14 +58,14 @@ public class HasteDao implements HasteOperation
         {
             objects.add(ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true));
         }
-        long[] rowId = sqlExecutor.insertList(sql, objects);
+        long[] rowIdArray = sqlExecutor.insertList(sql, objects);
         if (hasteTable.isAutoIncrease())
         {
             for (int i = 0, size = hasteModelList.size(); i < size; i++)
             {
-                if (rowId[i] != -1)
+                if (rowIdArray[i] > 0)
                 {
-                    hasteModelList.get(i).setRowId(rowId[i]);
+                    hasteModelList.get(i).setRowId(rowIdArray[i]);
                 }
             }
         }
@@ -90,6 +90,15 @@ public class HasteDao implements HasteOperation
             //not support
             throw new IllegalArgumentException("Can not delete entity with no primary key.");
         }
+    }
+
+    @Override
+    public void update(Class<? extends HasteModel> clz, ConditionExpression valueExpression, ConditionExpression whereExpression)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(" UPDATE ").append(hasteTable.getTableName()).append(" SET ");
+        stringBuilder.append(valueExpression.toString()).append(" WHERE ").append(whereExpression.toString());
+        sqlExecutor.execSQL(stringBuilder.toString());
     }
 
     @Override
@@ -118,32 +127,39 @@ public class HasteDao implements HasteOperation
         }
     }
 
-    public void update(Class<? extends HasteModel> clz, ConditionExpression valueExpression, ConditionExpression whereExpression)
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(" UPDATE ").append(hasteTable.getTableName()).append(" SET ");
-        stringBuilder.append(valueExpression.toString()).append(" WHERE ").append(whereExpression.toString());
-        sqlExecutor.execSQL(stringBuilder.toString());
-    }
-
     @Override
     public void insertOrReplace(HasteModel hasteModel)
     {
-        String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns());
-        Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, false);
-        sqlExecutor.execSQL(sql, objects);
+        boolean skipPrimaryKey = false;
+        if (hasteTable.hasPrimaryKey() && hasteModel.getRowId() <= 0)
+        {
+            skipPrimaryKey = true;
+        }
+        String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns(), skipPrimaryKey);
+        Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, skipPrimaryKey);
+        long rowId = sqlExecutor.insert(sql, objects);
+        if (rowId > 0 && hasteTable.hasPrimaryKey())
+            hasteModel.setRowId(rowId);
     }
 
     @Override
     public void insertOrReplaceAll(List<? extends HasteModel> hasteModelList)
     {
-        String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns());
-        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
+        HasteModel hasteModel;
         for (int i = 0, size = hasteModelList.size(); i < size; i++)
         {
-            objects.add(ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), false));
+            hasteModel = hasteModelList.get(i);
+            boolean skipPrimaryKey = false;
+            if (hasteTable.hasPrimaryKey() && hasteModel.getRowId() > 0)
+            {
+                skipPrimaryKey = true;
+            }
+            String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns(), skipPrimaryKey);
+            Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, skipPrimaryKey);
+            long rowId = sqlExecutor.insert(sql, objects);
+            if (rowId > 0 && hasteTable.hasPrimaryKey())
+                hasteModel.setRowId(rowId);
         }
-        sqlExecutor.execSQLList(sql, objects);
     }
 
     @Override
