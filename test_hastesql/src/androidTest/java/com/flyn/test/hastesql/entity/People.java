@@ -72,4 +72,16 @@ public class People implements HasteModel
     {
         return id;
     }
+
+
+    @Override
+    public String toString()
+    {
+        return "People{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", date=" + date +
+                '}';
+    }
 }

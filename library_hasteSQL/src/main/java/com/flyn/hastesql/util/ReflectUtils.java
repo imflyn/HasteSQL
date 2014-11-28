@@ -122,34 +122,52 @@ public class ReflectUtils
         return objectArrayList.toArray();
     }
 
-    public static void setFieldValue()
+    public static void setFieldValue(Field field, Object object, Object value)
     {
+        if (value == null)
+            return;
 
+        field.setAccessible(true);
+        Class<?> type = field.getType();
+        try
+        {
+            if (type.equals(boolean.class))
+            {
+                field.setBoolean(object, (Boolean) value);
+            } else if (type.equals(byte.class))
+            {
+                field.setByte(object, (Byte) value);
+            } else if (type.equals(double.class))
+            {
+                field.setDouble(object, (Double) value);
+            } else if (type.equals(char.class))
+            {
+                field.setChar(object, (Character) value);
+            } else if (type.equals(float.class))
+            {
+                field.setFloat(object, (Float) value);
+            } else if (type.equals(int.class))
+            {
+                field.setInt(object, (Integer) value);
+            } else if (type.equals(long.class))
+            {
+                field.setLong(object, (Long) value);
+            } else if (type.equals(short.class))
+            {
+                field.setShort(object, (Short) value);
+            } else
+            {
+                field.set(object, value);
+            }
+        } catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
     }
-
 
     public static boolean isText(Object obj)
     {
         return obj instanceof String;
     }
 
-    public static long getLongValue(Object obj)
-    {
-        if (obj == null)
-            return -1;
-
-        if (obj instanceof Long)
-        {
-            return (Long) obj;
-        } else if (obj instanceof Integer)
-        {
-            return Long.valueOf((Integer) obj);
-        } else if (obj instanceof Short)
-        {
-            return Long.valueOf((Short) obj);
-        } else
-        {
-            return -1;
-        }
-    }
 }

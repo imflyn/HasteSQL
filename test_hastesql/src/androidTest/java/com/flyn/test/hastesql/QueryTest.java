@@ -4,6 +4,7 @@ import android.content.Context;
 import android.test.AndroidTestCase;
 
 import com.flyn.hastesql.HasteSQL;
+import com.flyn.hastesql.util.LogUtils;
 import com.flyn.test.hastesql.entity.People;
 
 import java.util.ArrayList;
@@ -34,6 +35,19 @@ public class QueryTest extends AndroidTestCase
             peopleList.add(people);
         }
         HasteSQL.createDefault(mContext).insertAll(peopleList);
+    }
+
+    public void testQueryAll()
+    {
+        long time = System.currentTimeMillis();
+        List<People> list = HasteSQL.createDefault(mContext).queryAll(People.class);
+
+        LogUtils.d("花费时间:" + (System.currentTimeMillis() - time));
+        for (People entity : list)
+        {
+            LogUtils.i(entity.toString());
+        }
+
     }
 
 }

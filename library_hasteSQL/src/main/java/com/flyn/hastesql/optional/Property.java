@@ -9,7 +9,6 @@ public class Property
 {
     private String name;
     private String type;
-    private Object value;
     private Field field;
     private boolean isPrimaryKey;
     private boolean isAutoIncrease;
@@ -36,16 +35,6 @@ public class Property
     public void setType(String type)
     {
         this.type = type;
-    }
-
-    public Object getValue()
-    {
-        return value;
-    }
-
-    public void setValue(Object value)
-    {
-        this.value = value;
     }
 
     public Field getField()
