@@ -222,14 +222,19 @@ public class HasteDao implements HasteOperation
 
 
     @Override
-    public <T extends HasteModel> T queryFirst(Class<T> clz)
+    public <T extends HasteModel> List<T> queryAll(Class<T> clz)
     {
         return null;
     }
 
+    @Override
+    public <T extends HasteModel> T queryFirst(Class<T> clz, ConditionExpression conditionExpression)
+    {
+        return null;
+    }
 
     @Override
-    public <T extends HasteModel> List<T> queryAll(Class<T> clz)
+    public <T extends HasteModel> T queryByKey(Class<T> clz, Object key)
     {
         return null;
     }
