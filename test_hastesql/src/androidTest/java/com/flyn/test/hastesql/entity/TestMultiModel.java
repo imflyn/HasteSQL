@@ -3,6 +3,7 @@ package com.flyn.test.hastesql.entity;
 import com.flyn.hastesql.core.HasteModel;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -305,5 +306,37 @@ public class TestMultiModel implements HasteModel
     public long getRowId()
     {
         return 0;
+    }
+
+
+    @Override
+    public String toString()
+    {
+        return "TestMultiModel{" +
+                "testFinal=" + testFinal +
+                ", string1='" + string1 + '\'' +
+                ", string2=" + string2 +
+                ", char1=" + char1 +
+                ", char2=" + char2 +
+                ", int1=" + int1 +
+                ", int2=" + int2 +
+                ", short1=" + short1 +
+                ", short2=" + short2 +
+                ", long1=" + long1 +
+                ", long2=" + long2 +
+                ", data1=" + Arrays.toString(data1) +
+                ", data2=" + Arrays.toString(data2) +
+                ", boolean1=" + boolean1 +
+                ", boolean2=" + boolean2 +
+                ", double1=" + double1 +
+                ", double2=" + double2 +
+                ", float1=" + float1 +
+                ", float2=" + float2 +
+                ", date1=" + date1 +
+                ", testTransient=" + testTransient +
+                ", testObject=" + testObject +
+                ", testObject2=" + testObject2 +
+                ", testObject3=" + testObject3 +
+                '}';
     }
 }

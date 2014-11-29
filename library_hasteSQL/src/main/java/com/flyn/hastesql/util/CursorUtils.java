@@ -57,7 +57,6 @@ public class CursorUtils
             {
                 Field field = properties[i].getField();
                 Object value = getCursorValueAt(cursor, i, field);
-
                 ReflectUtils.setFieldValue(field, entity, value);
             }
             entities.add(entity);
