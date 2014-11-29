@@ -50,13 +50,16 @@ public class CursorUtils
         {
             columnIndexArray[i] = cursor.getColumnIndex(properties[i].getName());
         }
+        T entity;
+        Field field;
+        Object value;
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
         {
-            T entity = constructor.newInstance();
+            entity = constructor.newInstance();
             for (int i = 0; i < columnIndexArray.length; i++)
             {
-                Field field = properties[i].getField();
-                Object value = getCursorValueAt(cursor, i, field);
+                field = properties[i].getField();
+                value = getCursorValueAt(cursor, i, field);
                 ReflectUtils.setFieldValue(field, entity, value);
             }
             entities.add(entity);
