@@ -45,10 +45,10 @@ public class QueryTest extends AndroidTestCase
         List<People> list = HasteSQL.createDefault(mContext).queryAll(People.class);
 
         LogUtils.d("花费时间:" + (System.currentTimeMillis() - time));
-        for (People entity : list)
-        {
-            LogUtils.i(entity.toString());
-        }
+        //        for (People entity : list)
+        //        {
+        //            LogUtils.i(entity.toString());
+        //        }
 
     }
 

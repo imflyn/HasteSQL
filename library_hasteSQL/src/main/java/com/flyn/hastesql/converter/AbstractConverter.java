@@ -7,11 +7,31 @@ import java.lang.reflect.Field;
  */
 public abstract class AbstractConverter
 {
-    Field field;
+    protected final Field field;
+    protected String type;
 
-    public abstract Object getValue();
+    protected AbstractConverter(Field field)
+    {
+        this.field = field;
+        this.field.setAccessible(true);
+    }
 
-    public abstract void setValue();
+    public abstract Object getValue(Object obj) throws IllegalAccessException;
 
-    public abstract String getType();
+    public abstract void setValue(Object value, Object obj) throws IllegalAccessException;
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    public Field getField()
+    {
+        return field;
+    }
 }

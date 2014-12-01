@@ -4,7 +4,6 @@ package com.flyn.test.greendao.entity;
 
 import com.flyn.hastesql.annotation.PrimaryKey;
 import com.flyn.hastesql.core.HasteModel;
-import com.flyn.hastesql.util.LogUtils;
 
 /**
  * Entity mapped to table NOTE.
@@ -85,15 +84,15 @@ public class Note implements HasteModel
     }
 
     @Override
-    public void setRowId(long value)
-    {
-        id = Long.valueOf(value);
-        LogUtils.d("PrimaryKeyValue:" + id);
-    }
-
-    @Override
     public long getRowId()
     {
         return id;
+    }
+
+    @Override
+    public void setRowId(long value)
+    {
+        id = Long.valueOf(value);
+        //        LogUtils.d("PrimaryKeyValue:" + id);
     }
 }

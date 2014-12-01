@@ -1,5 +1,8 @@
 package com.flyn.hastesql.converter;
 
+import com.flyn.hastesql.optional.Type;
+
+import java.lang.reflect.Field;
 import java.util.Date;
 
 /**
@@ -8,76 +11,81 @@ import java.util.Date;
 public class ConverterFactory
 {
 
-    public static AbstractConverter getConverter(Class<?> clz)
+    public static AbstractConverter getConverter(Field field)
     {
+        Class<?> clz = field.getType();
+        String type = Type.wrap(clz);
+
         AbstractConverter abstractConverter = null;
         if (clz.equals(String.class))
         {
-            return new StringConverter();
+            abstractConverter = new StringConverter(field);
         } else if (clz.equals(CharSequence.class))
         {
-            return new CharSequenceConverter();
+            abstractConverter = new CharSequenceConverter(field);
         } else if (clz.equals(Byte.class))
         {
-            return new ByteObjectConverter();
+            abstractConverter = new ByteObjectConverter(field);
         } else if (clz.equals(byte.class))
         {
-            return new ByteConverter();
+            abstractConverter = new ByteConverter(field);
         } else if (clz.equals(Character.class))
         {
-            return new CharacterCharacter();
+            abstractConverter = new CharacterCharacter(field);
         } else if (clz.equals(char.class))
         {
-            return new CharConverter();
+            abstractConverter = new CharConverter(field);
         } else if (clz.equals(Boolean.class))
         {
-            return new BooleanObjectConverter();
+            abstractConverter = new BooleanObjectConverter(field);
         } else if (clz.equals(boolean.class))
         {
-            return new BooleanConverter();
+            abstractConverter = new BooleanConverter(field);
         } else if (clz.equals(Double.class))
         {
-            return new DoubleObjectConverter();
+            abstractConverter = new DoubleObjectConverter(field);
         } else if (clz.equals(double.class))
         {
-            return new DoubleConverter();
+            abstractConverter = new DoubleConverter(field);
         } else if (clz.equals(Float.class))
         {
-            return new FloatObjectConverter();
+            abstractConverter = new FloatObjectConverter(field);
         } else if (clz.equals(float.class))
         {
-            return new FloatConverter();
+            abstractConverter = new FloatConverter(field);
         } else if (clz.equals(Integer.class))
         {
-            return new IntegerConverter();
+            abstractConverter = new IntegerConverter(field);
         } else if (clz.equals(int.class))
         {
-            return new IntConverter();
+            abstractConverter = new IntConverter(field);
         } else if (clz.equals(Long.class))
         {
-            return new LongObjectConverter();
+            abstractConverter = new LongObjectConverter(field);
         } else if (clz.equals(long.class))
         {
-            return new LongConverter();
+            abstractConverter = new LongConverter(field);
         } else if (clz.equals(Short.class))
         {
-            return new ShortObjectConverter();
+            abstractConverter = new ShortObjectConverter(field);
         } else if (clz.equals(short.class))
         {
-            return new ShortConverter();
+            abstractConverter = new ShortConverter(field);
         } else if (clz.equals(Date.class))
         {
-            return new DateConverter();
+            abstractConverter = new DateConverter(field);
         } else if (clz.equals(Byte[].class))
         {
-            return new ByteObjectArrayConverter();
+            abstractConverter = new ByteObjectArrayConverter(field);
         } else if (clz.equals(byte[].class))
         {
-            return new ByteArrayConverter();
+            abstractConverter = new ByteArrayConverter(field);
         } else
         {
-            throw new IllegalArgumentException("Illegal Class type.");
+            return null;
         }
+        abstractConverter.setType(type);
+        return abstractConverter;
     }
 
 

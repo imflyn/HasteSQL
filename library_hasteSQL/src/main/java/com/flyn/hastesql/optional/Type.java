@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public enum Type
 {
-    BOOLEAN("BOOLEAN"), TEXT("TEXT"), DOUBLE("DOUBLE"), INTEGER("INTEGER"), DATE("DATE"), BLOB("BLOB");
+    BOOLEAN("BOOLEAN"), TEXT("TEXT"), DOUBLE("DOUBLE"), INTEGER("INTEGER"), BLOB("BLOB");
 
     private String type;
 
@@ -15,12 +15,6 @@ public enum Type
     {
         this.type = type;
     }
-
-    public String value()
-    {
-        return type;
-    }
-
 
     public static String wrap(Class<?> clz)
     {
@@ -41,11 +35,16 @@ public enum Type
             return Type.INTEGER.value();
         } else if (clz.equals(Date.class))
         {
-            return Type.DATE.value();
-        } else if (clz.isArray() && (clz.getComponentType().equals(byte.class)))
+            return Type.INTEGER.value();
+        } else if (clz.equals(byte[].class) || clz.equals(Byte[].class))
         {
             return Type.BLOB.value();
         }
         return null;
+    }
+
+    public String value()
+    {
+        return type;
     }
 }

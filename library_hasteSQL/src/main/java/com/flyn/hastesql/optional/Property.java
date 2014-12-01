@@ -1,6 +1,6 @@
 package com.flyn.hastesql.optional;
 
-import java.lang.reflect.Field;
+import com.flyn.hastesql.converter.AbstractConverter;
 
 /**
  * Created by flyn on 2014-11-11.
@@ -9,12 +9,12 @@ public class Property
 {
     private String name;
     private String type;
-    private Field field;
     private boolean isPrimaryKey;
     private boolean isAutoIncrease;
     private boolean notNull;
     private boolean unique;
     private String check;
+    private AbstractConverter converter;
 
 
     public String getName()
@@ -37,15 +37,6 @@ public class Property
         this.type = type;
     }
 
-    public Field getField()
-    {
-        return field;
-    }
-
-    public void setField(Field field)
-    {
-        this.field = field;
-    }
 
     public boolean isPrimaryKey()
     {
@@ -95,5 +86,15 @@ public class Property
     public void setCheck(String check)
     {
         this.check = check;
+    }
+
+    public AbstractConverter getConverter()
+    {
+        return converter;
+    }
+
+    public void setConverter(AbstractConverter converter)
+    {
+        this.converter = converter;
     }
 }

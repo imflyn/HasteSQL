@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.flyn.hastesql.optional.ConditionBuilder;
 import com.flyn.hastesql.optional.ConditionExpression;
 import com.flyn.hastesql.util.CursorUtils;
+import com.flyn.hastesql.util.LogUtils;
 import com.flyn.hastesql.util.ReflectUtils;
 import com.flyn.hastesql.util.SQLUtils;
 
@@ -45,7 +46,15 @@ public class HasteDao implements HasteOperation
     public void insert(HasteModel hasteModel)
     {
         String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
-        Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
+        Object[] objects;
+        try
+        {
+            objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
+        } catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+            return;
+        }
         long rowId = sqlExecutor.insert(sql, objects);
         if (hasteTable.isAutoIncrease() && rowId > 0)
         {
@@ -58,9 +67,16 @@ public class HasteDao implements HasteOperation
     {
         String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
         List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
-        for (int i = 0, size = hasteModelList.size(); i < size; i++)
+        try
         {
-            objects.add(ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true));
+            for (int i = 0, size = hasteModelList.size(); i < size; i++)
+            {
+                objects.add(ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true));
+            }
+        } catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+            return;
         }
         long[] rowIdArray = sqlExecutor.insertList(sql, objects);
         if (hasteTable.isAutoIncrease())
@@ -82,7 +98,15 @@ public class HasteDao implements HasteOperation
         if (hasteTable.hasPrimaryKey())
         {
             String sql = SQLUtils.createSQLUpdateByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey(), hasteTable.getAllColumns());
-            Object[] srcArray = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, false);
+            Object[] srcArray;
+            try
+            {
+                srcArray = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, false);
+            } catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+                return;
+            }
             Object[] dstArray = new Object[srcArray.length + 1];
 
             System.arraycopy(srcArray, 0, dstArray, 0, srcArray.length);
@@ -116,7 +140,15 @@ public class HasteDao implements HasteOperation
             for (int i = 0, size = hasteModelList.size(); i < size; i++)
             {
                 hasteModel = hasteModelList.get(i);
-                Object[] srcArray = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, false);
+                Object[] srcArray;
+                try
+                {
+                    srcArray = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, false);
+                } catch (IllegalAccessException e)
+                {
+                    e.printStackTrace();
+                    return;
+                }
                 Object[] dstArray = new Object[srcArray.length + 1];
 
                 System.arraycopy(srcArray, 0, dstArray, 0, srcArray.length);
@@ -140,10 +172,20 @@ public class HasteDao implements HasteOperation
             skipPrimaryKey = true;
         }
         String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns(), skipPrimaryKey);
-        Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, skipPrimaryKey);
+        Object[] objects;
+        try
+        {
+            objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, skipPrimaryKey);
+        } catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+            return;
+        }
         long rowId = sqlExecutor.insert(sql, objects);
         if (rowId > 0 && hasteTable.hasPrimaryKey())
+        {
             hasteModel.setRowId(rowId);
+        }
     }
 
     @Override
@@ -159,10 +201,20 @@ public class HasteDao implements HasteOperation
                 skipPrimaryKey = true;
             }
             String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns(), skipPrimaryKey);
-            Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, skipPrimaryKey);
+            Object[] objects;
+            try
+            {
+                objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, skipPrimaryKey);
+            } catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+                return;
+            }
             long rowId = sqlExecutor.insert(sql, objects);
             if (rowId > 0 && hasteTable.hasPrimaryKey())
+            {
                 hasteModel.setRowId(rowId);
+            }
         }
     }
 
@@ -172,12 +224,28 @@ public class HasteDao implements HasteOperation
         if (hasteTable.hasPrimaryKey())
         {
             String sql = SQLUtils.createSQLDeleteByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey());
-            Object[] keyValues = new Object[]{ReflectUtils.getFieldValue(hasteTable.getPrimaryKey().getField(), hasteModel)};
+            Object[] keyValues;
+            try
+            {
+                keyValues = new Object[]{hasteTable.getPrimaryKey().getConverter().getValue(hasteModel)};
+            } catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+                return;
+            }
             sqlExecutor.execSQL(sql, keyValues);
         } else
         {
             String sql = SQLUtils.createSQLDelete(hasteTable.getTableName(), hasteTable.getAllColumns());
-            Object[] objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
+            Object[] objects;
+            try
+            {
+                objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, true);
+            } catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+                return;
+            }
             sqlExecutor.execSQL(sql, objects);
         }
     }
@@ -206,19 +274,33 @@ public class HasteDao implements HasteOperation
         {
             String sql = SQLUtils.createSQLDeleteByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey());
 
-            for (int i = 0, size = hasteModelList.size(); i < size; i++)
+            try
             {
-                Object[] keyValues = new Object[]{ReflectUtils.getFieldValue(hasteTable.getPrimaryKey().getField(), hasteModelList.get(i))};
-                objects.add(keyValues);
+                for (int i = 0, size = hasteModelList.size(); i < size; i++)
+                {
+                    Object[] keyValues = new Object[]{hasteTable.getPrimaryKey().getConverter().getValue(hasteModelList.get(i))};
+                    objects.add(keyValues);
+                }
+            } catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+                return;
             }
             sqlExecutor.execSQLList(sql, objects);
         } else
         {
             String sql = SQLUtils.createSQLDelete(hasteTable.getTableName(), hasteTable.getAllColumns());
-            for (int i = 0, size = hasteModelList.size(); i < size; i++)
+            try
             {
-                Object[] keyValues = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true);
-                objects.add(keyValues);
+                for (int i = 0, size = hasteModelList.size(); i < size; i++)
+                {
+                    Object[] keyValues = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModelList.get(i), true);
+                    objects.add(keyValues);
+                }
+            } catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+                return;
             }
             sqlExecutor.execSQLList(sql, objects);
         }
@@ -236,7 +318,8 @@ public class HasteDao implements HasteOperation
             entities = CursorUtils.cursorToEntities(clz, cursor, hasteTable.getAllColumns());
         } catch (Exception e)
         {
-            e.printStackTrace();
+            throw new RuntimeException(e);
+            //            e.printStackTrace();
         } finally
         {
             CursorUtils.closeQuietly(cursor);
@@ -259,7 +342,7 @@ public class HasteDao implements HasteOperation
             entities = CursorUtils.cursorToEntities(clz, cursor, hasteTable.getAllColumns(), false);
         } catch (Exception e)
         {
-            e.printStackTrace();
+            LogUtils.e(e);
         } finally
         {
             CursorUtils.closeQuietly(cursor);

@@ -2,7 +2,6 @@ package com.flyn.test.hastesql.entity;
 
 import com.flyn.hastesql.annotation.PrimaryKey;
 import com.flyn.hastesql.core.HasteModel;
-import com.flyn.hastesql.util.LogUtils;
 
 import java.util.Date;
 
@@ -61,18 +60,17 @@ public class People implements HasteModel
     }
 
     @Override
-    public void setRowId(long value)
-    {
-        LogUtils.d("PrimaryKeyValue:" + value);
-        id = value;
-    }
-
-    @Override
     public long getRowId()
     {
         return id;
     }
 
+    @Override
+    public void setRowId(long value)
+    {
+        //        LogUtils.d("PrimaryKeyValue:" + value);
+        id = value;
+    }
 
     @Override
     public String toString()

@@ -1,25 +1,28 @@
 package com.flyn.hastesql.converter;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by flyn on 2014-12-01.
  */
 public class BooleanConverter extends AbstractConverter
 {
-    @Override
-    public Object getValue()
+    protected BooleanConverter(Field field)
     {
-        return null;
+        super(field);
     }
 
     @Override
-    public void setValue()
+    public Object getValue(Object obj) throws IllegalAccessException
     {
-
+        return field.getBoolean(obj);
     }
 
     @Override
-    public String getType()
+    public void setValue(Object value, Object obj) throws IllegalAccessException
     {
-        return null;
+        field.setBoolean(obj, (Boolean) value);
     }
+
+
 }

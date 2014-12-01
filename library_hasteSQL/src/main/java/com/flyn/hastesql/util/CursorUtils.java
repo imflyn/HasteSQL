@@ -11,11 +11,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by flyn on 2014-11-11.
@@ -67,10 +65,10 @@ public class CursorUtils
             entity = constructor.newInstance();
             for (int i = 0; i < columnIndexArray.length; i++)
             {
-                field = properties[i].getField();
+                field = properties[i].getConverter().getField();
                 value = getCursorValueAt(cursor, i, field);
-                ReflectUtils.setFieldValue(field, entity, value);
-
+                LogUtils.i("value:" + value);
+                properties[i].getConverter().setValue(value, entity);
             }
             entities.add(entity);
 
@@ -118,8 +116,8 @@ public class CursorUtils
             return cursor.getShort(index);
         } else if (clz.equals(Date.class))
         {
-            return new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(cursor.getString(index));
-        } else if (clz.equals(byte[].class))
+            return cursor.getLong(index);
+        } else if (clz.equals(byte[].class) || clz.equals(Byte[].class))
         {
             return cursor.getBlob(index);
         } else

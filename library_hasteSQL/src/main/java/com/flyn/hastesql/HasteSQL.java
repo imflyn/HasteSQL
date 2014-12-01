@@ -15,6 +15,39 @@ import java.util.HashMap;
  */
 public class HasteSQL
 {
+    private static final IHasteConfig DEFAULT_CONFIG = new IHasteConfig()
+    {
+        @Override
+        public void onCreate(SQLiteDatabase db)
+        {
+
+        }
+
+        @Override
+        public void onDrop(SQLiteDatabase db)
+        {
+
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+        {
+
+        }
+
+        @Override
+        public int dbVersion()
+        {
+            return 1;
+        }
+
+        @Override
+        public String dbName()
+        {
+            return "database.db";
+        }
+
+    };
     private static HasteSQL hasteSQL;
     private final HashMap<String, HasteMaster> hasteMasterMap = new HashMap<String, HasteMaster>();
     private final Object mLock = new Object();
@@ -56,39 +89,4 @@ public class HasteSQL
         }
         return hasteMaster;
     }
-
-
-    private static final IHasteConfig DEFAULT_CONFIG = new IHasteConfig()
-    {
-        @Override
-        public void onCreate(SQLiteDatabase db)
-        {
-
-        }
-
-        @Override
-        public void onDrop(SQLiteDatabase db)
-        {
-
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-        {
-
-        }
-
-        @Override
-        public int dbVersion()
-        {
-            return 1;
-        }
-
-        @Override
-        public String dbName()
-        {
-            return "database.db";
-        }
-
-    };
 }

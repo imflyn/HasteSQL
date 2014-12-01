@@ -2,8 +2,9 @@ package com.flyn.hastesql.util;
 
 import com.flyn.hastesql.annotation.Constraint;
 import com.flyn.hastesql.annotation.PrimaryKey;
+import com.flyn.hastesql.converter.AbstractConverter;
+import com.flyn.hastesql.converter.ConverterFactory;
 import com.flyn.hastesql.optional.Property;
-import com.flyn.hastesql.optional.Type;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -31,17 +32,17 @@ public class ReflectUtils
 
             if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isTransient(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()))
             {
-                String type = Type.wrap(field.getType());
-
-                if (StringUtils.isEmpty(type))
+                AbstractConverter abstractConverter = ConverterFactory.getConverter(field);
+                if (abstractConverter == null)
                 {
                     continue;
                 }
 
+                String type = abstractConverter.getType();
                 property = new Property();
                 property.setType(type);
                 property.setName(field.getName());
-                property.setField(field);
+                property.setConverter(abstractConverter);
 
                 Annotation[] annotations = field.getAnnotations();
                 for (Annotation annotation : annotations)
@@ -67,48 +68,7 @@ public class ReflectUtils
         return properties.toArray(new Property[properties.size()]);
     }
 
-    public static Object getFieldValue(Field field, Object obj)
-    {
-        field.setAccessible(true);
-        Class<?> type = field.getType();
-        try
-        {
-            if (type.equals(boolean.class))
-            {
-                return field.getBoolean(obj);
-            } else if (type.equals(byte.class))
-            {
-                return field.getByte(obj);
-            } else if (type.equals(double.class))
-            {
-                return field.getDouble(obj);
-            } else if (type.equals(char.class))
-            {
-                return field.getChar(obj);
-            } else if (type.equals(float.class))
-            {
-                return field.getFloat(obj);
-            } else if (type.equals(int.class))
-            {
-                return field.getInt(obj);
-            } else if (type.equals(long.class))
-            {
-                return field.getLong(obj);
-            } else if (type.equals(short.class))
-            {
-                return field.getShort(obj);
-            } else
-            {
-                return field.get(obj);
-            }
-        } catch (IllegalAccessException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static Object[] getFieldValueArray(Property[] properties, Object obj, boolean skipAutoIncrease)
+    public static Object[] getFieldValueArray(Property[] properties, Object obj, boolean skipAutoIncrease) throws IllegalAccessException
     {
         ArrayList<Object> objectArrayList = new ArrayList<Object>(properties.length);
         for (int i = 0; i < properties.length; i++)
@@ -117,53 +77,11 @@ public class ReflectUtils
             {
                 continue;
             }
-            objectArrayList.add(getFieldValue(properties[i].getField(), obj));
+            objectArrayList.add(properties[i].getConverter().getValue(obj));
         }
         return objectArrayList.toArray();
     }
 
-    public static void setFieldValue(Field field, Object object, Object value)
-    {
-        if (value == null)
-            return;
-
-        field.setAccessible(true);
-        Class<?> type = field.getType();
-        try
-        {
-            if (type.equals(boolean.class))
-            {
-                field.setBoolean(object, (Boolean) value);
-            } else if (type.equals(byte.class))
-            {
-                field.setByte(object, (Byte) value);
-            } else if (type.equals(double.class))
-            {
-                field.setDouble(object, (Double) value);
-            } else if (type.equals(char.class))
-            {
-                field.setChar(object, (Character) value);
-            } else if (type.equals(float.class))
-            {
-                field.setFloat(object, (Float) value);
-            } else if (type.equals(int.class))
-            {
-                field.setInt(object, (Integer) value);
-            } else if (type.equals(long.class))
-            {
-                field.setLong(object, (Long) value);
-            } else if (type.equals(short.class))
-            {
-                field.setShort(object, (Short) value);
-            } else
-            {
-                field.set(object, value);
-            }
-        } catch (IllegalAccessException e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     public static boolean isText(Object obj)
     {

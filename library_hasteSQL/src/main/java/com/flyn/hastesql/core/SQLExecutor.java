@@ -202,7 +202,6 @@ public class SQLExecutor
     }
 
 
-
     private void debugSql(String sql)
     {
         LogUtils.d(sql);

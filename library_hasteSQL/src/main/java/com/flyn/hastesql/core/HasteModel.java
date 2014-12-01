@@ -6,7 +6,7 @@ package com.flyn.hastesql.core;
  */
 public interface HasteModel
 {
-    void setRowId(long value);
-
     long getRowId();
+
+    void setRowId(long value);
 }
