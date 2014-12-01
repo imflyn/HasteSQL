@@ -5,4 +5,21 @@ package com.flyn.hastesql.converter;
  */
 public class BooleanConverter extends AbstractConverter
 {
+    @Override
+    public Object getValue()
+    {
+        return null;
+    }
+
+    @Override
+    public void setValue()
+    {
+
+    }
+
+    @Override
+    public String getType()
+    {
+        return null;
+    }
 }
