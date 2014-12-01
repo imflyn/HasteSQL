@@ -3,6 +3,6 @@ package com.flyn.hastesql.converter;
 /**
  * Created by flyn on 2014-12-01.
  */
-public class CharSequenceConverter
+public class CharSequenceConverter implements  IConverter
 {
 }
