@@ -206,6 +206,7 @@ public class SQLUtils
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("SELECT * FROM ");
         sqlBuilder.append(tableName);
+        sqlBuilder.append(" ");
 
         return sqlBuilder.toString();
     }

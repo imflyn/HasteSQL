@@ -37,10 +37,19 @@ public class CursorUtils
         }
     }
 
+
     public static <T extends HasteModel> List<T> cursorToEntities(Class<T> clz, Cursor cursor,
                                                                   Property[] properties) throws IllegalAccessException, InvocationTargetException,
                                                                                                 InstantiationException, NoSuchMethodException,
                                                                                                 ParseException
+    {
+        return cursorToEntities(clz, cursor, properties, false);
+    }
+
+    public static <T extends HasteModel> List<T> cursorToEntities(Class<T> clz, Cursor cursor, Property[] properties,
+                                                                  boolean onlyFirst) throws IllegalAccessException, InvocationTargetException,
+                                                                                            InstantiationException, NoSuchMethodException,
+                                                                                            ParseException
     {
         List<T> entities = new ArrayList<T>();
         Constructor<T> constructor = clz.getDeclaredConstructor();
@@ -61,8 +70,14 @@ public class CursorUtils
                 field = properties[i].getField();
                 value = getCursorValueAt(cursor, i, field);
                 ReflectUtils.setFieldValue(field, entity, value);
+
             }
             entities.add(entity);
+
+            if (onlyFirst)
+            {
+                break;
+            }
         }
 
         return entities;

@@ -2,6 +2,7 @@ package com.flyn.hastesql.core;
 
 import android.database.Cursor;
 
+import com.flyn.hastesql.optional.ConditionBuilder;
 import com.flyn.hastesql.optional.ConditionExpression;
 import com.flyn.hastesql.util.CursorUtils;
 import com.flyn.hastesql.util.ReflectUtils;
@@ -244,21 +245,79 @@ public class HasteDao implements HasteOperation
     }
 
     @Override
-    public <T extends HasteModel> T queryFirst(Class<T> clz, ConditionExpression conditionExpression)
+    public <T extends HasteModel> T queryFirst(Class<T> clz, ConditionBuilder conditionBuilder)
     {
-        return null;
+        String sql = SQLUtils.createSQLSelect(hasteTable.getTableName());
+        if (null != conditionBuilder)
+        {
+            sql = sql + conditionBuilder.build();
+        }
+        Cursor cursor = sqlExecutor.execQuery(sql);
+        List<T> entities = null;
+        try
+        {
+            entities = CursorUtils.cursorToEntities(clz, cursor, hasteTable.getAllColumns(), false);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            CursorUtils.closeQuietly(cursor);
+        }
+        return entities.isEmpty() ? null : entities.get(0);
     }
 
     @Override
     public <T extends HasteModel> T queryByKey(Class<T> clz, Object key)
     {
-        return null;
+        if (!hasteTable.hasPrimaryKey())
+        {
+            //not support
+            throw new IllegalArgumentException("Can not query entity by key with no primary key.");
+        }
+
+        StringBuilder sqlBuilder = new StringBuilder(SQLUtils.createSQLSelect(hasteTable.getTableName()));
+        ConditionBuilder conditionBuilder = new ConditionBuilder();
+        ConditionExpression conditionExpression = new ConditionExpression();
+        conditionExpression.equals(hasteTable.getPrimaryKey().getName(), key);
+        conditionBuilder.where(conditionExpression);
+        sqlBuilder.append(conditionBuilder.build());
+        Cursor cursor = sqlExecutor.execQuery(sqlBuilder.toString());
+        List<T> entities = null;
+        try
+        {
+            entities = CursorUtils.cursorToEntities(clz, cursor, hasteTable.getAllColumns(), false);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            CursorUtils.closeQuietly(cursor);
+        }
+        return entities.isEmpty() ? null : entities.get(0);
     }
 
     @Override
-    public <T extends HasteModel> List<T> query(Class<T> clz, ConditionExpression conditionExpression)
+    public <T extends HasteModel> List<T> query(Class<T> clz, ConditionBuilder conditionBuilder)
     {
-        return null;
+        String sql = SQLUtils.createSQLSelect(hasteTable.getTableName());
+        if (null != conditionBuilder)
+        {
+            sql = sql + conditionBuilder.build();
+        }
+        Cursor cursor = sqlExecutor.execQuery(sql);
+        List<T> entities = null;
+        try
+        {
+            entities = CursorUtils.cursorToEntities(clz, cursor, hasteTable.getAllColumns());
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            CursorUtils.closeQuietly(cursor);
+        }
+        return entities;
     }
 
     @Override

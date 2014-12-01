@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.flyn.hastesql.optional.ConditionBuilder;
 import com.flyn.hastesql.optional.ConditionExpression;
 
 import java.util.HashMap;
@@ -201,25 +202,25 @@ public class HasteMaster implements HasteOperation
     }
 
     @Override
-    public <T extends HasteModel> List<T> query(Class<T> clz, ConditionExpression conditionExpression)
+    public <T extends HasteModel> List<T> query(Class<T> clz, ConditionBuilder conditionBuilder)
     {
-        return getHasteDao(clz, clz.getSimpleName()).query(clz, conditionExpression);
+        return getHasteDao(clz, clz.getSimpleName()).query(clz, conditionBuilder);
     }
 
-    public <T extends HasteModel> List<T> query(Class<T> clz, String prefix, String suffix, ConditionExpression conditionExpression)
+    public <T extends HasteModel> List<T> query(Class<T> clz, String prefix, String suffix, ConditionBuilder conditionBuilder)
     {
-        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).query(clz, conditionExpression);
+        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).query(clz, conditionBuilder);
     }
 
     @Override
-    public <T extends HasteModel> T queryFirst(Class<T> clz, ConditionExpression conditionExpression)
+    public <T extends HasteModel> T queryFirst(Class<T> clz, ConditionBuilder conditionBuilder)
     {
-        return getHasteDao(clz, clz.getSimpleName()).queryFirst(clz, conditionExpression);
+        return getHasteDao(clz, clz.getSimpleName()).queryFirst(clz, conditionBuilder);
     }
 
-    public <T extends HasteModel> T queryFirst(Class<T> clz, String prefix, String suffix, ConditionExpression conditionExpression)
+    public <T extends HasteModel> T queryFirst(Class<T> clz, String prefix, String suffix, ConditionBuilder conditionBuilder)
     {
-        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryFirst(clz, conditionExpression);
+        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryFirst(clz, conditionBuilder);
     }
 
     @Override

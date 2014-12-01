@@ -1,5 +1,6 @@
 package com.flyn.hastesql.core;
 
+import com.flyn.hastesql.optional.ConditionBuilder;
 import com.flyn.hastesql.optional.ConditionExpression;
 
 import java.util.List;
@@ -35,11 +36,11 @@ public interface HasteOperation
 
     <T extends HasteModel> List<T> queryAll(Class<T> clz);
 
-    <T extends HasteModel> List<T> query(Class<T> clz, ConditionExpression conditionExpression);
+    <T extends HasteModel> List<T> query(Class<T> clz, ConditionBuilder conditionBuilder);
 
-    <T extends HasteModel> T queryFirst(Class<T> clz, ConditionExpression conditionExpression);
+    <T extends HasteModel> T queryFirst(Class<T> clz, ConditionBuilder conditionBuilder);
 
-    <T extends HasteModel> T queryByKey(Class<T> clz,Object key);
+    <T extends HasteModel> T queryByKey(Class<T> clz, Object key);
 
     void run(String sql);
 
