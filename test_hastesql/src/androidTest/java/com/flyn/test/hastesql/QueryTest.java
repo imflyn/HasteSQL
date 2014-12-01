@@ -28,7 +28,7 @@ public class QueryTest extends AndroidTestCase
         super.setUp();
         mContext = getContext();
         HasteSQL.createDefault(mContext).deleteAll(People.class);
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 10000; i++)
         {
             People people = new People();
             people.setAge(i);
@@ -89,10 +89,10 @@ public class QueryTest extends AndroidTestCase
 
         List<People> list = HasteSQL.createDefault(mContext).query(People.class, conditionBuilder);
         LogUtils.d("花费时间:" + (System.currentTimeMillis() - time));
-        for (People entity : list)
-        {
-            LogUtils.i(entity.toString());
-        }
+//        for (People entity : list)
+//        {
+//            LogUtils.i(entity.toString());
+//        }
 
     }
 
