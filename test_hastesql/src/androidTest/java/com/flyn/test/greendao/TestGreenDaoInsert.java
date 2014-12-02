@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
+import com.flyn.hastesql.util.LogUtils;
 import com.flyn.test.greendao.entity.DaoMaster;
 import com.flyn.test.greendao.entity.DaoSession;
 import com.flyn.test.greendao.entity.Note;
@@ -58,7 +59,8 @@ public class TestGreenDaoInsert extends AndroidTestCase
 
         long spendTime = System.currentTimeMillis() - time;
 
-        System.out.println("花费时间：" + spendTime);
+        LogUtils.d("花费时间：" + spendTime);
+
 
     }
 

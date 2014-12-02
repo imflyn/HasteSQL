@@ -40,7 +40,6 @@ public class ReflectUtils
 
                 String type = abstractConverter.getType();
                 property = new Property();
-                property.setType(type);
                 property.setName(field.getName());
                 property.setConverter(abstractConverter);
 

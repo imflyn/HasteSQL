@@ -69,7 +69,7 @@ public class InsertMultiTypeTest extends AndroidTestCase
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
         TestMultiModel testMultiModel;
         List<TestMultiModel> testMultiModelList = new ArrayList<TestMultiModel>();
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < 10000; i++)
         {
             testMultiModel = new TestMultiModel();
             testMultiModelList.add(testMultiModel);

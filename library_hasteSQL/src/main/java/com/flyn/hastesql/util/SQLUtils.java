@@ -32,7 +32,7 @@ public class SQLUtils
 
         for (Property property : properties)
         {
-            sqlBuilder.append(" \'").append(property.getName()).append("\' ").append(property.getType());
+            sqlBuilder.append(" \'").append(property.getName()).append("\' ").append(property.getConverter().getType());
             if (property.isPrimaryKey())
             {
                 sqlBuilder.append(" PRIMARY KEY ");

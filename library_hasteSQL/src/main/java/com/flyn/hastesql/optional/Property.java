@@ -8,7 +8,6 @@ import com.flyn.hastesql.converter.AbstractConverter;
 public class Property
 {
     private String name;
-    private String type;
     private boolean isPrimaryKey;
     private boolean isAutoIncrease;
     private boolean notNull;
@@ -25,16 +24,6 @@ public class Property
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    public String getType()
-    {
-        return type;
-    }
-
-    public void setType(String type)
-    {
-        this.type = type;
     }
 
 
