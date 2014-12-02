@@ -1,5 +1,7 @@
 package com.flyn.hastesql.converter;
 
+import android.database.Cursor;
+
 import java.lang.reflect.Field;
 
 /**
@@ -22,6 +24,12 @@ public class DoubleConverter extends AbstractConverter
     public void setValue(Object value, Object obj) throws IllegalAccessException
     {
         field.setDouble(obj, (Double) value);
+    }
+
+    @Override
+    public Object getCursorValueAt(Cursor cursor, int index)
+    {
+        return cursor.getDouble(index);
     }
 
 }

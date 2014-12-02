@@ -1,5 +1,7 @@
 package com.flyn.hastesql.converter;
 
+import android.database.Cursor;
+
 import java.lang.reflect.Field;
 
 /**
@@ -22,6 +24,12 @@ public class FloatConverter extends AbstractConverter
     public void setValue(Object value, Object obj) throws IllegalAccessException
     {
         field.setFloat(obj, (Float) value);
+    }
+
+    @Override
+    public Object getCursorValueAt(Cursor cursor, int index)
+    {
+        return cursor.getFloat(index);
     }
 
 }

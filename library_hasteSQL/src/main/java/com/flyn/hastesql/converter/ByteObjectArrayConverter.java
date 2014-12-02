@@ -1,5 +1,7 @@
 package com.flyn.hastesql.converter;
 
+import android.database.Cursor;
+
 import java.lang.reflect.Field;
 
 /**
@@ -35,6 +37,12 @@ public class ByteObjectArrayConverter extends AbstractConverter
             bytesArray[i] = bytes[i];
         }
         field.set(obj, bytesArray);
+    }
+
+    @Override
+    public Object getCursorValueAt(Cursor cursor, int index)
+    {
+        return cursor.getBlob(index);
     }
 
 }

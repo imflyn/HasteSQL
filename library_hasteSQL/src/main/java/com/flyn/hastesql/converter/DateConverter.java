@@ -1,5 +1,7 @@
 package com.flyn.hastesql.converter;
 
+import android.database.Cursor;
+
 import java.lang.reflect.Field;
 import java.util.Date;
 
@@ -26,6 +28,12 @@ public class DateConverter extends AbstractConverter
         long timeStamp = (Long) value;
         Date date = new Date(timeStamp);
         field.set(obj, date);
+    }
+
+    @Override
+    public Object getCursorValueAt(Cursor cursor, int index)
+    {
+        return cursor.getLong(index);
     }
 
 }

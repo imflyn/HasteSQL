@@ -27,19 +27,19 @@ public class InsertMultiTypeTest extends AndroidTestCase
         mContext = getContext();
         assertNotNull(mContext);
 
-        //        HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
-        //        TestMultiModel testMultiModel;
-        //        List<TestMultiModel> testMultiModelList = new ArrayList<TestMultiModel>();
-        //        for (int i = 0; i < 10000; i++)
-        //        {
-        //            testMultiModel = new TestMultiModel();
-        //            testMultiModelList.add(testMultiModel);
-        //        }
-        //        long time = SystemClock.uptimeMillis();
-        //
-        //        hasteMaster.insertAll(testMultiModelList);
-        //
-        //        LogUtils.d("花费时间:" + (SystemClock.uptimeMillis() - time));
+        HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
+        TestMultiModel testMultiModel;
+        List<TestMultiModel> testMultiModelList = new ArrayList<TestMultiModel>();
+        for (int i = 0; i < 10000; i++)
+        {
+            testMultiModel = new TestMultiModel();
+            testMultiModelList.add(testMultiModel);
+        }
+        long time = SystemClock.uptimeMillis();
+
+        hasteMaster.insertAll(testMultiModelList);
+
+        LogUtils.d("花费时间:" + (SystemClock.uptimeMillis() - time));
     }
 
     public void testQuery()

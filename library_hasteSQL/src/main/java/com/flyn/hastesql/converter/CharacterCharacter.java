@@ -1,5 +1,8 @@
 package com.flyn.hastesql.converter;
 
+import android.database.Cursor;
+import android.text.TextUtils;
+
 import java.lang.reflect.Field;
 
 /**
@@ -22,6 +25,19 @@ public class CharacterCharacter extends AbstractConverter
     public void setValue(Object value, Object obj) throws IllegalAccessException
     {
         field.set(obj, value);
+    }
+
+    @Override
+    public Object getCursorValueAt(Cursor cursor, int index)
+    {
+        String str = cursor.getString(index);
+        if (TextUtils.isEmpty(str))
+        {
+            return null;
+        } else
+        {
+            return str.charAt(0);
+        }
     }
 
 }
