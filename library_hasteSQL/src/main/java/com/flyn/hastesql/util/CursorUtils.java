@@ -67,7 +67,6 @@ public class CursorUtils
             {
                 field = properties[i].getConverter().getField();
                 value = getCursorValueAt(cursor, i, field);
-                LogUtils.i("value:" + value);
                 properties[i].getConverter().setValue(value, entity);
             }
             entities.add(entity);
