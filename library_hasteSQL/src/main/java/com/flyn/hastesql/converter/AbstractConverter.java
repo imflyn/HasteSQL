@@ -1,5 +1,7 @@
 package com.flyn.hastesql.converter;
 
+import android.database.Cursor;
+
 import java.lang.reflect.Field;
 
 /**
@@ -34,4 +36,6 @@ public abstract class AbstractConverter
     {
         return field;
     }
+
+    public abstract Object getCursorValueAt(Cursor cursor, int index);
 }
