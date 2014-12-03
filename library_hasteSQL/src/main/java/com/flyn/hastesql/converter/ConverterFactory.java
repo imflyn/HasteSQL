@@ -14,8 +14,6 @@ public class ConverterFactory
     public static AbstractConverter getConverter(Field field)
     {
         Class<?> clz = field.getType();
-        String type = Type.wrap(clz);
-
         AbstractConverter abstractConverter = null;
         if (clz.equals(String.class))
         {
@@ -84,6 +82,7 @@ public class ConverterFactory
         {
             return null;
         }
+        String type = Type.wrap(clz);
         abstractConverter.setType(type);
         return abstractConverter;
     }
