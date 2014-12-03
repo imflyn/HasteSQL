@@ -42,30 +42,6 @@ public class SQLExecutor
         return null;
     }
 
-    public boolean isEmpty(String sql)
-    {
-        Cursor cursor = execQuery(sql);
-        if (cursor != null)
-        {
-            try
-            {
-                if (cursor.moveToNext())
-                {
-                    int count = cursor.getInt(0);
-                    if (count > 0)
-                    {
-                        return false;
-                    }
-                }
-            } finally
-            {
-                CursorUtils.closeQuietly(cursor);
-            }
-        }
-
-        return true;
-    }
-
     public Cursor execQuery(String sql)
     {
         return execQuery(sql, null);

@@ -33,9 +33,10 @@ public class HasteDao implements HasteOperation
     {
 
         String checkTableSQL = SQLUtils.createSQLCheckTableExits(tableName);
-        if (sqlExecutor.isEmpty(checkTableSQL))
+        Cursor cursor = sqlExecutor.execQuery(checkTableSQL);
+        if (!CursorUtils.checkTableExist(cursor))
         {
-            //如果为空则建表
+            //如果不存在则建表
             String createTableSQL = SQLUtils.createSQLCreateTable(tableName, ReflectUtils.getPropertyArray(hasteModelClz));
             sqlExecutor.execSQL(createTableSQL);
         }
