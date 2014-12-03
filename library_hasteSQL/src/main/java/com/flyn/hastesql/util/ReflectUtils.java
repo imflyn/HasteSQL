@@ -54,6 +54,8 @@ public class ReflectUtils
                     } else if (annotation.annotationType().equals(ForeignKey.class))
                     {
                         //Add support foreign key
+
+
                     }
                     if (annotation.annotationType().equals(Constraint.class))
                     {

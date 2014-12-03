@@ -4,6 +4,7 @@ import android.database.Cursor;
 
 import com.flyn.hastesql.optional.ConditionBuilder;
 import com.flyn.hastesql.optional.ConditionExpression;
+import com.flyn.hastesql.optional.Property;
 import com.flyn.hastesql.util.CursorUtils;
 import com.flyn.hastesql.util.LogUtils;
 import com.flyn.hastesql.util.ReflectUtils;
@@ -25,11 +26,11 @@ public class HasteDao implements HasteOperation
     protected HasteDao(SQLExecutor sqlExecutor, String tableName, Class<? extends HasteModel> hasteModelClz)
     {
         this.sqlExecutor = sqlExecutor;
-        createTableIfNotExits(tableName, hasteModelClz);
         this.hasteTable = new HasteTable(tableName, hasteModelClz);
+        createTableIfNotExits(tableName, this.hasteTable.getAllColumns());
     }
 
-    protected void createTableIfNotExits(String tableName, Class<? extends HasteModel> hasteModelClz)
+    protected void createTableIfNotExits(String tableName, Property[] properties)
     {
 
         String checkTableSQL = SQLUtils.createSQLCheckTableExits(tableName);
@@ -37,7 +38,7 @@ public class HasteDao implements HasteOperation
         if (!CursorUtils.checkTableExist(cursor))
         {
             //如果不存在则建表
-            String createTableSQL = SQLUtils.createSQLCreateTable(tableName, ReflectUtils.getPropertyArray(hasteModelClz));
+            String createTableSQL = SQLUtils.createSQLCreateTable(tableName, properties);
             sqlExecutor.execSQL(createTableSQL);
         }
     }
