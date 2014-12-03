@@ -22,7 +22,7 @@ public class ThreadPool
             public Thread newThread(Runnable r)
             {
                 Thread thread = new Thread();
-                thread.setName("HasteSQL Thread#" + atomicInteger.incrementAndGet());
+                thread.setName("HasteSQL Thread #" + atomicInteger.incrementAndGet());
                 return thread;
             }
         });
