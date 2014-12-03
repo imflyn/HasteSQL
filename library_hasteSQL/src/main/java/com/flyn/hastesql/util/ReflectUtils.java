@@ -1,6 +1,7 @@
 package com.flyn.hastesql.util;
 
 import com.flyn.hastesql.annotation.Constraint;
+import com.flyn.hastesql.annotation.ForeignKey;
 import com.flyn.hastesql.annotation.PrimaryKey;
 import com.flyn.hastesql.converter.AbstractConverter;
 import com.flyn.hastesql.converter.ConverterFactory;
@@ -50,6 +51,9 @@ public class ReflectUtils
                         PrimaryKey primaryKey = (PrimaryKey) annotation;
                         property.setAutoIncrease(primaryKey.AutoIncrease());
                         property.setPrimaryKey(true);
+                    } else if (annotation.annotationType().equals(ForeignKey.class))
+                    {
+                        //Add support foreign key
                     }
                     if (annotation.annotationType().equals(Constraint.class))
                     {
