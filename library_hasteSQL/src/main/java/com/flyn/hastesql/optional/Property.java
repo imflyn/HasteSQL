@@ -26,7 +26,6 @@ public class Property
         this.name = name;
     }
 
-
     public boolean isPrimaryKey()
     {
         return isPrimaryKey;
