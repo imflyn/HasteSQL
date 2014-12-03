@@ -1,5 +1,7 @@
 package com.flyn.hastesql.core;
 
+import android.database.Cursor;
+
 import com.flyn.hastesql.optional.ConditionBuilder;
 import com.flyn.hastesql.optional.ConditionExpression;
 
@@ -45,4 +47,6 @@ public interface HasteOperation
     void run(String sql);
 
     void run(String sql, Object[] args);
+
+    Cursor query(String sql,String[] args);
 }

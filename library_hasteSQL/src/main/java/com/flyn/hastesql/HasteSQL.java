@@ -56,7 +56,6 @@ public class HasteSQL
         if (null == hasteSQL)
         {
             hasteSQL = new HasteSQL();
-
         }
         return hasteSQL;
     }

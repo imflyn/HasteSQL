@@ -417,4 +417,10 @@ public class HasteDao implements HasteOperation
         sqlExecutor.execSQL(sql, args);
     }
 
+    @Override
+    public Cursor query(String sql, String[] args)
+    {
+        return sqlExecutor.execQuery(sql, args);
+    }
+
 }

@@ -1,15 +1,19 @@
 package com.flyn.hastesql.core;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.flyn.hastesql.async.Async;
+import com.flyn.hastesql.async.ThreadPool;
 import com.flyn.hastesql.optional.ConditionBuilder;
 import com.flyn.hastesql.optional.ConditionExpression;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Created by flyn on 2014-11-11.
@@ -244,6 +248,23 @@ public class HasteMaster implements HasteOperation
     public void run(String sql, Object[] args)
     {
         sqlExecutor.execSQL(sql, args);
+    }
+
+    @Override
+    public Cursor query(String sql, String[] args)
+    {
+        return sqlExecutor.execQuery(sql, args);
+    }
+
+
+    public Async startAsync()
+    {
+        return Async.create(this);
+    }
+
+    public Async startAsync(ExecutorService executorService)
+    {
+        return Async.create(this, ThreadPool.createNew(executorService));
     }
 
 
