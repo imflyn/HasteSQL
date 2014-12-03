@@ -5,4 +5,8 @@ package com.flyn.hastesql.async;
  */
 public class Async
 {
+
+
+
+
 }

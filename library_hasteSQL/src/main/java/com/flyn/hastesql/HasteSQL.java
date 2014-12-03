@@ -24,12 +24,6 @@ public class HasteSQL
         }
 
         @Override
-        public void onDrop(SQLiteDatabase db)
-        {
-
-        }
-
-        @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
         {
 

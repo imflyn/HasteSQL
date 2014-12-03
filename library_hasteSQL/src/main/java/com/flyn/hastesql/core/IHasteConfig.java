@@ -9,8 +9,6 @@ public interface IHasteConfig
 {
     public abstract void onCreate(SQLiteDatabase db);
 
-    public abstract void onDrop(SQLiteDatabase db);
-
     public abstract void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
 
     public abstract int dbVersion();
