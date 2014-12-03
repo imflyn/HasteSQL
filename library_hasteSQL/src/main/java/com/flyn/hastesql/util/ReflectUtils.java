@@ -38,7 +38,6 @@ public class ReflectUtils
                     continue;
                 }
 
-                String type = abstractConverter.getType();
                 property = new Property();
                 property.setName(field.getName());
                 property.setConverter(abstractConverter);
