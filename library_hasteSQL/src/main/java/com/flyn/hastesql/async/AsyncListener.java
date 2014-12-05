@@ -11,7 +11,7 @@ public interface AsyncListener<T>
 
     void onSuccess(T data);
 
-    void onFailed(Exception e);
+    void onFailure(Throwable e);
 
     void onCancel();
 }

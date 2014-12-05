@@ -46,9 +46,9 @@ public class ThreadPool
     }
 
 
-    public Future<Object> submit(Callable<Object> callable)
+    public <T> Future<T> submit(Callable<T> callable)
     {
-        Future<Object> future = this.executorService.submit(callable);
+        Future<T> future = this.executorService.submit(callable);
 
         return future;
     }

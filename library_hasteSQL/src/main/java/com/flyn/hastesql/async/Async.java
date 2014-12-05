@@ -1,5 +1,8 @@
 package com.flyn.hastesql.async;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.flyn.hastesql.core.HasteMaster;
 import com.flyn.hastesql.core.HasteModel;
 import com.flyn.hastesql.optional.ConditionBuilder;
@@ -16,18 +19,19 @@ public class Async
 
     private final HasteMaster hasteMaster;
     private final ThreadPool threadPool;
+    private final ExecutorDelivery executorDelivery;
 
 
     private Async(HasteMaster hasteMaster)
     {
-        this.hasteMaster = hasteMaster;
-        this.threadPool = ThreadPool.createDefault();
+        this(hasteMaster, null);
     }
 
     private Async(HasteMaster hasteMaster, ThreadPool threadPool)
     {
         this.hasteMaster = hasteMaster;
-        this.threadPool = threadPool;
+        this.threadPool = threadPool == null ? ThreadPool.createDefault() : threadPool;
+        this.executorDelivery = new ExecutorDelivery(new Handler(Looper.getMainLooper()));
     }
 
     public static Async create(HasteMaster hasteMaster)
@@ -52,23 +56,18 @@ public class Async
         insert(hasteModel, prefix, suffix, null);
     }
 
-    public void insert(HasteModel hasteModel, AsyncListener<?> asyncListener)
+    public void insert(final HasteModel hasteModel,final AsyncListener<?> listener)
     {
-        if (null != asyncListener)
-        {
-            asyncListener.onStart();
-        }
-
         threadPool.submit(new Callable<Object>()
         {
             @Override
             public Object call() throws Exception
             {
-                return null;
+                executorDelivery.sendStartMessage(listener);
+                hasteMaster.insert(hasteModel);
+                return true;
             }
         });
-
-
     }
 
     public void insert(HasteModel hasteModel, String prefix, String suffix, AsyncListener<?> asyncListener)
