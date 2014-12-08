@@ -48,21 +48,6 @@ public class ExecutorDelivery
             });
     }
 
-
-    public void sendCancelMessage(final AsyncListener<?> listener)
-    {
-        if (listener != null)
-            this.mResponsePoster.execute(new Runnable()
-            {
-
-                @Override
-                public void run()
-                {
-                    listener.onCancel();
-                }
-            });
-    }
-
     public <T> void sendSuccessMessage(final AsyncListener<T> listener, final T result)
     {
         if (listener != null)

@@ -13,5 +13,4 @@ public interface AsyncListener<T>
 
     void onFailure(Throwable e);
 
-    void onCancel();
 }
