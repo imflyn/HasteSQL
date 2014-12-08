@@ -56,7 +56,7 @@ public class Async
         insert(hasteModel, prefix, suffix, null);
     }
 
-    public void insert(final HasteModel hasteModel,final AsyncListener<?> listener)
+    public void insert(final HasteModel hasteModel, final AsyncListener<?> listener)
     {
         threadPool.submit(new Callable<Object>()
         {
