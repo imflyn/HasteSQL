@@ -70,9 +70,18 @@ public class Async
         });
     }
 
-    public void insert(HasteModel hasteModel, String prefix, String suffix, AsyncListener<?> asyncListener)
+    public void insert(final HasteModel hasteModel, final String prefix, final String suffix, final AsyncListener<?> listener)
     {
-        hasteMaster.insert(hasteModel, prefix, suffix);
+        threadPool.submit(new Callable<Object>()
+        {
+            @Override
+            public Object call() throws Exception
+            {
+                executorDelivery.sendStartMessage(listener);
+                hasteMaster.insert(hasteModel, prefix, suffix);
+                return true;
+            }
+        });
     }
 
     public void insertAll(List<? extends HasteModel> hasteModelList)
