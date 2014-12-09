@@ -61,6 +61,33 @@ public class AsyncTest extends AndroidTestCase
             }
         });
 
+        hasteMaster.startAsync().insert(people, new AsyncListener<Object>()
+        {
+            @Override
+            public void onStart()
+            {
+                LogUtils.d("onStart");
+            }
+
+            @Override
+            public void onFinish()
+            {
+                LogUtils.d("onFinish");
+            }
+
+            @Override
+            public void onSuccess(Object data)
+            {
+                LogUtils.d("onSuccess");
+            }
+
+            @Override
+            public void onFailure(Throwable e)
+            {
+                LogUtils.d("onFailure");
+            }
+        });
+
 
         while(true)
         {
