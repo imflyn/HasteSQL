@@ -25,6 +25,7 @@ public class HasteMaster implements HasteOperation
     private final Map<String, HasteDao> hasteDaoMap = new HashMap<String, HasteDao>();
     private SQLiteDatabase db;
     private SQLExecutor sqlExecutor;
+    private Async async;
 
     private HasteMaster(Context context, IHasteConfig hasteConfig)
     {
@@ -257,14 +258,22 @@ public class HasteMaster implements HasteOperation
     }
 
 
-    public Async startAsync()
+    public synchronized Async startAsync()
     {
-        return Async.create(this);
+        if (async == null)
+        {
+            async = Async.create(this);
+        }
+        return async;
     }
 
-    public Async startAsync(ExecutorService executorService)
+    public synchronized Async startAsync(ExecutorService executorService)
     {
-        return Async.create(this, ThreadPool.createNew(executorService));
+        if (async == null)
+        {
+            async = Async.create(this, ThreadPool.createNew(executorService));
+        }
+        return async;
     }
 
 
