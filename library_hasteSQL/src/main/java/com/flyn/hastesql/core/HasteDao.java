@@ -93,6 +93,14 @@ public class HasteDao implements HasteOperation
         }
     }
 
+    @Override
+    public void update(Class<? extends HasteModel> clz, ConditionExpression valueExpression, ConditionExpression whereExpression)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(" UPDATE ").append(hasteTable.getTableName()).append(" SET ");
+        stringBuilder.append(valueExpression.toString()).append(" WHERE ").append(whereExpression.toString());
+        sqlExecutor.execSQL(stringBuilder.toString());
+    }
 
     @Override
     public void update(HasteModel hasteModel)
@@ -110,25 +118,22 @@ public class HasteDao implements HasteOperation
                 return;
             }
             Object[] dstArray = new Object[srcArray.length + 1];
-
             System.arraycopy(srcArray, 0, dstArray, 0, srcArray.length);
-            dstArray[dstArray.length - 1] = hasteModel.getRowId();
-            sqlExecutor.execSQL(sql, dstArray);
+            try
+            {
+                dstArray[dstArray.length - 1] = ReflectUtils.getFieldValue(hasteTable.getPrimaryKey(), hasteModel);
+            } catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+                return;
+            }
 
+            sqlExecutor.execSQL(sql, dstArray);
         } else
         {
             //not support
             throw new IllegalArgumentException("Can not delete entity with no primary key.");
         }
-    }
-
-    @Override
-    public void update(Class<? extends HasteModel> clz, ConditionExpression valueExpression, ConditionExpression whereExpression)
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(" UPDATE ").append(hasteTable.getTableName()).append(" SET ");
-        stringBuilder.append(valueExpression.toString()).append(" WHERE ").append(whereExpression.toString());
-        sqlExecutor.execSQL(stringBuilder.toString());
     }
 
     @Override
@@ -154,7 +159,14 @@ public class HasteDao implements HasteOperation
                 Object[] dstArray = new Object[srcArray.length + 1];
 
                 System.arraycopy(srcArray, 0, dstArray, 0, srcArray.length);
-                dstArray[dstArray.length - 1] = hasteModel.getRowId();
+                try
+                {
+                    dstArray[dstArray.length - 1] = ReflectUtils.getFieldValue(hasteTable.getPrimaryKey(), hasteModel);
+                } catch (IllegalAccessException e)
+                {
+                    e.printStackTrace();
+                    return;
+                }
                 objects.add(dstArray);
             }
             sqlExecutor.execSQLList(sql, objects);

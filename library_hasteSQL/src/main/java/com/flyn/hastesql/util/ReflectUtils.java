@@ -86,6 +86,11 @@ public class ReflectUtils
         return objectArrayList.toArray();
     }
 
+    public static Object getFieldValue(Property property, Object obj) throws IllegalAccessException
+    {
+        return property.getConverter().getValue(obj);
+    }
+
 
     public static boolean isText(Object obj)
     {
