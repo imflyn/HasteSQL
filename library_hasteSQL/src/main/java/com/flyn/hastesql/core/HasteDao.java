@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class HasteDao implements HasteOperation
 {
-    private final HasteTable hasteTable;
+    private final HasteTable  hasteTable;
     private final SQLExecutor sqlExecutor;
 
     protected HasteDao(SQLExecutor sqlExecutor, String tableName, Class<? extends HasteModel> hasteModelClz)
@@ -181,7 +181,7 @@ public class HasteDao implements HasteOperation
     public void insertOrReplace(HasteModel hasteModel)
     {
         boolean skipPrimaryKey = false;
-        if (hasteTable.hasPrimaryKey() && hasteModel.getRowId() <= 0)
+        if (hasteTable.hasPrimaryKey() && hasteTable.isAutoIncrease() && hasteModel.getRowId() <= 0)
         {
             skipPrimaryKey = true;
         }
@@ -210,7 +210,7 @@ public class HasteDao implements HasteOperation
         {
             hasteModel = hasteModelList.get(i);
             boolean skipPrimaryKey = false;
-            if (hasteTable.hasPrimaryKey() && hasteModel.getRowId() > 0)
+            if (hasteTable.hasPrimaryKey() && hasteTable.isAutoIncrease() && hasteModel.getRowId() <= 0)
             {
                 skipPrimaryKey = true;
             }
