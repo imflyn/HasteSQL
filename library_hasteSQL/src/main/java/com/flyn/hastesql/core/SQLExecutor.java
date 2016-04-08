@@ -13,7 +13,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Created by flyn on 2014-11-11.
- * <p/>
  * Thread-Safe
  */
 public class SQLExecutor

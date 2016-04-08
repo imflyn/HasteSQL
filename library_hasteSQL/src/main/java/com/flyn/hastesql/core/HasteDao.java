@@ -15,7 +15,6 @@ import java.util.List;
 
 /**
  * Created by flyn on 2014-11-10.
- * <p/>
  * Thread-Safe
  */
 public class HasteDao implements HasteOperation

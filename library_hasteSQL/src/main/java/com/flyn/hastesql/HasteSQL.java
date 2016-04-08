@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 /**
  * Created by flyn on 2014-11-10.
- * <p/>
  * Thread-Safe
  */
 public class HasteSQL

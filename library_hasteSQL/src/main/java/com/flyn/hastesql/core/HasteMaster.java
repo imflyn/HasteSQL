@@ -17,7 +17,6 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * Created by flyn on 2014-11-11.
- * <p/>
  * Thread-Safe
  */
 public class HasteMaster implements HasteOperation

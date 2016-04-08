@@ -41,9 +41,6 @@ public class SQLUtils
                     sqlBuilder.append(" AUTOINCREMENT ");
                 }
             }
-            // 设置UNIQUE属性
-            // 设置NOT NULL属性
-            // 设置CHECK属性
             if (!StringUtils.isEmpty(property.getCheck()))
             {
                 sqlBuilder.append(" CHECK(");
