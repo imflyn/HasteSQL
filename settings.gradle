@@ -1,1 +1,1 @@
-include ':library_hasteSQL', ':test_hastesql'
+include ':hastesql', ':test_hastesql'

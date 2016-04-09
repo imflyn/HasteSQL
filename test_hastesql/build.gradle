@@ -16,6 +16,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':library_hasteSQL')
+    compile project(':hastesql')
     compile 'de.greenrobot:greendao:1.3.7'
 }
