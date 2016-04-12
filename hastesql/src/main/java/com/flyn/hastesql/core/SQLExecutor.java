@@ -18,12 +18,12 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class SQLExecutor
 {
 
-    private final ReentrantReadWriteLock.ReadLock mReadLock;
+    private final ReentrantReadWriteLock.ReadLock  mReadLock;
     private final ReentrantReadWriteLock.WriteLock mWriteLock;
 
     private final SQLiteDatabase db;
 
-    public SQLExecutor(SQLiteDatabase db)
+    protected SQLExecutor(SQLiteDatabase db)
     {
         this.db = db;
         ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
@@ -31,22 +31,22 @@ public class SQLExecutor
         this.mWriteLock = lock.writeLock();
     }
 
-    public <T extends HasteModel> T queryFirst(Class<T> clz)
+    protected  <T extends HasteModel> T queryFirst(Class<T> clz)
     {
         return null;
     }
 
-    public <T extends HasteModel> List<T> queryAll(Class<T> clz)
+    protected <T extends HasteModel> List<T> queryAll(Class<T> clz)
     {
         return null;
     }
 
-    public Cursor execQuery(String sql)
+    protected Cursor execQuery(String sql)
     {
         return execQuery(sql, null);
     }
 
-    public Cursor execQuery(String sql, String[] selectionArgs)
+    protected Cursor execQuery(String sql, String[] selectionArgs)
     {
         debugSql(sql);
         Cursor cursor;
@@ -62,7 +62,7 @@ public class SQLExecutor
     }
 
 
-    public void execSQL(String sql)
+    protected void execSQL(String sql)
     {
         debugSql(sql);
         try
@@ -78,7 +78,7 @@ public class SQLExecutor
         }
     }
 
-    public void execSQL(String sql, Object[] values)
+    protected void execSQL(String sql, Object[] values)
     {
         debugSql(sql);
         try
@@ -94,7 +94,7 @@ public class SQLExecutor
         }
     }
 
-    public void execSQLList(String sql, List<Object[]> values)
+    protected void execSQLList(String sql, List<Object[]> values)
     {
         debugSql(sql);
         try
@@ -113,7 +113,7 @@ public class SQLExecutor
         }
     }
 
-    public long insert(String sql, Object[] objects)
+    protected long insert(String sql, Object[] objects)
     {
         debugSql(sql);
         long rowId = -1;
@@ -142,7 +142,7 @@ public class SQLExecutor
         return rowId;
     }
 
-    public long[] insertList(String sql, List<Object[]> objects)
+    protected long[] insertList(String sql, List<Object[]> objects)
     {
         debugSql(sql);
         long[] rowId = new long[objects.size()];

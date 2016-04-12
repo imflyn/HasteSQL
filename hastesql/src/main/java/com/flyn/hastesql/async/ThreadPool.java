@@ -8,35 +8,43 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by flyn on 2014-12-03.
  */
-public class ThreadPool {
-	private ExecutorService executorService;
+public class ThreadPool
+{
+    private ExecutorService executorService;
 
-	private ThreadPool() {
-		this.executorService = Executors.newCachedThreadPool(new ThreadFactory() {
-			private AtomicInteger atomicInteger = new AtomicInteger(0);
+    private ThreadPool()
+    {
+        this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
+        {
+            private AtomicInteger atomicInteger = new AtomicInteger(0);
 
-			@Override
-			public Thread newThread(Runnable r) {
-				Thread thread = new Thread(r);
-				thread.setName("HasteSQL Thread #" + atomicInteger.incrementAndGet());
-				return thread;
-			}
-		});
-	}
+            @Override
+            public Thread newThread(Runnable r)
+            {
+                Thread thread = new Thread(r);
+                thread.setName("HasteSQL Thread #" + atomicInteger.incrementAndGet());
+                return thread;
+            }
+        });
+    }
 
-	private ThreadPool(ExecutorService executorService) {
-		this.executorService = executorService;
-	}
+    private ThreadPool(ExecutorService executorService)
+    {
+        this.executorService = executorService;
+    }
 
-	public static ThreadPool createDefault() {
-		return new ThreadPool();
-	}
+    public static ThreadPool createDefault()
+    {
+        return new ThreadPool();
+    }
 
-	public static ThreadPool createNew(ExecutorService executorService) {
-		return new ThreadPool(executorService);
-	}
+    public static ThreadPool createNew(ExecutorService executorService)
+    {
+        return new ThreadPool(executorService);
+    }
 
-	public void submit(Runnable runnable) {
-		this.executorService.execute(runnable);
-	}
+    public void submit(Runnable runnable)
+    {
+        this.executorService.execute(runnable);
+    }
 }

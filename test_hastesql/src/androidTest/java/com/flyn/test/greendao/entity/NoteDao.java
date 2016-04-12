@@ -18,29 +18,21 @@ public class NoteDao extends AbstractDao<Note, Long>
 
     public static final String TABLENAME = "NOTE";
 
-    /**
-     * Properties of entity Note.<br/>
-     * Can be used for QueryBuilder and for referencing column names.
-     */
-    public static class Properties
-    {
-        public final static Property Id      = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Text    = new Property(1, String.class, "text", false, "TEXT");
-        public final static Property Comment = new Property(2, String.class, "comment", false, "COMMENT");
-        public final static Property Date    = new Property(3, java.util.Date.class, "date", false, "DATE");
-    };
-
     public NoteDao(DaoConfig config)
     {
         super(config);
     }
+
+    ;
 
     public NoteDao(DaoConfig config, DaoSession daoSession)
     {
         super(config, daoSession);
     }
 
-    /** Creates the underlying database table. */
+    /**
+     * Creates the underlying database table.
+     */
     public static void createTable(SQLiteDatabase db, boolean ifNotExists)
     {
         String constraint = ifNotExists ? "IF NOT EXISTS " : "";
@@ -51,14 +43,18 @@ public class NoteDao extends AbstractDao<Note, Long>
                 "'DATE' INTEGER);"); // 3: date
     }
 
-    /** Drops the underlying database table. */
+    /**
+     * Drops the underlying database table.
+     */
     public static void dropTable(SQLiteDatabase db, boolean ifExists)
     {
         String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "'NOTE'";
         db.execSQL(sql);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected void bindValues(SQLiteStatement stmt, Note entity)
     {
@@ -84,14 +80,18 @@ public class NoteDao extends AbstractDao<Note, Long>
         }
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public Long readKey(Cursor cursor, int offset)
     {
         return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public Note readEntity(Cursor cursor, int offset)
     {
@@ -104,7 +104,9 @@ public class NoteDao extends AbstractDao<Note, Long>
         return entity;
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public void readEntity(Cursor cursor, Note entity, int offset)
     {
@@ -114,7 +116,9 @@ public class NoteDao extends AbstractDao<Note, Long>
         entity.setDate(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected Long updateKeyAfterInsert(Note entity, long rowId)
     {
@@ -122,7 +126,9 @@ public class NoteDao extends AbstractDao<Note, Long>
         return rowId;
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public Long getKey(Note entity)
     {
@@ -135,11 +141,25 @@ public class NoteDao extends AbstractDao<Note, Long>
         }
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected boolean isEntityUpdateable()
     {
         return true;
+    }
+
+    /**
+     * Properties of entity Note.<br/>
+     * Can be used for QueryBuilder and for referencing column names.
+     */
+    public static class Properties
+    {
+        public final static Property Id      = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Text    = new Property(1, String.class, "text", false, "TEXT");
+        public final static Property Comment = new Property(2, String.class, "comment", false, "COMMENT");
+        public final static Property Date    = new Property(3, java.util.Date.class, "date", false, "DATE");
     }
 
 }

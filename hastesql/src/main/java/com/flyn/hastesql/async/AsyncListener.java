@@ -3,14 +3,26 @@ package com.flyn.hastesql.async;
 /**
  * Created by flyn on 2014-12-03.
  */
-public interface AsyncListener<T>
+public abstract class AsyncListener<T>
 {
-    void onStart();
+    public void onStart()
+    {
 
-    void onFinish();
+    }
 
-    void onSuccess(T data);
+    public void onFinish()
+    {
 
-    void onFailure(Throwable e);
+    }
+
+    public void onSuccess(T data)
+    {
+
+    }
+
+    public void onFailure(Throwable e)
+    {
+
+    }
 
 }

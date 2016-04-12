@@ -67,7 +67,7 @@ public class HasteDao implements HasteOperation
     public void insertAll(List<? extends HasteModel> hasteModelList)
     {
         String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
-        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
+        List<Object[]> objects = new ArrayList<>(hasteModelList.size());
         try
         {
             for (int i = 0, size = hasteModelList.size(); i < size; i++)
@@ -138,7 +138,7 @@ public class HasteDao implements HasteOperation
     @Override
     public void updateAll(List<? extends HasteModel> hasteModelList)
     {
-        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
+        List<Object[]> objects = new ArrayList<>(hasteModelList.size());
         if (hasteTable.hasPrimaryKey())
         {
             String sql = SQLUtils.createSQLUpdateByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey(), hasteTable.getAllColumns());
@@ -179,11 +179,7 @@ public class HasteDao implements HasteOperation
     @Override
     public void insertOrReplace(HasteModel hasteModel)
     {
-        boolean skipPrimaryKey = false;
-        if (hasteTable.hasPrimaryKey() && hasteTable.isAutoIncrease() && hasteModel.getRowId() <= 0)
-        {
-            skipPrimaryKey = true;
-        }
+        boolean skipPrimaryKey = hasteTable.hasPrimaryKey() && hasteTable.isAutoIncrease() && hasteModel.getRowId() <= 0;
         String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns(), skipPrimaryKey);
         Object[] objects;
         try
@@ -208,11 +204,7 @@ public class HasteDao implements HasteOperation
         for (int i = 0, size = hasteModelList.size(); i < size; i++)
         {
             hasteModel = hasteModelList.get(i);
-            boolean skipPrimaryKey = false;
-            if (hasteTable.hasPrimaryKey() && hasteTable.isAutoIncrease() && hasteModel.getRowId() <= 0)
-            {
-                skipPrimaryKey = true;
-            }
+            boolean skipPrimaryKey = hasteTable.hasPrimaryKey() && hasteTable.isAutoIncrease() && hasteModel.getRowId() <= 0;
             String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns(), skipPrimaryKey);
             Object[] objects;
             try
@@ -282,7 +274,7 @@ public class HasteDao implements HasteOperation
     @Override
     public void deleteAll(List<? extends HasteModel> hasteModelList)
     {
-        List<Object[]> objects = new ArrayList<Object[]>(hasteModelList.size());
+        List<Object[]> objects = new ArrayList<>(hasteModelList.size());
         if (hasteTable.hasPrimaryKey())
         {
             String sql = SQLUtils.createSQLDeleteByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey());
@@ -335,7 +327,7 @@ public class HasteDao implements HasteOperation
             //            e.printStackTrace();
         } finally
         {
-            CursorUtils.closeQuietly(cursor);
+            cursor.close();
         }
         return entities;
     }
@@ -358,7 +350,7 @@ public class HasteDao implements HasteOperation
             LogUtils.e(e);
         } finally
         {
-            CursorUtils.closeQuietly(cursor);
+            cursor.close();
         }
         return entities.isEmpty() ? null : entities.get(0);
     }
@@ -388,7 +380,7 @@ public class HasteDao implements HasteOperation
             e.printStackTrace();
         } finally
         {
-            CursorUtils.closeQuietly(cursor);
+            cursor.close();
         }
         return entities.isEmpty() ? null : entities.get(0);
     }
@@ -411,7 +403,7 @@ public class HasteDao implements HasteOperation
             e.printStackTrace();
         } finally
         {
-            CursorUtils.closeQuietly(cursor);
+            cursor.close();
         }
         return entities;
     }

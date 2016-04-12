@@ -74,7 +74,7 @@ public class ReflectUtils
 
     public static Object[] getFieldValueArray(Property[] properties, Object obj, boolean skipAutoIncrease) throws IllegalAccessException
     {
-        ArrayList<Object> objectArrayList = new ArrayList<Object>(properties.length);
+        ArrayList<Object> objectArrayList = new ArrayList<>(properties.length);
         for (int i = 0; i < properties.length; i++)
         {
             if (properties[i].isAutoIncrease() && skipAutoIncrease)

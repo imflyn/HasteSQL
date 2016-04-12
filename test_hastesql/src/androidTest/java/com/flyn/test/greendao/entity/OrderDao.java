@@ -23,21 +23,11 @@ public class OrderDao extends AbstractDao<Order, Long>
 {
 
     public static final String TABLENAME = "ORDERS";
+    private DaoSession daoSession;
 
-    /**
-     * Properties of entity Order.<br/>
-     * Can be used for QueryBuilder and for referencing column names.
-     */
-    public static class Properties
-    {
-        public final static Property Id         = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Date       = new Property(1, java.util.Date.class, "date", false, "DATE");
-        public final static Property CustomerId = new Property(2, long.class, "customerId", false, "CUSTOMER_ID");
-    };
-
-    private DaoSession   daoSession;
-
+    ;
     private Query<Order> customer_OrdersQuery;
+    private String selectDeep;
 
     public OrderDao(DaoConfig config)
     {
@@ -50,7 +40,9 @@ public class OrderDao extends AbstractDao<Order, Long>
         this.daoSession = daoSession;
     }
 
-    /** Creates the underlying database table. */
+    /**
+     * Creates the underlying database table.
+     */
     public static void createTable(SQLiteDatabase db, boolean ifNotExists)
     {
         String constraint = ifNotExists ? "IF NOT EXISTS " : "";
@@ -60,14 +52,18 @@ public class OrderDao extends AbstractDao<Order, Long>
                 "'CUSTOMER_ID' INTEGER NOT NULL );"); // 2: customerId
     }
 
-    /** Drops the underlying database table. */
+    /**
+     * Drops the underlying database table.
+     */
     public static void dropTable(SQLiteDatabase db, boolean ifExists)
     {
         String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "'ORDERS'";
         db.execSQL(sql);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected void bindValues(SQLiteStatement stmt, Order entity)
     {
@@ -94,14 +90,18 @@ public class OrderDao extends AbstractDao<Order, Long>
         entity.__setDaoSession(daoSession);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public Long readKey(Cursor cursor, int offset)
     {
         return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public Order readEntity(Cursor cursor, int offset)
     {
@@ -113,7 +113,9 @@ public class OrderDao extends AbstractDao<Order, Long>
         return entity;
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public void readEntity(Cursor cursor, Order entity, int offset)
     {
@@ -122,7 +124,9 @@ public class OrderDao extends AbstractDao<Order, Long>
         entity.setCustomerId(cursor.getLong(offset + 2));
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected Long updateKeyAfterInsert(Order entity, long rowId)
     {
@@ -130,7 +134,9 @@ public class OrderDao extends AbstractDao<Order, Long>
         return rowId;
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public Long getKey(Order entity)
     {
@@ -143,14 +149,18 @@ public class OrderDao extends AbstractDao<Order, Long>
         }
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected boolean isEntityUpdateable()
     {
         return true;
     }
 
-    /** Internal query to resolve the "orders" to-many relationship of Customer. */
+    /**
+     * Internal query to resolve the "orders" to-many relationship of Customer.
+     */
     public List<Order> _queryCustomer_Orders(long customerId)
     {
         synchronized (this)
@@ -167,8 +177,6 @@ public class OrderDao extends AbstractDao<Order, Long>
         query.setParameter(0, customerId);
         return query.list();
     }
-
-    private String selectDeep;
 
     protected String getSelectDeep()
     {
@@ -213,7 +221,7 @@ public class OrderDao extends AbstractDao<Order, Long>
         SqlUtils.appendColumnsEqValue(builder, "T", getPkColumns());
         String sql = builder.toString();
 
-        String[] keyArray = new String[] { key.toString() };
+        String[] keyArray = new String[]{key.toString()};
         Cursor cursor = db.rawQuery(sql, keyArray);
 
         try
@@ -277,11 +285,24 @@ public class OrderDao extends AbstractDao<Order, Long>
         }
     }
 
-    /** A raw-style query where you can pass any WHERE clause and arguments. */
+    /**
+     * A raw-style query where you can pass any WHERE clause and arguments.
+     */
     public List<Order> queryDeep(String where, String... selectionArg)
     {
         Cursor cursor = db.rawQuery(getSelectDeep() + where, selectionArg);
         return loadDeepAllAndCloseCursor(cursor);
+    }
+
+    /**
+     * Properties of entity Order.<br/>
+     * Can be used for QueryBuilder and for referencing column names.
+     */
+    public static class Properties
+    {
+        public final static Property Id         = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Date       = new Property(1, java.util.Date.class, "date", false, "DATE");
+        public final static Property CustomerId = new Property(2, long.class, "customerId", false, "CUSTOMER_ID");
     }
 
 }

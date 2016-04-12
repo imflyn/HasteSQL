@@ -12,17 +12,23 @@ import de.greenrobot.dao.DaoException;
 public class Customer
 {
 
-    private Long                  id;
-    /** Not-null value. */
-    private String                name;
+    private Long   id;
+    /**
+     * Not-null value.
+     */
+    private String name;
 
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     private transient DaoSession daoSession;
 
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     private transient CustomerDao myDao;
 
-    private List<Order>           orders;
+    private List<Order> orders;
 
     public Customer()
     {
@@ -39,7 +45,9 @@ public class Customer
         this.name = name;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     public void __setDaoSession(DaoSession daoSession)
     {
         this.daoSession = daoSession;
@@ -56,7 +64,9 @@ public class Customer
         this.id = id;
     }
 
-    /** Not-null value. */
+    /**
+     * Not-null value.
+     */
     public String getName()
     {
         return name;

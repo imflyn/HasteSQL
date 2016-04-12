@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class TestGreenDaoInsert extends AndroidTestCase
 {
-    private Context mContext;
+    private Context        mContext;
     private SQLiteDatabase db;
 
 

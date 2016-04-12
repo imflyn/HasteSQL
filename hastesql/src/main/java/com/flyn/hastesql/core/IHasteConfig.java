@@ -7,13 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public interface IHasteConfig
 {
-    public abstract void onCreate(SQLiteDatabase db);
+    void onCreate(SQLiteDatabase db);
 
-    public abstract void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
+    void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
 
-    public abstract int dbVersion();
+    int dbVersion();
 
-    public abstract String dbName();
-
-
+    String dbName();
 }

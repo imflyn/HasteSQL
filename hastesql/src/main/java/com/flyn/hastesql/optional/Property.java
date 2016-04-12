@@ -7,12 +7,12 @@ import com.flyn.hastesql.converter.AbstractConverter;
  */
 public class Property
 {
-    private String name;
-    private boolean isPrimaryKey;
-    private boolean isAutoIncrease;
-    private boolean notNull;
-    private boolean unique;
-    private String check;
+    private String            name;
+    private boolean           isPrimaryKey;
+    private boolean           isAutoIncrease;
+    private boolean           notNull;
+    private boolean           unique;
+    private String            check;
     private AbstractConverter converter;
 
 

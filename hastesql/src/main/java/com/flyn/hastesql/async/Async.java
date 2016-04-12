@@ -17,8 +17,8 @@ import java.util.List;
 public class Async
 {
 
-    private final HasteMaster hasteMaster;
-    private final ThreadPool threadPool;
+    private final HasteMaster      hasteMaster;
+    private final ThreadPool       threadPool;
     private final ExecutorDelivery executorDelivery;
 
 
@@ -347,8 +347,8 @@ public class Async
         });
     }
 
-    public void insertOrReplaceAll(final List<? extends HasteModel> hasteModelList, final String prefix, final String suffix,
-                                   final AsyncListener<?> listener)
+    public void insertOrReplaceAll(final List<? extends HasteModel> hasteModelList, final String prefix, final String suffix, final
+    AsyncListener<?> listener)
     {
         threadPool.submit(new Runnable()
         {
@@ -441,8 +441,8 @@ public class Async
         });
     }
 
-    public void delete(final Class<? extends HasteModel> clz, final String prefix, final String suffix,
-                       final ConditionExpression conditionExpression, final AsyncListener<?> listener)
+    public void delete(final Class<? extends HasteModel> clz, final String prefix, final String suffix, final ConditionExpression
+            conditionExpression, final AsyncListener<?> listener)
     {
         threadPool.submit(new Runnable()
         {
@@ -673,8 +673,8 @@ public class Async
         });
     }
 
-    public <T extends HasteModel> void queryFirst(final Class<T> clz, final String prefix, final String suffix,
-                                                  final ConditionBuilder conditionBuilder, final AsyncListener<T> listener)
+    public <T extends HasteModel> void queryFirst(final Class<T> clz, final String prefix, final String suffix, final ConditionBuilder
+            conditionBuilder, final AsyncListener<T> listener)
     {
         threadPool.submit(new Runnable()
         {
@@ -720,8 +720,8 @@ public class Async
         });
     }
 
-    public <T extends HasteModel> void queryByKey(final Class<T> clz, final String prefix, final String suffix, final Object key,
-                                                  final AsyncListener<T> listener)
+    public <T extends HasteModel> void queryByKey(final Class<T> clz, final String prefix, final String suffix, final Object key, final
+    AsyncListener<T> listener)
     {
         threadPool.submit(new Runnable()
         {

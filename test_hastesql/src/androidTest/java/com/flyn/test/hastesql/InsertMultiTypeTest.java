@@ -48,10 +48,10 @@ public class InsertMultiTypeTest extends AndroidTestCase
         List<TestMultiModel> list = HasteSQL.createDefault(mContext).queryAll(TestMultiModel.class);
 
         LogUtils.d("花费时间:" + (System.currentTimeMillis() - time));
-//        for (TestMultiModel entity : list)
-//        {
-//            LogUtils.i(entity.toString());
-//        }
+        //        for (TestMultiModel entity : list)
+        //        {
+        //            LogUtils.i(entity.toString());
+        //        }
 
     }
 

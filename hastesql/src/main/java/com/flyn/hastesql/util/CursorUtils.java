@@ -36,18 +36,18 @@ public class CursorUtils
     }
 
 
-    public static <T extends HasteModel> List<T> cursorToEntities(Class<T> clz, Cursor cursor,
-                                                                  Property[] properties) throws IllegalAccessException, InvocationTargetException,
-                                                                                                InstantiationException, NoSuchMethodException,
-                                                                                                ParseException
+    public static <T extends HasteModel> List<T> cursorToEntities(Class<T> clz, Cursor cursor, Property[] properties) throws
+                                                                                                                      IllegalAccessException,
+                                                                                                                      InvocationTargetException,
+                                                                                                                      InstantiationException,
+                                                                                                                      NoSuchMethodException,
+                                                                                                                      ParseException
     {
         return cursorToEntities(clz, cursor, properties, false);
     }
 
-    public static <T extends HasteModel> List<T> cursorToEntities(Class<T> clz, Cursor cursor, Property[] properties,
-                                                                  boolean onlyFirst) throws IllegalAccessException, InvocationTargetException,
-                                                                                            InstantiationException, NoSuchMethodException,
-                                                                                            ParseException
+    public static <T extends HasteModel> List<T> cursorToEntities(Class<T> clz, Cursor cursor, Property[] properties, boolean onlyFirst) throws
+                                                                                                                                         IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, ParseException
     {
         List<T> entities = new ArrayList<T>();
         Constructor<T> constructor = clz.getDeclaredConstructor();
@@ -93,7 +93,7 @@ public class CursorUtils
             throw new RuntimeException(e);
         } finally
         {
-            closeQuietly(cursor);
+            cursor.close();
         }
 
     }
@@ -114,7 +114,7 @@ public class CursorUtils
                 }
             } finally
             {
-                CursorUtils.closeQuietly(cursor);
+                cursor.close();
             }
         }
 

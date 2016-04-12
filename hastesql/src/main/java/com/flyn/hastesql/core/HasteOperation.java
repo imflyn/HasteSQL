@@ -48,5 +48,5 @@ public interface HasteOperation
 
     void run(String sql, Object[] args);
 
-    Cursor query(String sql,String[] args);
+    Cursor query(String sql, String[] args);
 }

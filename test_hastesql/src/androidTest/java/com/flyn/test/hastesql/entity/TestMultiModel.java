@@ -11,32 +11,32 @@ import java.util.Date;
  */
 public class TestMultiModel implements HasteModel
 {
-    private final int testFinal = 2;
-    private static int testStatic = 3;
     private static final int testStaticFinal = 4;
-    private String string1;
-    private CharSequence string2;
-    private char char1;
-    private Character char2;
-    private int int1;
-    private Integer int2;
-    private short short1;
-    private Short short2;
-    private long long1;
-    private Long long2;
-    private byte[] data1;
-    private Byte[] data2;
-    private boolean boolean1;
-    private Boolean boolean2;
-    private double double1;
-    private Double double2;
-    private float float1;
-    private Float float2;
-    private Date date1;
-    private transient int testTransient;
-    private Object testObject;
-    private Number testObject2;
-    private volatile StringBuffer testObject3;
+    private static       int testStatic      = 3;
+    private final        int testFinal       = 2;
+    private           String       string1;
+    private           CharSequence string2;
+    private           char         char1;
+    private           Character    char2;
+    private           int          int1;
+    private           Integer      int2;
+    private           short        short1;
+    private           Short        short2;
+    private           long         long1;
+    private           Long         long2;
+    private           byte[]       data1;
+    private           Byte[]       data2;
+    private           boolean      boolean1;
+    private           Boolean      boolean2;
+    private           double       double1;
+    private           Double       double2;
+    private           float        float1;
+    private           Float        float2;
+    private           Date         date1;
+    private transient int          testTransient;
+    private           Object       testObject;
+    private           Number       testObject2;
+    private volatile  StringBuffer testObject3;
 
 
     public TestMultiModel()
@@ -297,17 +297,16 @@ public class TestMultiModel implements HasteModel
     }
 
     @Override
-    public void setRowId(long value)
-    {
-
-    }
-
-    @Override
     public long getRowId()
     {
         return 0;
     }
 
+    @Override
+    public void setRowId(long value)
+    {
+
+    }
 
     @Override
     public String toString()

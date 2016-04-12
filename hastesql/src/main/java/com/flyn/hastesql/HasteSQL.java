@@ -42,15 +42,15 @@ public class HasteSQL
 
     };
     private static HasteSQL hasteSQL;
-    private final HashMap<String, HasteMaster> hasteMasterMap = new HashMap<String, HasteMaster>();
-    private final Object mLock = new Object();
+    private final HashMap<String, HasteMaster> hasteMasterMap = new HashMap<>();
+    private final Object                       mLock          = new Object();
 
     private HasteSQL()
     {
 
     }
 
-    private static synchronized HasteSQL getInstance(Context context)
+    private static synchronized HasteSQL getInstance()
     {
         if (null == hasteSQL)
         {
@@ -67,7 +67,7 @@ public class HasteSQL
     public static HasteMaster createNew(Context context, IHasteConfig hasteConfig)
     {
 
-        HasteSQL hasteSQL = getInstance(context);
+        HasteSQL hasteSQL = getInstance();
 
         HasteMaster hasteMaster;
         synchronized (hasteSQL.mLock)

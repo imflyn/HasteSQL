@@ -17,18 +17,9 @@ public class CustomerDao extends AbstractDao<Customer, Long>
 {
 
     public static final String TABLENAME = "CUSTOMER";
-
-    /**
-     * Properties of entity Customer.<br/>
-     * Can be used for QueryBuilder and for referencing column names.
-     */
-    public static class Properties
-    {
-        public final static Property Id   = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-    };
-
     private DaoSession daoSession;
+
+    ;
 
     public CustomerDao(DaoConfig config)
     {
@@ -41,7 +32,9 @@ public class CustomerDao extends AbstractDao<Customer, Long>
         this.daoSession = daoSession;
     }
 
-    /** Creates the underlying database table. */
+    /**
+     * Creates the underlying database table.
+     */
     public static void createTable(SQLiteDatabase db, boolean ifNotExists)
     {
         String constraint = ifNotExists ? "IF NOT EXISTS " : "";
@@ -50,14 +43,18 @@ public class CustomerDao extends AbstractDao<Customer, Long>
                 "'NAME' TEXT NOT NULL );"); // 1: name
     }
 
-    /** Drops the underlying database table. */
+    /**
+     * Drops the underlying database table.
+     */
     public static void dropTable(SQLiteDatabase db, boolean ifExists)
     {
         String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "'CUSTOMER'";
         db.execSQL(sql);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected void bindValues(SQLiteStatement stmt, Customer entity)
     {
@@ -78,14 +75,18 @@ public class CustomerDao extends AbstractDao<Customer, Long>
         entity.__setDaoSession(daoSession);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public Long readKey(Cursor cursor, int offset)
     {
         return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public Customer readEntity(Cursor cursor, int offset)
     {
@@ -96,7 +97,9 @@ public class CustomerDao extends AbstractDao<Customer, Long>
         return entity;
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public void readEntity(Cursor cursor, Customer entity, int offset)
     {
@@ -104,7 +107,9 @@ public class CustomerDao extends AbstractDao<Customer, Long>
         entity.setName(cursor.getString(offset + 1));
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected Long updateKeyAfterInsert(Customer entity, long rowId)
     {
@@ -112,7 +117,9 @@ public class CustomerDao extends AbstractDao<Customer, Long>
         return rowId;
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     public Long getKey(Customer entity)
     {
@@ -125,11 +132,23 @@ public class CustomerDao extends AbstractDao<Customer, Long>
         }
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     */
     @Override
     protected boolean isEntityUpdateable()
     {
         return true;
+    }
+
+    /**
+     * Properties of entity Customer.<br/>
+     * Can be used for QueryBuilder and for referencing column names.
+     */
+    public static class Properties
+    {
+        public final static Property Id   = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
     }
 
 }

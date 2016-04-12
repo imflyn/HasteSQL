@@ -70,7 +70,7 @@ public class UpdateTest extends AndroidTestCase
     {
         long time = System.currentTimeMillis();
         ConditionExpression valueExpression = new ConditionExpression();
-        valueExpression.equals("age", 1).combine(",").equals("name","sb");
+        valueExpression.equals("age", 1).combine(",").equals("name", "sb");
 
         ConditionExpression whereExpression = new ConditionExpression();
         whereExpression.equals("age", 8).or().greater("age", 18);

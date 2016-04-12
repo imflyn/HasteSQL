@@ -9,8 +9,8 @@ import java.lang.reflect.Field;
  */
 public abstract class AbstractConverter
 {
-    protected final Field field;
-    protected String type;
+    protected final Field  field;
+    protected       String type;
 
     protected AbstractConverter(Field field)
     {

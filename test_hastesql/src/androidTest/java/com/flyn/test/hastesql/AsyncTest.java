@@ -89,7 +89,7 @@ public class AsyncTest extends AndroidTestCase
         });
 
 
-        while(true)
+        while (true)
         {
             Thread.sleep(5000);
         }

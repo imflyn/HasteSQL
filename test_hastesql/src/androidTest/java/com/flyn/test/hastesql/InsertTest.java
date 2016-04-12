@@ -22,7 +22,7 @@ import java.util.List;
 public class InsertTest extends AndroidTestCase
 {
 
-    private Context mContext;
+    private Context      mContext;
     private IHasteConfig iHasteConfig;
 
     @Override

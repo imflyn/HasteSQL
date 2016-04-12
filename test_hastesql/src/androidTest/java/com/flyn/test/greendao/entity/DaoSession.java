@@ -13,19 +13,19 @@ import de.greenrobot.dao.internal.DaoConfig;
 
 /**
  * {@inheritDoc}
- * 
+ *
  * @see de.greenrobot.dao.AbstractDaoSession
  */
 public class DaoSession extends AbstractDaoSession
 {
 
-    private final DaoConfig   noteDaoConfig;
-    private final DaoConfig   customerDaoConfig;
-    private final DaoConfig   orderDaoConfig;
+    private final DaoConfig noteDaoConfig;
+    private final DaoConfig customerDaoConfig;
+    private final DaoConfig orderDaoConfig;
 
-    private final NoteDao noteDao;
+    private final NoteDao     noteDao;
     private final CustomerDao customerDao;
-    private final OrderDao orderDao;
+    private final OrderDao    orderDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig> daoConfigMap)
     {

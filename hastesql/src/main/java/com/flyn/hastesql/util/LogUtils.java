@@ -5,9 +5,9 @@ import android.util.Log;
 public final class LogUtils
 {
 
-    private static final String LOG_FORMAT = "%1$s\n%2$s";
-    private static final String TAG = "HasteSQL";
-    public static volatile boolean DISABLED = false;
+    private static final   String  LOG_FORMAT = "%1$s\n%2$s";
+    private static final   String  TAG        = "HasteSQL";
+    public static volatile boolean DISABLED   = false;
 
     private LogUtils()
     {

@@ -11,12 +11,12 @@ import com.flyn.hastesql.core.HasteModel;
 public class Note implements HasteModel
 {
     @PrimaryKey(AutoIncrease = true)
-    private Long id;
+    private Long           id;
     /**
      * Not-null value.
      */
-    private String text;
-    private String comment;
+    private String         text;
+    private String         comment;
     private java.util.Date date;
 
     public Note()

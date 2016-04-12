@@ -27,7 +27,7 @@ public class QueryTest extends AndroidTestCase
     {
         super.setUp();
         mContext = getContext();
-//        HasteSQL.createDefault(mContext).deleteAll(People.class);
+        //        HasteSQL.createDefault(mContext).deleteAll(People.class);
         for (int i = 0; i < 10000; i++)
         {
             People people = new People();
@@ -45,7 +45,7 @@ public class QueryTest extends AndroidTestCase
         List<People> list = HasteSQL.createDefault(mContext).queryAll(People.class);
 
         LogUtils.d("花费时间:" + (System.currentTimeMillis() - time));
-        LogUtils.d("共"+list.size()+"条记录");
+        LogUtils.d("共" + list.size() + "条记录");
         //        for (People entity : list)
         //        {
         //            LogUtils.i(entity.toString());
@@ -84,16 +84,16 @@ public class QueryTest extends AndroidTestCase
     {
         long time = System.currentTimeMillis();
         ConditionExpression conditionExpression = new ConditionExpression();
-        conditionExpression.greater("age",2);
+        conditionExpression.greater("age", 2);
         ConditionBuilder conditionBuilder = new ConditionBuilder();
         conditionBuilder.where(conditionExpression).orderByDesc("age");
 
         List<People> list = HasteSQL.createDefault(mContext).query(People.class, conditionBuilder);
         LogUtils.d("花费时间:" + (System.currentTimeMillis() - time));
-//        for (People entity : list)
-//        {
-//            LogUtils.i(entity.toString());
-//        }
+        //        for (People entity : list)
+        //        {
+        //            LogUtils.i(entity.toString());
+        //        }
 
     }
 

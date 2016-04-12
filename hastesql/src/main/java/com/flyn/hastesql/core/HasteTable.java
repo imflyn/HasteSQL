@@ -9,10 +9,9 @@ import com.flyn.hastesql.util.ReflectUtils;
 class HasteTable
 {
 
-    private final String tableName;
-    private Property primaryKey;
-    private Property[] allColumns;
-    private Property[] pkColumns;
+    private final String     tableName;
+    private       Property   primaryKey;
+    private       Property[] allColumns;
 
     protected HasteTable(String tableName, Class<? extends HasteModel> clz)
     {
@@ -45,11 +44,6 @@ class HasteTable
         return allColumns;
     }
 
-    public Property[] getPkColumns()
-    {
-        return pkColumns;
-    }
-
     public Property getPrimaryKey()
     {
         return primaryKey;
@@ -58,7 +52,6 @@ class HasteTable
     public boolean isAutoIncrease()
     {
         return primaryKey != null && primaryKey.isAutoIncrease();
-
     }
 
     public boolean hasPrimaryKey()

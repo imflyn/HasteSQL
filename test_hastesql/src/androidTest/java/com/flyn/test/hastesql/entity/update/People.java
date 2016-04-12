@@ -14,7 +14,7 @@ public class People implements HasteModel
     private long id;
 
     private String name;
-    private int age;
+    private int    age;
 
     private Date date = new Date();
 

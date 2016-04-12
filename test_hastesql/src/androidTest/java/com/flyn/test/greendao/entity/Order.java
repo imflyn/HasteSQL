@@ -10,18 +10,22 @@ import de.greenrobot.dao.DaoException;
 public class Order
 {
 
-    private Long                 id;
-    private java.util.Date       date;
-    private long                 customerId;
+    private Long           id;
+    private java.util.Date date;
+    private long           customerId;
 
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     private transient DaoSession daoSession;
 
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     private transient OrderDao myDao;
 
     private Customer customer;
-    private Long                 customer__resolvedKey;
+    private Long     customer__resolvedKey;
 
     public Order()
     {
@@ -39,7 +43,9 @@ public class Order
         this.customerId = customerId;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     public void __setDaoSession(DaoSession daoSession)
     {
         this.daoSession = daoSession;
@@ -76,7 +82,9 @@ public class Order
         this.customerId = customerId;
     }
 
-    /** To-one relationship, resolved on first access. */
+    /**
+     * To-one relationship, resolved on first access.
+     */
     public Customer getCustomer()
     {
         long __key = this.customerId;

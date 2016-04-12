@@ -21,10 +21,10 @@ import java.util.concurrent.ExecutorService;
  */
 public class HasteMaster implements HasteOperation
 {
-    private final Map<String, HasteDao> hasteDaoMap = new HashMap<String, HasteDao>();
+    private final Map<String, HasteDao> hasteDaoMap = new HashMap<>();
     private SQLiteDatabase db;
-    private SQLExecutor sqlExecutor;
-    private Async async;
+    private SQLExecutor    sqlExecutor;
+    private Async          async;
 
     private HasteMaster(Context context, IHasteConfig hasteConfig)
     {
@@ -38,7 +38,6 @@ public class HasteMaster implements HasteOperation
 
     private void init(Context context, IHasteConfig hasteConfig)
     {
-        this.hasteDaoMap.clear();
         HasteSQLiteOpenHelper hasteSQLiteOpenHelper = new HasteSQLiteOpenHelper(context, hasteConfig);
         this.db = hasteSQLiteOpenHelper.getWritableDatabase();
         this.sqlExecutor = new SQLExecutor(this.db);
@@ -46,18 +45,13 @@ public class HasteMaster implements HasteOperation
 
     private synchronized HasteDao getHasteDao(Class<? extends HasteModel> clz, String tableName)
     {
-        HasteDao hasteDao = hasteDaoMap.get(tableName);
+        HasteDao hasteDao = this.hasteDaoMap.get(tableName);
         if (null == hasteDao)
         {
             hasteDao = new HasteDao(this.sqlExecutor, tableName, clz);
             this.hasteDaoMap.put(tableName, hasteDao);
         }
         return hasteDao;
-    }
-
-    public SQLExecutor getSqlExecutor()
-    {
-        return sqlExecutor;
     }
 
     @Override
@@ -117,8 +111,8 @@ public class HasteMaster implements HasteOperation
         getHasteDao(clz, clz.getSimpleName()).update(clz, valueExpression, whereExpression);
     }
 
-    public void update(Class<? extends HasteModel> clz, String prefix, String suffix, ConditionExpression valueExpression,
-                       ConditionExpression whereExpression)
+    public void update(Class<? extends HasteModel> clz, String prefix, String suffix, ConditionExpression valueExpression, ConditionExpression
+            whereExpression)
     {
         getHasteDao(clz, prefix + clz.getSimpleName() + suffix).update(clz, valueExpression, whereExpression);
     }
