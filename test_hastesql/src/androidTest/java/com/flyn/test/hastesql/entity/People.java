@@ -60,19 +60,6 @@ public class People implements HasteModel
     }
 
     @Override
-    public long getRowId()
-    {
-        return id;
-    }
-
-    @Override
-    public void setRowId(long value)
-    {
-        //        LogUtils.d("PrimaryKeyValue:" + value);
-        id = value;
-    }
-
-    @Override
     public String toString()
     {
         return "People{" +

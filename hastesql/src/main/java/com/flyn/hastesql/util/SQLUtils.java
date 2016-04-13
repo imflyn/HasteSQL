@@ -105,7 +105,7 @@ public class SQLUtils
         sqlBuilder.append(" (");
         for (Property property : properties)
         {
-            if (skipPrimaryKey)
+            if (property.isPrimaryKey() && skipPrimaryKey)
             {
                 continue;
             }

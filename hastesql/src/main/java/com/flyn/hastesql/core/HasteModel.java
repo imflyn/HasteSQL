@@ -5,7 +5,4 @@ package com.flyn.hastesql.core;
  */
 public interface HasteModel
 {
-    long getRowId();
-
-    void setRowId(long value);
 }

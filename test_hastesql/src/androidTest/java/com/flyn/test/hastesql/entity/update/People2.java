@@ -58,17 +58,6 @@ public class People2 implements HasteModel
         this.uid = uid;
     }
 
-    @Override
-    public long getRowId()
-    {
-        return 0;
-    }
-
-    @Override
-    public void setRowId(long value)
-    {
-
-    }
 
     @Override
     public String toString()

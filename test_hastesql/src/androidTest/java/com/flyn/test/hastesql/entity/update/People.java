@@ -63,13 +63,11 @@ public class People implements HasteModel
         this.date = date;
     }
 
-    @Override
     public long getRowId()
     {
         return id;
     }
 
-    @Override
     public void setRowId(long value)
     {
         id = value;

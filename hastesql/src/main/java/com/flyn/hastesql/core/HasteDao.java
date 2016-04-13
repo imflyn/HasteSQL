@@ -34,7 +34,7 @@ public class HasteDao implements HasteOperation
 
         String checkTableSQL = SQLUtils.createSQLCheckTableExits(tableName);
         Cursor cursor = sqlExecutor.execQuery(checkTableSQL);
-        if (!CursorUtils.checkTableExist(cursor))
+        if (!CursorUtils.checkTableExist(cursor) && ReflectUtils.checkPropertiesValidity(properties))
         {
             //如果不存在则建表
             String createTableSQL = SQLUtils.createSQLCreateTable(tableName, properties);
@@ -59,7 +59,13 @@ public class HasteDao implements HasteOperation
         long rowId = sqlExecutor.insert(sql, objects);
         if (hasteTable.isAutoIncrease() && rowId > 0)
         {
-            hasteModel.setRowId(rowId);
+            try
+            {
+                hasteTable.getPrimaryKey().getConverter().setValue(rowId, hasteModel);
+            } catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -86,7 +92,13 @@ public class HasteDao implements HasteOperation
             {
                 if (rowIdArray[i] > 0)
                 {
-                    hasteModelList.get(i).setRowId(rowIdArray[i]);
+                    try
+                    {
+                        hasteTable.getPrimaryKey().getConverter().setValue(rowIdArray[i], hasteModelList.get(i));
+                    } catch (IllegalAccessException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -139,47 +151,20 @@ public class HasteDao implements HasteOperation
     public void updateAll(List<? extends HasteModel> hasteModelList)
     {
         List<Object[]> objects = new ArrayList<>(hasteModelList.size());
-        if (hasteTable.hasPrimaryKey())
+        String sql = SQLUtils.createSQLUpdateByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey(), hasteTable.getAllColumns());
+        HasteModel hasteModel;
+        for (int i = 0, size = hasteModelList.size(); i < size; i++)
         {
-            String sql = SQLUtils.createSQLUpdateByKey(hasteTable.getTableName(), hasteTable.getPrimaryKey(), hasteTable.getAllColumns());
-            HasteModel hasteModel;
-            for (int i = 0, size = hasteModelList.size(); i < size; i++)
-            {
-                hasteModel = hasteModelList.get(i);
-                Object[] srcArray;
-                try
-                {
-                    srcArray = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, false);
-                } catch (IllegalAccessException e)
-                {
-                    e.printStackTrace();
-                    return;
-                }
-                Object[] dstArray = new Object[srcArray.length + 1];
-
-                System.arraycopy(srcArray, 0, dstArray, 0, srcArray.length);
-                try
-                {
-                    dstArray[dstArray.length - 1] = ReflectUtils.getFieldValue(hasteTable.getPrimaryKey(), hasteModel);
-                } catch (IllegalAccessException e)
-                {
-                    e.printStackTrace();
-                    return;
-                }
-                objects.add(dstArray);
-            }
-            sqlExecutor.execSQLList(sql, objects);
-        } else
-        {
-            //not support
-            throw new IllegalArgumentException("Can not delete entity with no primary key.");
+            hasteModel = hasteModelList.get(i);
+            update(hasteModel);
         }
+        sqlExecutor.execSQLList(sql, objects);
     }
 
     @Override
     public void insertOrReplace(HasteModel hasteModel)
     {
-        boolean skipPrimaryKey = hasteTable.hasPrimaryKey() && hasteTable.isAutoIncrease() && hasteModel.getRowId() <= 0;
+        boolean skipPrimaryKey = ReflectUtils.getRowIdValue(hasteTable, hasteModel) <= 0;
         String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns(), skipPrimaryKey);
         Object[] objects;
         try
@@ -193,7 +178,13 @@ public class HasteDao implements HasteOperation
         long rowId = sqlExecutor.insert(sql, objects);
         if (rowId > 0 && hasteTable.hasPrimaryKey())
         {
-            hasteModel.setRowId(rowId);
+            try
+            {
+                hasteTable.getPrimaryKey().getConverter().setValue(rowId, hasteModel);
+            } catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -204,22 +195,7 @@ public class HasteDao implements HasteOperation
         for (int i = 0, size = hasteModelList.size(); i < size; i++)
         {
             hasteModel = hasteModelList.get(i);
-            boolean skipPrimaryKey = hasteTable.hasPrimaryKey() && hasteTable.isAutoIncrease() && hasteModel.getRowId() <= 0;
-            String sql = SQLUtils.createSQLInsertOrReplace(hasteTable.getTableName(), hasteTable.getAllColumns(), skipPrimaryKey);
-            Object[] objects;
-            try
-            {
-                objects = ReflectUtils.getFieldValueArray(hasteTable.getAllColumns(), hasteModel, skipPrimaryKey);
-            } catch (IllegalAccessException e)
-            {
-                e.printStackTrace();
-                return;
-            }
-            long rowId = sqlExecutor.insert(sql, objects);
-            if (rowId > 0 && hasteTable.hasPrimaryKey())
-            {
-                hasteModel.setRowId(rowId);
-            }
+            insertOrReplace(hasteModel);
         }
     }
 

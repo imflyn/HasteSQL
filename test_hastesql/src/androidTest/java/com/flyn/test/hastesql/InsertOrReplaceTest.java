@@ -34,6 +34,9 @@ public class InsertOrReplaceTest extends AndroidTestCase
             peopleList.add(people);
         }
         HasteSQL.createDefault(mContext).insertAll(peopleList);
+
+        List<People> peoples = HasteSQL.createDefault(mContext).queryAll(People.class);
+        LogUtils.i(peoples.toString());
     }
 
 

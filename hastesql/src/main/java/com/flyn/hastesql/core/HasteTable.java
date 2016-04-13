@@ -6,7 +6,7 @@ import com.flyn.hastesql.util.ReflectUtils;
 /**
  * Created by flyn on 2014-11-11.
  */
-class HasteTable
+public class HasteTable
 {
 
     private final String     tableName;

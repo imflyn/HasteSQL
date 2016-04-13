@@ -31,7 +31,7 @@ public class SQLExecutor
         this.mWriteLock = lock.writeLock();
     }
 
-    protected  <T extends HasteModel> T queryFirst(Class<T> clz)
+    protected <T extends HasteModel> T queryFirst(Class<T> clz)
     {
         return null;
     }

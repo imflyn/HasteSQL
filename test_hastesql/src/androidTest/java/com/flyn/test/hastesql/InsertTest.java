@@ -76,7 +76,7 @@ public class InsertTest extends AndroidTestCase
     {
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
         Note note;
-        List<Note> testMultiModelList = new ArrayList<Note>();
+        List<Note> testMultiModelList = new ArrayList<>();
         for (int i = 0; i < 10000; i++)
         {
             note = new Note(Long.valueOf(i + ""), "123", "466", new Date());
@@ -120,7 +120,7 @@ public class InsertTest extends AndroidTestCase
     {
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
         Note note;
-        List<Note> testMultiModelList = new ArrayList<Note>();
+        List<Note> testMultiModelList = new ArrayList<>();
         for (int i = 0; i < 2; i++)
         {
             note = new Note(Long.valueOf(i + ""), "123", "466", new Date());
@@ -143,7 +143,7 @@ public class InsertTest extends AndroidTestCase
 
                     HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
                     Note note;
-                    List<Note> testMultiModelList = new ArrayList<Note>();
+                    List<Note> testMultiModelList = new ArrayList<>();
                     for (int i = 0; i < 10; i++)
                     {
                         note = new Note();

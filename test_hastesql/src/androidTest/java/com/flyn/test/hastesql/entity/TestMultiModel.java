@@ -296,17 +296,6 @@ public class TestMultiModel implements HasteModel
         this.testObject3 = testObject3;
     }
 
-    @Override
-    public long getRowId()
-    {
-        return 0;
-    }
-
-    @Override
-    public void setRowId(long value)
-    {
-
-    }
 
     @Override
     public String toString()

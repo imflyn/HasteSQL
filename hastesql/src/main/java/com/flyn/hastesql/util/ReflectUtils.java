@@ -5,6 +5,10 @@ import com.flyn.hastesql.annotation.ForeignKey;
 import com.flyn.hastesql.annotation.PrimaryKey;
 import com.flyn.hastesql.converter.AbstractConverter;
 import com.flyn.hastesql.converter.ConverterFactory;
+import com.flyn.hastesql.converter.LongConverter;
+import com.flyn.hastesql.converter.LongObjectConverter;
+import com.flyn.hastesql.core.HasteModel;
+import com.flyn.hastesql.core.HasteTable;
 import com.flyn.hastesql.optional.Property;
 
 import java.lang.annotation.Annotation;
@@ -95,6 +99,39 @@ public class ReflectUtils
     public static boolean isText(Object obj)
     {
         return obj instanceof String;
+    }
+
+    public static boolean checkPropertiesValidity(Property[] properties)
+    {
+        for (Property property : properties)
+        {
+            if (property.isPrimaryKey() && property.isAutoIncrease())
+            {
+                if (!(property.getConverter() instanceof LongConverter) && !(property.getConverter() instanceof LongObjectConverter))
+                    throw new IllegalStateException("AutoIncrease field data type is not long or Long.");
+
+                break;
+            }
+        }
+        return true;
+    }
+
+    public static long getRowIdValue(HasteTable hasteTable, HasteModel hasteModel)
+    {
+        if (hasteTable.hasPrimaryKey() && hasteTable.isAutoIncrease())
+        {
+            try
+            {
+                return Long.valueOf(hasteTable.getPrimaryKey().getConverter().getValue(hasteModel).toString());
+            } catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+            } catch (ClassCastException e1)
+            {
+                e1.printStackTrace();
+            }
+        }
+        return -1;
     }
 
 }

@@ -18,7 +18,7 @@ public class DeleteTest extends AndroidTestCase
 {
 
     private Context mContext;
-    private List<People> peopleList = new ArrayList<People>();
+    private List<People> peopleList = new ArrayList<>();
 
     @Override
     protected void setUp() throws Exception
