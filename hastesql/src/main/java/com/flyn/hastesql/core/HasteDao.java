@@ -17,14 +17,16 @@ import java.util.List;
  * Created by flyn on 2014-11-10.
  * Thread-Safe
  */
-public class HasteDao implements HasteOperation
+public class HasteDao
 {
-    private final HasteTable  hasteTable;
-    private final SQLExecutor sqlExecutor;
+    private final HasteTable                  hasteTable;
+    private final SQLExecutor                 sqlExecutor;
+    private       Class<? extends HasteModel> hasteModelClz;
 
     protected HasteDao(SQLExecutor sqlExecutor, String tableName, Class<? extends HasteModel> hasteModelClz)
     {
         this.sqlExecutor = sqlExecutor;
+        this.hasteModelClz = hasteModelClz;
         this.hasteTable = new HasteTable(tableName, hasteModelClz);
         createTableIfNotExits(tableName, this.hasteTable.getAllColumns());
     }
@@ -42,8 +44,6 @@ public class HasteDao implements HasteOperation
         }
     }
 
-
-    @Override
     public void insert(HasteModel hasteModel)
     {
         String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
@@ -69,7 +69,6 @@ public class HasteDao implements HasteOperation
         }
     }
 
-    @Override
     public void insertAll(List<? extends HasteModel> hasteModelList)
     {
         String sql = SQLUtils.createSQLInsert(hasteTable.getTableName(), hasteTable.getAllColumns());
@@ -104,8 +103,7 @@ public class HasteDao implements HasteOperation
         }
     }
 
-    @Override
-    public void update(Class<? extends HasteModel> clz, ConditionExpression valueExpression, ConditionExpression whereExpression)
+    public void update(ConditionExpression valueExpression, ConditionExpression whereExpression)
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(" UPDATE ").append(hasteTable.getTableName()).append(" SET ");
@@ -113,7 +111,6 @@ public class HasteDao implements HasteOperation
         sqlExecutor.execSQL(stringBuilder.toString());
     }
 
-    @Override
     public void update(HasteModel hasteModel)
     {
         if (hasteTable.hasPrimaryKey())
@@ -147,7 +144,6 @@ public class HasteDao implements HasteOperation
         }
     }
 
-    @Override
     public void updateAll(List<? extends HasteModel> hasteModelList)
     {
         List<Object[]> objects = new ArrayList<>(hasteModelList.size());
@@ -161,7 +157,6 @@ public class HasteDao implements HasteOperation
         sqlExecutor.execSQLList(sql, objects);
     }
 
-    @Override
     public void insertOrReplace(HasteModel hasteModel)
     {
         boolean skipPrimaryKey = ReflectUtils.getRowIdValue(hasteTable, hasteModel) <= 0;
@@ -188,7 +183,6 @@ public class HasteDao implements HasteOperation
         }
     }
 
-    @Override
     public void insertOrReplaceAll(List<? extends HasteModel> hasteModelList)
     {
         HasteModel hasteModel;
@@ -199,7 +193,6 @@ public class HasteDao implements HasteOperation
         }
     }
 
-    @Override
     public void delete(HasteModel hasteModel)
     {
         if (hasteTable.hasPrimaryKey())
@@ -231,8 +224,7 @@ public class HasteDao implements HasteOperation
         }
     }
 
-    @Override
-    public void delete(Class<? extends HasteModel> clz, ConditionExpression conditionExpression)
+    public void delete(ConditionExpression conditionExpression)
     {
         StringBuilder stringBuilder = new StringBuilder();
         String sql = SQLUtils.createSQLDelete(hasteTable.getTableName());
@@ -240,14 +232,12 @@ public class HasteDao implements HasteOperation
         sqlExecutor.execSQL(stringBuilder.toString());
     }
 
-    @Override
-    public void deleteAll(Class<? extends HasteModel> clz)
+    public void deleteAll()
     {
         String sql = SQLUtils.createSQLDelete(hasteTable.getTableName());
         sqlExecutor.execSQL(sql);
     }
 
-    @Override
     public void deleteAll(List<? extends HasteModel> hasteModelList)
     {
         List<Object[]> objects = new ArrayList<>(hasteModelList.size());
@@ -288,15 +278,14 @@ public class HasteDao implements HasteOperation
     }
 
 
-    @Override
-    public <T extends HasteModel> List<T> queryAll(Class<T> clz)
+    public <T extends HasteModel> List<T> queryAll()
     {
         String sql = SQLUtils.createSQLSelect(hasteTable.getTableName());
         Cursor cursor = sqlExecutor.execQuery(sql);
         List<T> entities = null;
         try
         {
-            entities = CursorUtils.cursorToEntities(clz, cursor, hasteTable.getAllColumns());
+            entities = (List<T>) CursorUtils.cursorToEntities(hasteModelClz, cursor, hasteTable.getAllColumns());
         } catch (Exception e)
         {
             throw new RuntimeException(e);
@@ -308,8 +297,7 @@ public class HasteDao implements HasteOperation
         return entities;
     }
 
-    @Override
-    public <T extends HasteModel> T queryFirst(Class<T> clz, ConditionBuilder conditionBuilder)
+    public <T extends HasteModel> T queryFirst(ConditionBuilder conditionBuilder)
     {
         String sql = SQLUtils.createSQLSelect(hasteTable.getTableName());
         if (null != conditionBuilder)
@@ -320,7 +308,7 @@ public class HasteDao implements HasteOperation
         List<T> entities = null;
         try
         {
-            entities = CursorUtils.cursorToEntities(clz, cursor, hasteTable.getAllColumns(), false);
+            entities = (List<T>) CursorUtils.cursorToEntities(hasteModelClz, cursor, hasteTable.getAllColumns(), false);
         } catch (Exception e)
         {
             LogUtils.e(e);
@@ -331,8 +319,7 @@ public class HasteDao implements HasteOperation
         return entities.isEmpty() ? null : entities.get(0);
     }
 
-    @Override
-    public <T extends HasteModel> T queryByKey(Class<T> clz, Object key)
+    public <T extends HasteModel> T queryByKey(Object key)
     {
         if (!hasteTable.hasPrimaryKey())
         {
@@ -350,7 +337,7 @@ public class HasteDao implements HasteOperation
         List<T> entities = null;
         try
         {
-            entities = CursorUtils.cursorToEntities(clz, cursor, hasteTable.getAllColumns(), false);
+            entities = (List<T>) CursorUtils.cursorToEntities(hasteModelClz, cursor, hasteTable.getAllColumns(), false);
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -361,8 +348,7 @@ public class HasteDao implements HasteOperation
         return entities.isEmpty() ? null : entities.get(0);
     }
 
-    @Override
-    public <T extends HasteModel> List<T> query(Class<T> clz, ConditionBuilder conditionBuilder)
+    public <T extends HasteModel> List<T> query(ConditionBuilder conditionBuilder)
     {
         String sql = SQLUtils.createSQLSelect(hasteTable.getTableName());
         if (null != conditionBuilder)
@@ -373,7 +359,7 @@ public class HasteDao implements HasteOperation
         List<T> entities = null;
         try
         {
-            entities = CursorUtils.cursorToEntities(clz, cursor, hasteTable.getAllColumns());
+            entities = (List<T>) CursorUtils.cursorToEntities(hasteModelClz, cursor, hasteTable.getAllColumns());
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -384,19 +370,16 @@ public class HasteDao implements HasteOperation
         return entities;
     }
 
-    @Override
     public void run(String sql)
     {
         sqlExecutor.execSQL(sql);
     }
 
-    @Override
     public void run(String sql, Object[] args)
     {
         sqlExecutor.execSQL(sql, args);
     }
 
-    @Override
     public Cursor query(String sql, String[] args)
     {
         return sqlExecutor.execQuery(sql, args);

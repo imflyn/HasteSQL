@@ -9,6 +9,8 @@ import com.flyn.hastesql.async.Async;
 import com.flyn.hastesql.async.ThreadPool;
 import com.flyn.hastesql.optional.ConditionBuilder;
 import com.flyn.hastesql.optional.ConditionExpression;
+import com.flyn.hastesql.optional.OptionProxy;
+import com.flyn.hastesql.optional.UpdateOptionProxy;
 
 import java.util.HashMap;
 import java.util.List;
@@ -108,13 +110,22 @@ public class HasteMaster implements HasteOperation
     @Override
     public void update(Class<? extends HasteModel> clz, ConditionExpression valueExpression, ConditionExpression whereExpression)
     {
-        getHasteDao(clz, clz.getSimpleName()).update(clz, valueExpression, whereExpression);
+        //TODO
+        getHasteDao(clz, clz.getSimpleName()).update(valueExpression, whereExpression);
     }
+
+    public OptionProxy update1(Class<? extends HasteModel> clz)
+    {
+        //TODO
+        return new UpdateOptionProxy(getHasteDao(clz, clz.getSimpleName()));
+    }
+
 
     public void update(Class<? extends HasteModel> clz, String prefix, String suffix, ConditionExpression valueExpression, ConditionExpression
             whereExpression)
     {
-        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).update(clz, valueExpression, whereExpression);
+        //TODO
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).update(valueExpression, whereExpression);
     }
 
     @Override
@@ -155,19 +166,19 @@ public class HasteMaster implements HasteOperation
 
     @Override
     public void delete(Class<? extends HasteModel> clz, ConditionExpression conditionExpression)
-    {
-        getHasteDao(clz, clz.getSimpleName()).delete(clz, conditionExpression);
+    {//TODO
+        getHasteDao(clz, clz.getSimpleName()).delete(conditionExpression);
     }
 
     public void delete(Class<? extends HasteModel> clz, String prefix, String suffix, ConditionExpression conditionExpression)
-    {
-        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).delete(clz, conditionExpression);
+    {//TODO
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).delete(conditionExpression);
     }
 
     @Override
     public void deleteAll(Class<? extends HasteModel> clz)
     {
-        getHasteDao(clz, clz.getSimpleName()).deleteAll(clz);
+        getHasteDao(clz, clz.getSimpleName()).deleteAll();
     }
 
     @Override
@@ -179,7 +190,7 @@ public class HasteMaster implements HasteOperation
 
     public void deleteAll(Class<? extends HasteModel> clz, String prefix, String suffix)
     {
-        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).deleteAll(clz);
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).deleteAll();
     }
 
     public void deleteAll(List<? extends HasteModel> hasteModelList, String prefix, String suffix)
@@ -191,45 +202,45 @@ public class HasteMaster implements HasteOperation
     @Override
     public <T extends HasteModel> List<T> queryAll(Class<T> clz)
     {
-        return getHasteDao(clz, clz.getSimpleName()).queryAll(clz);
+        return getHasteDao(clz, clz.getSimpleName()).queryAll();
     }
 
     public <T extends HasteModel> List<T> queryAll(Class<T> clz, String prefix, String suffix)
     {
-        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryAll(clz);
+        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryAll();
     }
 
     @Override
     public <T extends HasteModel> List<T> query(Class<T> clz, ConditionBuilder conditionBuilder)
-    {
-        return getHasteDao(clz, clz.getSimpleName()).query(clz, conditionBuilder);
+    {//TODO
+        return getHasteDao(clz, clz.getSimpleName()).query(conditionBuilder);
     }
 
     public <T extends HasteModel> List<T> query(Class<T> clz, String prefix, String suffix, ConditionBuilder conditionBuilder)
-    {
-        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).query(clz, conditionBuilder);
+    {//TODO
+        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).query(conditionBuilder);
     }
 
     @Override
     public <T extends HasteModel> T queryFirst(Class<T> clz, ConditionBuilder conditionBuilder)
-    {
-        return getHasteDao(clz, clz.getSimpleName()).queryFirst(clz, conditionBuilder);
+    {//TODO
+        return getHasteDao(clz, clz.getSimpleName()).queryFirst(conditionBuilder);
     }
 
     public <T extends HasteModel> T queryFirst(Class<T> clz, String prefix, String suffix, ConditionBuilder conditionBuilder)
-    {
-        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryFirst(clz, conditionBuilder);
+    {//TODO
+        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryFirst(conditionBuilder);
     }
 
     @Override
     public <T extends HasteModel> T queryByKey(Class<T> clz, Object key)
     {
-        return getHasteDao(clz, clz.getSimpleName()).queryByKey(clz, key);
+        return getHasteDao(clz, clz.getSimpleName()).queryByKey(key);
     }
 
     public <T extends HasteModel> T queryByKey(Class<T> clz, String prefix, String suffix, Object key)
     {
-        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryByKey(clz, key);
+        return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).queryByKey(key);
     }
 
     @Override
