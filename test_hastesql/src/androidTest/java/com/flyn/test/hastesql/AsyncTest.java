@@ -10,6 +10,7 @@ import com.flyn.hastesql.util.LogUtils;
 import com.flyn.test.hastesql.entity.People;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by flyn on 2014-12-09.
@@ -27,7 +28,7 @@ public class AsyncTest extends AndroidTestCase
 
     public void testAsyncInsert() throws InterruptedException
     {
-        HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
+        final HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
 
         People people = new People();
         people.setDate(new Date());
@@ -52,6 +53,14 @@ public class AsyncTest extends AndroidTestCase
             public void onSuccess(Object data)
             {
                 LogUtils.d("onSuccess");
+                hasteMaster.startAsync().queryAll(People.class, new AsyncListener<List<People>>()
+                {
+                    @Override
+                    public void onSuccess(List<People> data)
+                    {
+                        LogUtils.i(data.toString());
+                    }
+                });
             }
 
             @Override
@@ -73,6 +82,14 @@ public class AsyncTest extends AndroidTestCase
             public void onFinish()
             {
                 LogUtils.d("onFinish");
+                hasteMaster.startAsync().queryAll(People.class, new AsyncListener<List<People>>()
+                {
+                    @Override
+                    public void onSuccess(List<People> data)
+                    {
+                        LogUtils.i(data.toString());
+                    }
+                });
             }
 
             @Override
@@ -89,10 +106,6 @@ public class AsyncTest extends AndroidTestCase
         });
 
 
-        while (true)
-        {
-            Thread.sleep(5000);
-        }
     }
 
 }
