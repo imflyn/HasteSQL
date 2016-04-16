@@ -72,7 +72,8 @@ public class QueryTest extends AndroidTestCase
         ConditionBuilder conditionBuilder = new ConditionBuilder();
         conditionBuilder.where(conditionExpression);
 
-        People entity = HasteSQL.createDefault(mContext).queryFirst(People.class, conditionBuilder);
+//        People entity = HasteSQL.createDefault(mContext).queryFirst(People.class, conditionBuilder);
+        People entity = HasteSQL.createDefault(mContext).queryFirst(People.class);
 
         LogUtils.d("花费时间:" + (System.currentTimeMillis() - time));
         LogUtils.i(entity.toString());
