@@ -105,16 +105,14 @@ public class HasteMaster implements HasteOperation
         getHasteDao(clz, prefix + clz.getSimpleName() + suffix).updateAll(hasteModelList);
     }
 
-    @Override
-    public void update(Class<? extends HasteModel> clz, ConditionExpression valueExpression, ConditionExpression whereExpression)
+    public void update(Class<? extends HasteModel> clz, ConditionBuilder conditionBuilder)
     {
-        getHasteDao(clz, clz.getSimpleName()).update(valueExpression, whereExpression);
+        getHasteDao(clz, clz.getSimpleName()).update(conditionBuilder);
     }
 
-    public void update(Class<? extends HasteModel> clz, String prefix, String suffix, ConditionExpression valueExpression, ConditionExpression
-            whereExpression)
+    public void update(Class<? extends HasteModel> clz, String prefix, String suffix, ConditionBuilder conditionBuilder)
     {
-        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).update(valueExpression, whereExpression);
+        getHasteDao(clz, prefix + clz.getSimpleName() + suffix).update(conditionBuilder);
     }
 
     @Override
@@ -208,6 +206,12 @@ public class HasteMaster implements HasteOperation
     public <T extends HasteModel> List<T> query(Class<T> clz, String prefix, String suffix, ConditionBuilder conditionBuilder)
     {
         return getHasteDao(clz, prefix + clz.getSimpleName() + suffix).query(conditionBuilder);
+    }
+
+    @Override
+    public <T extends HasteModel> T queryFirst(Class<T> clz)
+    {
+        return getHasteDao(clz, clz.getSimpleName()).queryFirst();
     }
 
     @Override

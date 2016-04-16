@@ -6,7 +6,7 @@ import com.flyn.hastesql.util.ReflectUtils;
  * Created by flyn on 2014-11-19.
  * Non-Thread-Safe
  */
-public class ConditionExpression implements ExpressionInterface
+public class ConditionExpression
 {
 
     public static final String MATH_ADDITIVE                 = "+";
@@ -41,10 +41,8 @@ public class ConditionExpression implements ExpressionInterface
     public static final String BITWISE_LEFT_SHIFT            = "<<";
     public static final String BITWISE_RIGHT_SHIFT           = ">>";
 
+    private StringBuilder stringBuilder = new StringBuilder();
 
-    protected StringBuilder stringBuilder = new StringBuilder();
-
-    @Override
     public ConditionExpression operate(String operation, String field, Object value)
     {
 
@@ -59,7 +57,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression combine(String operation)
     {
         stringBuilder.append(" ");
@@ -68,7 +66,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression and()
     {
         stringBuilder.append(" ");
@@ -77,7 +75,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression exists()
     {
         stringBuilder.append(" ");
@@ -87,7 +85,6 @@ public class ConditionExpression implements ExpressionInterface
     }
 
 
-    @Override
     public ConditionExpression equals(String fieldName, Object value)
     {
         stringBuilder.append(fieldName);
@@ -99,7 +96,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression notEquals(String fieldName, Object value)
     {
         stringBuilder.append(fieldName);
@@ -111,7 +108,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression greater(String fieldName, Object value)
     {
         stringBuilder.append(fieldName);
@@ -123,7 +120,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression greaterEquals(String fieldName, Object value)
     {
         stringBuilder.append(fieldName);
@@ -135,7 +132,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression notGreater(String fieldName, Object value)
     {
         stringBuilder.append(fieldName);
@@ -147,7 +144,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression less(String fieldName, Object value)
     {
         stringBuilder.append(fieldName);
@@ -159,7 +156,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression lessEquals(String fieldName, Object value)
     {
         stringBuilder.append(fieldName);
@@ -171,7 +168,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression notLess(String fieldName, Object value)
     {
         stringBuilder.append(fieldName);
@@ -183,7 +180,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression between(String fieldName, Object left, Object right)
     {
         stringBuilder.append(fieldName);
@@ -201,7 +198,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression in(String fieldName, Object... value)
     {
         stringBuilder.append(fieldName);
@@ -221,7 +218,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression notIn(String fieldName, Object... value)
     {
         stringBuilder.append(fieldName);
@@ -240,7 +237,7 @@ public class ConditionExpression implements ExpressionInterface
         return this;
     }
 
-    @Override
+
     public ConditionExpression or()
     {
         stringBuilder.append(" ");
@@ -250,7 +247,6 @@ public class ConditionExpression implements ExpressionInterface
     }
 
 
-    @Override
     public String toString()
     {
         return stringBuilder.toString();

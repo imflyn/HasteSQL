@@ -103,11 +103,11 @@ public class HasteDao
         }
     }
 
-    public void update(ConditionExpression valueExpression, ConditionExpression whereExpression)
+    public void update(ConditionBuilder conditionBuilder)
     {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(" UPDATE ").append(hasteTable.getTableName()).append(" SET ");
-        stringBuilder.append(valueExpression.toString()).append(" WHERE ").append(whereExpression.toString());
+        stringBuilder.append(" UPDATE ").append(hasteTable.getTableName()).append(" ");
+        stringBuilder.append(conditionBuilder.build());
         sqlExecutor.execSQL(stringBuilder.toString());
     }
 
@@ -296,6 +296,26 @@ public class HasteDao
         }
         return entities;
     }
+
+
+    public <T extends HasteModel> T queryFirst()
+    {
+        String sql = SQLUtils.createSQLSelect(hasteTable.getTableName());
+        Cursor cursor = sqlExecutor.execQuery(sql);
+        List<T> entities = null;
+        try
+        {
+            entities = (List<T>) CursorUtils.cursorToEntities(hasteModelClz, cursor, hasteTable.getAllColumns(), false);
+        } catch (Exception e)
+        {
+            LogUtils.e(e);
+        } finally
+        {
+            cursor.close();
+        }
+        return entities.isEmpty() ? null : entities.get(0);
+    }
+
 
     public <T extends HasteModel> T queryFirst(ConditionBuilder conditionBuilder)
     {

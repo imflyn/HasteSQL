@@ -230,8 +230,7 @@ public class Async
         });
     }
 
-    public void update(final Class<? extends HasteModel> clz, final ConditionExpression valueExpression, final ConditionExpression whereExpression,
-                       final AsyncListener<?> listener)
+    public void update(final Class<? extends HasteModel> clz, final ConditionBuilder conditionBuilder, final AsyncListener<?> listener)
     {
         threadPool.submit(new Runnable()
         {
@@ -241,7 +240,7 @@ public class Async
                 executorDelivery.sendStartMessage(listener);
                 try
                 {
-                    hasteMaster.update(clz, valueExpression, whereExpression);
+                    hasteMaster.update(clz, conditionBuilder);
                     executorDelivery.sendSuccessMessage(listener, null);
                 } catch (Exception e)
                 {
@@ -254,8 +253,8 @@ public class Async
         });
     }
 
-    public void update(final Class<? extends HasteModel> clz, final String prefix, final String suffix, final ConditionExpression valueExpression,
-                       final ConditionExpression whereExpression, final AsyncListener<?> listener)
+    public void update(final Class<? extends HasteModel> clz, final String prefix, final String suffix, final ConditionBuilder conditionBuilder,
+                       final AsyncListener<?> listener)
     {
         threadPool.submit(new Runnable()
         {
@@ -265,7 +264,7 @@ public class Async
                 executorDelivery.sendStartMessage(listener);
                 try
                 {
-                    hasteMaster.update(clz, prefix, suffix, valueExpression, whereExpression);
+                    hasteMaster.update(clz, prefix, suffix, conditionBuilder);
                     executorDelivery.sendSuccessMessage(listener, null);
                 } catch (Exception e)
                 {

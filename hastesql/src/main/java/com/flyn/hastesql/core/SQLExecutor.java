@@ -31,16 +31,6 @@ public class SQLExecutor
         this.mWriteLock = lock.writeLock();
     }
 
-    protected <T extends HasteModel> T queryFirst(Class<T> clz)
-    {
-        return null;
-    }
-
-    protected <T extends HasteModel> List<T> queryAll(Class<T> clz)
-    {
-        return null;
-    }
-
     protected Cursor execQuery(String sql)
     {
         return execQuery(sql, null);
@@ -60,7 +50,6 @@ public class SQLExecutor
         }
         return cursor;
     }
-
 
     protected void execSQL(String sql)
     {
