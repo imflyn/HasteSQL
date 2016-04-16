@@ -2,6 +2,7 @@ package com.flyn.test.hastesql;
 
 import com.flyn.hastesql.optional.ConditionBuilder;
 import com.flyn.hastesql.optional.ConditionExpression;
+import com.flyn.hastesql.util.LogUtils;
 
 import junit.framework.TestCase;
 
@@ -31,5 +32,26 @@ public class ConditionBuilderTest extends TestCase
         havingExpression.in("name", "1", "2", "3");
 
         conditionBuilder.where(whereExpression).groupBy("age", "name", "age").having(havingExpression).orderBy("age", "name", "age").build();
+    }
+
+    public void testExpression()
+    {
+        ConditionBuilder conditionBuilder = new ConditionBuilder();
+        ConditionExpression whereExpression = new ConditionExpression();
+
+        whereExpression.equals("age", "1");
+        whereExpression.and().equals("name", "android");
+        whereExpression.and().between("age", "left", "right");
+        whereExpression.or().in("age", 1, 2, 3, 4);
+        whereExpression.exists().notGreater("age", 123);
+
+        ConditionExpression havingExpression = new ConditionExpression();
+        havingExpression.in("name", "1", "2", "3");
+
+        conditionBuilder.where(whereExpression).groupBy("age", "name", "age").having(havingExpression).orderBy("age", "name", "age");
+
+        conditionBuilder.set("age", 2);
+        conditionBuilder.set("name", "3");
+        LogUtils.i(conditionBuilder.build());
     }
 }
