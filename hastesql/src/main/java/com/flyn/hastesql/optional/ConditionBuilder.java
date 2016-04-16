@@ -1,6 +1,7 @@
 package com.flyn.hastesql.optional;
 
 import com.flyn.hastesql.util.LogUtils;
+import com.flyn.hastesql.util.ReflectUtils;
 
 /**
  * Created by flyn on 2014-11-19.
@@ -8,12 +9,27 @@ import com.flyn.hastesql.util.LogUtils;
  */
 public class ConditionBuilder
 {
-    private StringBuilder stringBuilder = new StringBuilder();
+    private StringBuilder valueStringBuilder = new StringBuilder("SET");
+    private StringBuilder stringBuilder      = new StringBuilder();
 
+    public ConditionBuilder set(String field, Object value)
+    {
+        if (valueStringBuilder.length() > 3)
+        {
+            valueStringBuilder.append(",");
+        }
+        valueStringBuilder.append(" ");
+        valueStringBuilder.append(field);
+        valueStringBuilder.append("=");
+        boolean isText = ReflectUtils.isText(value);
+        valueStringBuilder.append(isText ? "\'" : "");
+        valueStringBuilder.append(value);
+        valueStringBuilder.append(isText ? "\'" : "");
+        return this;
+    }
 
     public ConditionBuilder where(ConditionExpression conditionExpression)
     {
-
         stringBuilder.append(" WHERE ");
         stringBuilder.append(conditionExpression.toString());
         stringBuilder.append(" ");
@@ -146,6 +162,6 @@ public class ConditionBuilder
     public String build()
     {
         LogUtils.d("[" + stringBuilder.toString() + "]");
-        return stringBuilder.toString();
+        return (valueStringBuilder.length() > 3 ? valueStringBuilder.toString() : "") + stringBuilder.toString();
     }
 }

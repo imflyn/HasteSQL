@@ -22,7 +22,7 @@ public interface HasteOperation
 
     void updateAll(List<? extends HasteModel> hasteModelList);
 
-    void update(Class<? extends HasteModel> clz, ConditionExpression valueExpression, ConditionExpression whereExpression);
+    void update(Class<? extends HasteModel> clz, ConditionBuilder conditionBuilder);
 
     void insertOrReplace(HasteModel hasteModel);
 
@@ -41,6 +41,8 @@ public interface HasteOperation
     <T extends HasteModel> List<T> query(Class<T> clz, ConditionBuilder conditionBuilder);
 
     <T extends HasteModel> T queryFirst(Class<T> clz, ConditionBuilder conditionBuilder);
+
+    <T extends HasteModel> T queryFirst(Class<T> clz);
 
     <T extends HasteModel> T queryByKey(Class<T> clz, Object key);
 
