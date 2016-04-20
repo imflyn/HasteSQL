@@ -57,7 +57,7 @@ public class ReflectUtils
                         property.setPrimaryKey(true);
                     } else if (annotation.annotationType().equals(ForeignKey.class))
                     {
-                        //Add support foreign key
+                        //TODO Add support foreign key
 
 
                     }
