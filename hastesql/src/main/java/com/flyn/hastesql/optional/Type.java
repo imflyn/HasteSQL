@@ -1,6 +1,8 @@
 package com.flyn.hastesql.optional;
 
+import java.lang.reflect.Array;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by flyn on 2014-11-11.
@@ -19,8 +21,7 @@ public enum Type
     public static String wrap(Class<?> clz)
     {
         if (clz.equals(String.class) || clz.equals(CharSequence.class) || clz.equals(Byte.class) || clz.equals(byte.class) || clz.equals(char
-                .class) ||
-                clz.equals(Character.class))
+                .class) || clz.equals(Character.class) || clz.equals(List.class) || clz.equals(Array.class))
         {
             return Type.TEXT.value();
         } else if (clz.equals(boolean.class) || clz.equals(Boolean.class))

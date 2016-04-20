@@ -14,7 +14,7 @@ public interface HasteOperation
 {
 
 
-    void insert(HasteModel hasteModel);
+    void insert(HasteModel hasteModel) throws IllegalAccessException;
 
     void insertAll(List<? extends HasteModel> hasteModelList);
 

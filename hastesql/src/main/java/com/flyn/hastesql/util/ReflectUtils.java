@@ -30,7 +30,7 @@ public class ReflectUtils
             return new Property[0];
         }
 
-        ArrayList<Property> properties = new ArrayList<Property>();
+        ArrayList<Property> properties = new ArrayList<>();
         Property property;
         for (Field field : fields)
         {

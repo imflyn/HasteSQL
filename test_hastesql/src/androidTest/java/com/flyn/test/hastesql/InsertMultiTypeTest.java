@@ -7,6 +7,7 @@ import android.test.AndroidTestCase;
 import com.flyn.hastesql.HasteSQL;
 import com.flyn.hastesql.core.HasteMaster;
 import com.flyn.hastesql.util.LogUtils;
+import com.flyn.test.hastesql.entity.Order;
 import com.flyn.test.hastesql.entity.TestMultiModel;
 
 import java.util.ArrayList;
@@ -27,19 +28,19 @@ public class InsertMultiTypeTest extends AndroidTestCase
         mContext = getContext();
         assertNotNull(mContext);
 
-        HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
-        TestMultiModel testMultiModel;
-        List<TestMultiModel> testMultiModelList = new ArrayList<TestMultiModel>();
-        for (int i = 0; i < 10000; i++)
-        {
-            testMultiModel = new TestMultiModel();
-            testMultiModelList.add(testMultiModel);
-        }
-        long time = SystemClock.uptimeMillis();
-
-        hasteMaster.insertAll(testMultiModelList);
-
-        LogUtils.d("花费时间:" + (SystemClock.uptimeMillis() - time));
+        //        HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
+        //        TestMultiModel testMultiModel;
+        //        List<TestMultiModel> testMultiModelList = new ArrayList<TestMultiModel>();
+        //        for (int i = 0; i < 10000; i++)
+        //        {
+        //            testMultiModel = new TestMultiModel();
+        //            testMultiModelList.add(testMultiModel);
+        //        }
+        //        long time = SystemClock.uptimeMillis();
+        //
+        //        hasteMaster.insertAll(testMultiModelList);
+        //
+        //        LogUtils.d("花费时间:" + (SystemClock.uptimeMillis() - time));
     }
 
     public void testQuery()
@@ -82,9 +83,26 @@ public class InsertMultiTypeTest extends AndroidTestCase
 
     }
 
-    @Override
-    protected void tearDown() throws Exception
+    public void testListInsert()
     {
-        super.tearDown();
+        HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
+
+        Order order = new Order();
+
+
+        order.orderId = String.valueOf(System.currentTimeMillis());
+        order.messageList = new ArrayList<Order.Message>()
+        {
+            {
+                add(new Order.Message("1"));
+            }
+        };
+        order.users = new Order.User[]{new Order.User("flyn")};
+
+        hasteMaster.insert(order);
+
+
+        LogUtils.i(hasteMaster.queryAll(Order.class).toString());
     }
+
 }
