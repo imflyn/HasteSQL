@@ -5,7 +5,7 @@ import com.flyn.hastesql.core.HasteModel;
 
 import java.util.List;
 
-public class Order implements HasteModel
+public class Bill implements HasteModel
 {
 
     @PrimaryKey

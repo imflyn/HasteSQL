@@ -21,7 +21,7 @@ public enum Type
     public static String wrap(Class<?> clz)
     {
         if (clz.equals(String.class) || clz.equals(CharSequence.class) || clz.equals(Byte.class) || clz.equals(byte.class) || clz.equals(char
-                .class) || clz.equals(Character.class) || clz.equals(List.class) || clz.equals(Array.class))
+                .class) || clz.equals(Character.class) || clz.equals(List.class) || clz.equals(Array.class) || clz.isArray())
         {
             return Type.TEXT.value();
         } else if (clz.equals(boolean.class) || clz.equals(Boolean.class))

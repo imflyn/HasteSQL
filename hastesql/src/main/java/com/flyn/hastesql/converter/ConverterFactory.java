@@ -1,7 +1,6 @@
 package com.flyn.hastesql.converter;
 
 import com.flyn.hastesql.optional.Type;
-import com.flyn.hastesql.util.LogUtils;
 
 import java.lang.reflect.Field;
 import java.util.Date;
@@ -82,15 +81,13 @@ public class ConverterFactory
             abstractConverter = new ByteArrayConverter(field);
         } else if (clz.equals(List.class))
         {
-            //TODO
-
-
-
+            abstractConverter = new ListConverter(field);
+        } else if (clz.isArray())
+        {
+            abstractConverter = new ArrayConverter(field);
         } else
         {
-            LogUtils.e("Not support this type" + field.getType() + ",you should use modifier transient");
-
-
+            new IllegalStateException("Not support this type" + field.getType() + ",you should use modifier transient");
         }
         String type = Type.wrap(clz);
         abstractConverter.setType(type);

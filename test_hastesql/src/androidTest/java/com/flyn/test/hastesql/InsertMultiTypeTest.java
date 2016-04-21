@@ -7,8 +7,9 @@ import android.test.AndroidTestCase;
 import com.flyn.hastesql.HasteSQL;
 import com.flyn.hastesql.core.HasteMaster;
 import com.flyn.hastesql.util.LogUtils;
-import com.flyn.test.hastesql.entity.Order;
+import com.flyn.test.hastesql.entity.Bill;
 import com.flyn.test.hastesql.entity.TestMultiModel;
+import com.flyn.test.hastesql.entity.TextPrimaryEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,22 +88,35 @@ public class InsertMultiTypeTest extends AndroidTestCase
     {
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
 
-        Order order = new Order();
+        Bill order = new Bill();
 
 
         order.orderId = String.valueOf(System.currentTimeMillis());
-        order.messageList = new ArrayList<Order.Message>()
-        {
-            {
-                add(new Order.Message("1"));
-            }
-        };
-        order.users = new Order.User[]{new Order.User("flyn")};
+        order.messageList = new ArrayList<>();
+        Bill.Message message = new Bill.Message("1");
+        order.messageList.add(message);
+        order.users = new Bill.User[]{new Bill.User("flyn")};
+
+
+        TextPrimaryEntity people = new TextPrimaryEntity();
+        people.setAge(3);
+        people.setName("2号");
 
         hasteMaster.insert(order);
 
+        LogUtils.i(hasteMaster.queryAll(Bill.class).toString());
+    }
 
-        LogUtils.i(hasteMaster.queryAll(Order.class).toString());
+    public void testAA()
+    {
+
+        HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
+
+        TextPrimaryEntity people = new TextPrimaryEntity();
+        people.setAge(3);
+        people.setName("2号");
+        hasteMaster.insert(people);
+        LogUtils.i(hasteMaster.queryAll(TextPrimaryEntity.class).toString());
     }
 
 }

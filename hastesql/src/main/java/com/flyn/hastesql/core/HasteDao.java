@@ -33,7 +33,6 @@ public class HasteDao
 
     protected void createTableIfNotExits(String tableName, Property[] properties)
     {
-
         String checkTableSQL = SQLUtils.createSQLCheckTableExits(tableName);
         Cursor cursor = sqlExecutor.execQuery(checkTableSQL);
         if (!CursorUtils.checkTableExist(cursor) && ReflectUtils.checkPropertiesValidity(properties))
