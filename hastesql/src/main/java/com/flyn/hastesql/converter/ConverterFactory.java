@@ -3,6 +3,7 @@ package com.flyn.hastesql.converter;
 import com.flyn.hastesql.optional.Type;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -79,7 +80,7 @@ public class ConverterFactory
         } else if (clz.equals(byte[].class))
         {
             abstractConverter = new ByteArrayConverter(field);
-        } else if (clz.equals(List.class))
+        } else if (clz.equals(List.class) || Collection.class.isAssignableFrom(clz))
         {
             abstractConverter = new ListConverter(field);
         } else if (clz.isArray())

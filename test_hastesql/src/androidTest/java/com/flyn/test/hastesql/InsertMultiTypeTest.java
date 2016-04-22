@@ -9,8 +9,10 @@ import com.flyn.hastesql.core.HasteMaster;
 import com.flyn.hastesql.util.LogUtils;
 import com.flyn.test.hastesql.entity.Bill;
 import com.flyn.test.hastesql.entity.TestMultiModel;
-import com.flyn.test.hastesql.entity.TextPrimaryEntity;
+import com.google.gson.Gson;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,26 +99,34 @@ public class InsertMultiTypeTest extends AndroidTestCase
         order.messageList.add(message);
         order.users = new Bill.User[]{new Bill.User("flyn")};
 
-
-        TextPrimaryEntity people = new TextPrimaryEntity();
-        people.setAge(3);
-        people.setName("2号");
-
         hasteMaster.insert(order);
 
         LogUtils.i(hasteMaster.queryAll(Bill.class).toString());
     }
 
-    public void testAA()
+    public void testAA() throws NoSuchFieldException
     {
+        Bill order = new Bill();
 
-        HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
 
-        TextPrimaryEntity people = new TextPrimaryEntity();
-        people.setAge(3);
-        people.setName("2号");
-        hasteMaster.insert(people);
-        LogUtils.i(hasteMaster.queryAll(TextPrimaryEntity.class).toString());
+        order.orderId = String.valueOf(System.currentTimeMillis());
+        order.messageList = new ArrayList<>();
+        Bill.Message message = new Bill.Message("1");
+        order.messageList.add(message);
+        order.users = new Bill.User[]{new Bill.User("flyn")};
+
+        Field field = order.getClass().getDeclaredField("users");
+        field.setAccessible(true);
+
+
+        Gson gson = new Gson();
+
+        System.out.println( Array.newInstance((Class<?>) field.getGenericType(), 0).getClass().equals(Bill.User[].class));
+
+//        Object realValue = gson.fromJson("[{\"name\":\"flyn\"}]", Array.newInstance((Class<?>) field.getGenericType(), 0).getClass());
+//        Object realValue = gson.fromJson("[{\"name\":\"flyn\"}]", Bill.User[].class);
+
+//        System.out.println(realValue);
     }
 
 }

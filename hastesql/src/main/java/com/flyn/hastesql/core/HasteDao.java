@@ -287,8 +287,7 @@ public class HasteDao
             entities = (List<T>) CursorUtils.cursorToEntities(hasteModelClz, cursor, hasteTable.getAllColumns());
         } catch (Exception e)
         {
-            throw new RuntimeException(e);
-            //            e.printStackTrace();
+            LogUtils.e(e);
         } finally
         {
             cursor.close();
