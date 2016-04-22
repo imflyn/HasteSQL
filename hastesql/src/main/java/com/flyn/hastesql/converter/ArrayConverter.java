@@ -12,63 +12,53 @@ import java.lang.reflect.Type;
 /**
  * Created by flyn on 2016-04-22.
  */
-public class ArrayConverter extends AbstractConverter
-{
+public class ArrayConverter extends AbstractConverter {
     private Class genericClz;
 
-    public ArrayConverter(Field field)
-    {
+    public ArrayConverter(Field field) {
         super(field);
         genericClz = (Class<?>) field.getGenericType();
     }
 
 
     @Override
-    public Object getValue(Object obj) throws IllegalAccessException
-    {
+    public Object getValue(Object obj) throws IllegalAccessException {
         Gson gson = new Gson();
         String content = gson.toJson(field.get(obj));
         return content;
     }
 
     @Override
-    public void setValue(Object value, Object obj) throws IllegalAccessException
-    {
+    public void setValue(Object value, Object obj) throws IllegalAccessException {
         Gson gson = new Gson();
-        Object realValue = gson.fromJson(value.toString(),  Array.newInstance(genericClz, 0).getClass());
+        Object realValue = gson.fromJson(value.toString(), genericClz);
         field.set(obj, realValue);
     }
 
     @Override
-    public Object getCursorValueAt(Cursor cursor, int index)
-    {
+    public Object getCursorValueAt(Cursor cursor, int index) {
         return cursor.getString(index);
     }
 
-    class ArrayJsonType implements ParameterizedType
-    {
+    class ArrayJsonType implements ParameterizedType {
         private Class<?> wrapped;
 
-        public ArrayJsonType(Class<?> wrapper)
-        {
+        public ArrayJsonType(Class<?> wrapper) {
             this.wrapped = wrapper;
         }
 
         @Override
-        public Type[] getActualTypeArguments()
-        {
+        public Type[] getActualTypeArguments() {
             return new Type[]{wrapped};
         }
 
         @Override
-        public Type getRawType()
-        {
+        public Type getRawType() {
             return Array.newInstance(genericClz, 0).getClass();
         }
 
         @Override
-        public Type getOwnerType()
-        {
+        public Type getOwnerType() {
             return null;
         }
     }
