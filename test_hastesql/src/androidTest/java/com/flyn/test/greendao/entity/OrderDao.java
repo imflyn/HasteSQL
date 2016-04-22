@@ -27,7 +27,7 @@ public class OrderDao extends AbstractDao<Order, Long>
 
     ;
     private Query<Order> customer_OrdersQuery;
-    private String selectDeep;
+    private String       selectDeep;
 
     public OrderDao(DaoConfig config)
     {

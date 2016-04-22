@@ -4,6 +4,7 @@ import com.flyn.hastesql.annotation.PrimaryKey;
 import com.flyn.hastesql.core.HasteModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Bill implements HasteModel
 {
@@ -17,13 +18,20 @@ public class Bill implements HasteModel
 
     public static class Message
     {
+        public String text;
+
         public Message(String text)
         {
             this.text = text;
         }
 
-        public String text;
-
+        @Override
+        public String toString()
+        {
+            return "Message{" +
+                    "text='" + text + '\'' +
+                    '}';
+        }
     }
 
     public static class User
@@ -35,6 +43,23 @@ public class Bill implements HasteModel
         {
             this.name = name;
         }
+
+        @Override
+        public String toString()
+        {
+            return "User{" +
+                    "name='" + name + '\'' +
+                    '}';
+        }
     }
 
+    @Override
+    public String toString()
+    {
+        return "Bill{" +
+                "orderId='" + orderId + '\'' +
+                ", messageList=" + messageList +
+                ", users=" + Arrays.toString(users) +
+                '}';
+    }
 }

@@ -9,21 +9,21 @@ import com.flyn.hastesql.core.HasteMaster;
 import com.flyn.hastesql.util.LogUtils;
 import com.flyn.test.hastesql.entity.Bill;
 import com.flyn.test.hastesql.entity.TestMultiModel;
-import com.google.gson.Gson;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by flyn on 2014-11-12.
  */
-public class InsertMultiTypeTest extends AndroidTestCase {
+public class InsertMultiTypeTest extends AndroidTestCase
+{
 
     private Context mContext;
 
     @Override
-    protected void setUp() throws Exception {
+    protected void setUp() throws Exception
+    {
         super.setUp();
         mContext = getContext();
         assertNotNull(mContext);
@@ -43,7 +43,8 @@ public class InsertMultiTypeTest extends AndroidTestCase {
         //        LogUtils.d("花费时间:" + (SystemClock.uptimeMillis() - time));
     }
 
-    public void testQuery() {
+    public void testQuery()
+    {
         long time = System.currentTimeMillis();
         List<TestMultiModel> list = HasteSQL.createDefault(mContext).queryAll(TestMultiModel.class);
 
@@ -55,7 +56,8 @@ public class InsertMultiTypeTest extends AndroidTestCase {
 
     }
 
-    public void testInsert() {
+    public void testInsert()
+    {
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
 
         TestMultiModel testMultiModel = new TestMultiModel();
@@ -63,11 +65,13 @@ public class InsertMultiTypeTest extends AndroidTestCase {
 
     }
 
-    public void testInsertAll() {
+    public void testInsertAll()
+    {
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
         TestMultiModel testMultiModel;
         List<TestMultiModel> testMultiModelList = new ArrayList<TestMultiModel>();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 10000; i++)
+        {
             testMultiModel = new TestMultiModel();
             testMultiModelList.add(testMultiModel);
         }
@@ -79,7 +83,8 @@ public class InsertMultiTypeTest extends AndroidTestCase {
 
     }
 
-    public void testListInsert() {
+    public void testListInsert()
+    {
         HasteMaster hasteMaster = HasteSQL.createDefault(mContext);
 
         Bill order = new Bill();
@@ -88,38 +93,15 @@ public class InsertMultiTypeTest extends AndroidTestCase {
         order.orderId = String.valueOf(System.currentTimeMillis());
         order.messageList = new ArrayList<>();
         Bill.Message message = new Bill.Message("1");
+        Bill.Message message2 = new Bill.Message("2");
         order.messageList.add(message);
-        order.users = new Bill.User[]{new Bill.User("flyn")};
+        order.messageList.add(message2);
+        order.users = new Bill.User[]{new Bill.User("flyn"), new Bill.User("dq")};
 
         hasteMaster.insert(order);
 
         LogUtils.i(hasteMaster.queryAll(Bill.class).toString());
     }
 
-    public void testAA() throws NoSuchFieldException {
-        Bill order = new Bill();
-
-
-        order.orderId = String.valueOf(System.currentTimeMillis());
-        order.messageList = new ArrayList<>();
-        Bill.Message message = new Bill.Message("1");
-        order.messageList.add(message);
-        order.users = new Bill.User[]{new Bill.User("flyn")};
-
-        Field field = order.getClass().getDeclaredField("users");
-        field.setAccessible(true);
-
-
-        Gson gson = new Gson();
-
-//        order.getClass().getTypeParameters();
-
-//        System.out.println(Array.newInstance(genericClz, 0).getClass().equals(Bill.User[].class));
-
-        Object realValue = gson.fromJson("[{\"name\":\"flyn\"}]",field.getGenericType());
-//        Object realValue = gson.fromJson("[{\"name\":\"flyn\"}]", Bill.User[].class);
-
-        System.out.println(realValue);
-    }
 
 }
