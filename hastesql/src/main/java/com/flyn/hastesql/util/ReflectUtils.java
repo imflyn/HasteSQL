@@ -14,7 +14,9 @@ import com.flyn.hastesql.optional.Property;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by flyn on 2014-11-11.
@@ -34,6 +36,10 @@ public class ReflectUtils
         Property property;
         for (Field field : fields)
         {
+            if (isHasteModel(field))
+            {
+                continue;
+            }
 
             if (!Modifier.isFinal(field.getModifiers()) && !Modifier.isTransient(field.getModifiers()) && !Modifier.isStatic(field.getModifiers()))
             {
@@ -134,4 +140,44 @@ public class ReflectUtils
         return -1;
     }
 
+    public static Property[] getHasteModelPropertyArray(Class<?> clz)
+    {
+        //TODO
+        Field[] fields = clz.getDeclaredFields();
+
+        if (null == fields || fields.length == 0)
+        {
+            return new Property[0];
+        }
+
+        ArrayList<Property> properties = new ArrayList<>();
+        Property property = new Property();
+        for (Field field : fields)
+        {
+            if (isHasteModel(field))
+            {
+                properties.add(property);
+            }
+        }
+        return properties.toArray(new Property[properties.size()]);
+    }
+
+    public static boolean isHasteModel(Field field)
+    {
+        if (HasteModel.class.isAssignableFrom(field.getType()))
+        {
+            return true;
+        }
+        if (field.getType().isArray() && HasteModel.class.isAssignableFrom(field.getType().getComponentType()))
+        {
+            return true;
+        }
+        if (Collection.class.isAssignableFrom(field.getType()) && (HasteModel.class.isAssignableFrom((Class<?>) ((ParameterizedType) field
+                .getGenericType()).getActualTypeArguments()[0])))
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

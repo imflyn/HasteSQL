@@ -40,8 +40,10 @@ public enum Type
         } else if (clz.equals(byte[].class) || clz.equals(Byte[].class))
         {
             return Type.BLOB.value();
+        } else
+        {
+            return Type.TEXT.value();
         }
-        return null;
     }
 
     public String value()

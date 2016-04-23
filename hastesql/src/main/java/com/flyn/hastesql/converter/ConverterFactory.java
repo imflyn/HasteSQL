@@ -5,7 +5,6 @@ import com.flyn.hastesql.optional.Type;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by flyn on 2014-12-01.
@@ -80,7 +79,7 @@ public class ConverterFactory
         } else if (clz.equals(byte[].class))
         {
             abstractConverter = new ByteArrayConverter(field);
-        } else if (clz.equals(List.class) || Collection.class.isAssignableFrom(clz))
+        } else if (Collection.class.isAssignableFrom(clz))
         {
             abstractConverter = new ListConverter(field);
         } else if (clz.isArray())
@@ -88,7 +87,7 @@ public class ConverterFactory
             abstractConverter = new ArrayConverter(field);
         } else
         {
-            new IllegalStateException("Not support this type" + field.getType() + ",you should use modifier transient");
+            abstractConverter = new ObjectConverter(field);
         }
         String type = Type.wrap(clz);
         abstractConverter.setType(type);

@@ -1,7 +1,6 @@
 package com.flyn.hastesql.core;
 
 import com.flyn.hastesql.optional.Property;
-import com.flyn.hastesql.util.ReflectUtils;
 
 /**
  * Created by flyn on 2014-11-11.
@@ -13,10 +12,10 @@ public class HasteTable
     private       Property   primaryKey;
     private       Property[] allColumns;
 
-    protected HasteTable(String tableName, Class<? extends HasteModel> clz)
+    protected HasteTable(String tableName, Property[] allColumns)
     {
         this.tableName = tableName;
-        this.allColumns = ReflectUtils.getPropertyArray(clz);
+        this.allColumns = allColumns;
         init();
     }
 

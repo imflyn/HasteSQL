@@ -27,7 +27,9 @@ public class HasteDao
     {
         this.sqlExecutor = sqlExecutor;
         this.hasteModelClz = hasteModelClz;
-        this.hasteTable = new HasteTable(tableName, hasteModelClz);
+
+        Property[] allColumns = ReflectUtils.getPropertyArray(hasteModelClz);
+        this.hasteTable = new HasteTable(tableName, allColumns);
         createTableIfNotExits(tableName, this.hasteTable.getAllColumns());
     }
 

@@ -16,6 +16,8 @@ public class Bill implements HasteModel
 
     public User[] users;
 
+    public People people;
+
     public static class Message
     {
         public String text;
@@ -60,6 +62,7 @@ public class Bill implements HasteModel
                 "orderId='" + orderId + '\'' +
                 ", messageList=" + messageList +
                 ", users=" + Arrays.toString(users) +
+                ", people=" + people +
                 '}';
     }
 }
